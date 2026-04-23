@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affetti in Saldo – Il Libro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0392B;
+    --red-dark: #922B21;
+    --red-deep: #641E16;
+    --orange: #E07B1F;
+    --cream: #F5ECD7;
+    --cream-dark: #E8D5B0;
+    --blue-denim: #4A6FA5;
+    --blue-dark: #1B3A6B;
+    --white: #FDFAF4;
+    --text: #1A0A00;
+    --text-muted: #5C3A1E;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1B3A6B 0%, #2E5491 40%, #4A6FA5 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 6vw;
+    gap: 40px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 2;
+    animation: fadeInLeft 1s ease forwards;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--orange);
+    font-style: italic;
+    font-size: 0.85em;
+  }
+
+  .hero-subtitle {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+    color: var(--cream);
+    opacity: 0.85;
+    line-height: 1.7;
+    margin: 28px 0 40px;
+    max-width: 460px;
+  }
+
+  .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .btn-primary:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(192,57,43,0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    padding: 15px 32px;
+    border: 1.5px solid rgba(245,236,215,0.4);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--cream);
+    background: rgba(245,236,215,0.08);
+  }
+
+  /* Book mockup */
+  .hero-book {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInRight 1s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  .book-wrapper {
+    position: relative;
+    width: min(320px, 45vw);
+    aspect-ratio: 2/3;
+    transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+    transition: transform 0.5s ease;
+    filter: drop-shadow(-20px 30px 60px rgba(0,0,0,0.5));
+  }
+
+  .book-wrapper:hover {
+    transform: perspective(800px) rotateY(-3deg) rotateX(1deg) scale(1.03);
+  }
+
+  .book-cover {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, var(--red) 0%, var(--red-dark) 60%, var(--red-deep) 100%);
+    border-radius: 4px 10px 10px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book-cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 8px; height: 100%;
+    background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+  }
+
+  .book-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  .book-tag-hole {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #1B3A6B;
+    border: 2px solid rgba(0,0,0,0.3);
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .book-tag-string {
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(180deg, #C8A87A, #8B6542);
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .book-title-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--white);
+    text-align: center;
+    line-height: 1;
+    text-shadow: 2px 3px 8px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
+  }
+
+  .book-subtitle-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--orange);
+    text-align: center;
+    text-shadow: 1px 2px 6px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 2;
+  }
+
+  .book-heart {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--white);
+    opacity: 0.9;
+    text-shadow: 2px 3px 10px rgba(0,0,0,0.3);
+    animation: heartbeat 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  /* ─── TAGLINE BAND ─── */
+  .tagline-band {
+    background: var(--red);
+    padding: 22px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    overflow: hidden;
+  }
+
+  .tagline-band p {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: var(--white);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .tagline-band .ornament {
+    color: var(--orange);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ─── ABOUT SECTION ─── */
+  .about {
+    padding: 100px 6vw;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  .about-heading em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .about-body {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  .about-body p + p { margin-top: 18px; }
+
+  .quote-block {
+    position: relative;
+    border-left: 4px solid var(--red);
+    padding: 28px 32px;
+    background: var(--white);
+    box-shadow: 4px 8px 40px rgba(0,0,0,0.08);
+  }
+
+  .quote-block::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: var(--red);
+    opacity: 0.15;
+    position: absolute;
+    top: -10px; left: 10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    color: var(--text);
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-attr {
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── THEMES ─── */
+  .themes {
+    background: #1A2A3A;
+    padding: 90px 6vw;
+  }
+
+  .themes-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .themes-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .themes-header p {
+    color: var(--cream-dark);
+    opacity: 0.7;
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .theme-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 32px 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .theme-card:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-4px);
+  }
+
+  .theme-card:hover::after { transform: scaleX(1); }
+
+  .theme-icon {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .theme-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .theme-card p {
+    font-size: 0.9rem;
+    color: rgba(245,236,215,0.6);
+    line-height: 1.6;
+  }
+
+  /* ─── REVIEWS ─── */
+  .reviews {
+    padding: 90px 6vw;
+    background: var(--cream);
+  }
+
+  .reviews-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .reviews-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--text);
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .review-card {
+    background: var(--white);
+    padding: 32px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+    position: relative;
+  }
+
+  .stars {
+    color: var(--orange);
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+
+  .review-text {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .reviewer {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ─── BUY ─── */
+  .buy {
+    background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 50%, var(--orange) 100%);
+    padding: 90px 6vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .buy::before {
+    content: '♥';
+    position: absolute;
+    font-size: 30vw;
+    color: rgba(255,255,255,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .buy h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .buy p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    position: relative;
+  }
+
+  .price-tag {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 10px 24px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .price-currency {
+    font-size: 1.4rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--white);
+  }
+
+  .price-cents {
+    font-size: 1.4rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .buy-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn-buy {
+    background: var(--white);
+    color: var(--red);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 18px 48px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-buy:hover {
+    background: var(--cream);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+
+  .btn-buy-outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.6);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    padding: 16px 40px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-buy-outline:hover {
+    border-color: var(--white);
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 36px 6vw;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  footer a { color: var(--orange); text-decoration: none; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(27, 58, 107, 0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--orange); }
+
+  .nav-cta {
+    background: var(--red);
+    color: var(--white) !important;
+    padding: 8px 20px;
+    font-weight: 500;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding-top: 90px; text-align: center; }
+    .hero-subtitle { margin-left: auto; margin-right: auto; }
+    .hero-cta-group { justify-content: center; }
+    .hero-book { order: -1; }
+    .book-wrapper { width: min(220px, 60vw); }
+    .about { grid-template-columns: 1fr; gap: 50px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">Affetti <span>in Saldo</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Il Libro</a></li>
+    <li><a href="#temi">Temi</a></li>
+    <li><a href="#recensioni">Recensioni</a></li>
+    <li><a href="#acquista" class="nav-cta">Prossimamente</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-title">
+      Affetti
+      <span>in saldo</span>
+    </h1>
+    <div class="hero-cta-group">
+      <a href="#about" class="btn-primary">Scopri di più</a>
+    </div>
+  </div>
+
+  <div class="hero-book">
+    <div class="book-wrapper">
+      <div class="book-cover">
+        <div class="book-tag-hole"></div>
+        <div class="book-tag-string"></div>
+        <div class="book-title-text">Affetti</div>
+        <div class="book-subtitle-text">in saldo</div>
+        <div class="book-heart">♥</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAGLINE BAND -->
+<div class="tagline-band">
+  <span class="ornament">♥</span>
+  <p>«Cosa vale davvero un sentimento, quando il mondo lo mette in vetrina con un cartellino del prezzo?»</p>
+  <span class="ornament">♥</span>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="fade-in">
+    <p class="section-label">Il Libro</p>
+    <h2 class="about-heading">
+      Una storia di affetti, perdite<br>e <em>riscatti inaspettati</em>
+    </h2>
+    <div class="about-body">
+      <p>
+        In un mondo che misura tutto in termini di convenienza, 
+        <em>Affetti in Saldo</em> racconta le vite di persone comuni 
+        che si ritrovano a fare i conti con sentimenti che non hanno 
+        prezzo — eppure sembrano sempre in offerta.
+      </p>
+      <p>
+        Un romanzo che tocca le corde più profonde dell'anima, 
+        tra ironia e malinconia, tra il rumore del quotidiano e 
+        il silenzio di ciò che non siamo riusciti a dire in tempo.
+      </p>
+      <p>
+        Una lettura che fa riflettere, sorridere, e a volte — 
+        piangere di nascosto.
+      </p>
+    </div>
+  </div>
+
+  <div class="fade-in">
+    <div class="quote-block">
+      <p class="quote-text">
+        «Ho scritto questo libro pensando a tutte le volte che ho detto 
+        "ci penserò domani" alle persone che amavo. 
+        Domani arriva sempre troppo presto — o troppo tardi.»
+      </p>
+      <p class="quote-attr">— L'Autore</p>
+    </div>
+  </div>
+</section>
+
+<!-- THEMES -->
+<section class="themes" id="temi">
+  <div class="themes-header fade-in">
+    <p class="section-label" style="color: var(--orange)">Temi del romanzo</p>
+    <h2>Cosa troverai tra queste pagine</h2>
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
+  </div>
+
+  <div class="themes-grid">
+    <div class="theme-card fade-in">
+      <span class="theme-icon">❤️</span>
+      <h3>Amore e Perdita</h3>
+      <p>I sentimenti non si liquidano: restano, cambiano forma, ma non spariscono mai davvero.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">👨‍👩‍👧</span>
+      <h3>Famiglia</h3>
+      <p>I legami di sangue che logorano e che salvano — spesso le stesse persone, nello stesso momento.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">🕰️</span>
+      <h3>Il Tempo</h3>
+      <p>Quello che sprechiamo, quello che vorremmo indietro, e quello che ci rimane da vivere.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">🌿</span>
+      <h3>Rinascita</h3>
+      <p>Perché anche quando tutto sembra finito, c'è sempre qualcosa — o qualcuno — che ricomincia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="recensioni">
+  <div class="reviews-header fade-in">
+    <p class="section-label">Recensioni</p>
+    <h2>Cosa dicono i lettori</h2>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card fade-in">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">«L'ho letto in un weekend, incapace di smettere. Ogni capitolo era uno specchio in cui mi ritrovavo. Raro trovare una storia così autentica.»</p>
+      <p class="reviewer">— Maria G., Napoli</p>
+    </div>
+    <div class="review-card fade-in">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">«Un libro che ti rimane addosso per giorni. La scrittura è precisa, tagliente al punto giusto, e i personaggi sembrano persone che conosci davvero.»</p>
+      <p class="reviewer">— Luca F., Milano</p>
+    </div>
+    <div class="review-card fade-in">
+      <div class="stars">★★★★☆</div>
+      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l'autore ci riesce con una naturalezza disarmante.»</p>
+      <p class="reviewer">— Claudia R., Roma</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUY -->
+<section class="buy" id="acquista">
+  <h2>Prossimamente disponibile</h2>
+  <p>Vuoi sapere quando sarà in vendita? Lascia la tua email e sarai tra i primi a saperlo.</p>
+
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; margin-top: 8px;">
+    <input type="email" placeholder="La tua email" style="
+      padding: 16px 24px;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      min-width: 280px;
+      font-family: 'DM Sans', sans-serif;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.4);
+    " id="emailInput">
+    <button onclick="handleNotify()" class="btn-buy" style="padding: 16px 32px;">
+      🔔 Avvisami
+    </button>
+  </div>
+  <p id="notifyMsg" style="margin-top: 20px; font-size: 0.9rem; opacity: 0; transition: opacity 0.4s; font-style: normal; position:relative;">
+    ✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom: 8px;">
+    <strong style="color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-style: italic;">Affetti in Saldo</strong>
+  </p>
+  <p>© 2025 · Tutti i diritti riservati · <a href="#">Privacy Policy</a> · <a href="#">Contatti</a></p>
+</footer>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Notify
+  function handleNotify() {
+    const msg = document.getElementById('notifyMsg');
+    msg.style.opacity = '1';
+  }
+
+  // Fade in on scroll
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  fadeEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
