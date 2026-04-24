@@ -486,7 +486,7 @@
     <div class="about-body">
       <p>
         Non perché manchi il desiderio di amare, ma perché il tempo in cui viviamo rende difficile restare.
-        Affetti in saldo è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami.
+        Affetti in saldo è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami?
       </p>
       <p>
         Attraverso le voci di giovani studentesse che intrecciano riflessioni pedagogiche alla dimensione narrativa,
@@ -510,7 +510,7 @@
         di diventare parola pubblica. Nasce da un tratto di strada condiviso, da una prossimità costruita nel tempo,
         da un ascolto reciproco che ha permesso a vissuti, inquietudini e riflessioni di trovare lentamente forma.»
       </p>
-      <p class="quote-attr">— Giovanbattista Trebisacce</p>
+      <p class="quote-attr">— Giovambattista Trebisacce</p>
     </div>
   </div>
 </section>
@@ -624,7 +624,7 @@
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  async function handleNotify() {
+  function handleNotify() {
     const email = document.getElementById('emailInput').value;
     const msg = document.getElementById('notifyMsg');
     if (!email || !email.includes('@')) {
@@ -633,22 +633,28 @@
       msg.style.opacity = '1';
       return;
     }
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbzexICMNBKf3GUWNoN-8w0g6zBCl_QNQp7HRKxkhBmc5mx-upGiq30mFeqQ0T8GOwPd/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'email=' + encodeURIComponent(email)
-      });
-      msg.style.color = '#fff';
-      msg.textContent = '✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.';
+    const callbackName = 'cb_' + Date.now();
+    window[callbackName] = function(data) {
+      if (data.result === 'ok') {
+        msg.style.color = '#fff';
+        msg.textContent = '✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.';
+        document.getElementById('emailInput').value = '';
+      } else {
+        msg.style.color = '#ffe0b2';
+        msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
+      }
       msg.style.opacity = '1';
-      document.getElementById('emailInput').value = '';
-    } catch(err) {
+      delete window[callbackName];
+      document.body.removeChild(script);
+    };
+    const script = document.createElement('script');
+    script.src = 'https://script.google.com/macros/s/AKfycbzexICMNBKf3GUWNoN-8w0g6zBCl_QNQp7HRKxkhBmc5mx-upGiq30mFeqQ0T8GOwPd/exec?email=' + encodeURIComponent(email) + '&callback=' + callbackName;
+    script.onerror = function() {
       msg.style.color = '#ffe0b2';
       msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
       msg.style.opacity = '1';
-    }
+    };
+    document.body.appendChild(script);
   }
 
   const fadeEls = document.querySelectorAll('.fade-in');
