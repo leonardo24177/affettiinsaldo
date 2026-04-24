@@ -472,21 +472,23 @@
 
   @media (max-width: 768px) {
     .autrici-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px 20px;
     }
     .autrici-row-2 {
-      gap: 16px;
+      display: contents;
+    }
+    .autrice {
+      width: calc(33% - 20px);
     }
     .autrice-photo { width: 90px; height: 90px; }
   }
 
   @media (max-width: 480px) {
-    .autrici-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .autrici-row-2 {
-      justify-content: center;
+    .autrice {
+      width: calc(50% - 20px);
     }
   }
 
