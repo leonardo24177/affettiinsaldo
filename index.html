@@ -176,7 +176,7 @@
   }
 
   .quote-block::before {
-    content: '“';
+    content: '\201C';
     font-family: 'Playfair Display', serif;
     font-size: 8rem;
     color: var(--red);
@@ -206,7 +206,6 @@
   }
 
   .themes { background: #1A2A3A; padding: 90px 6vw; }
-
   .themes-header { text-align: center; margin-bottom: 60px; }
 
   .themes-header h2 {
@@ -261,45 +260,7 @@
 
   .theme-card p { font-size: 0.9rem; color: rgba(245,236,215,0.6); line-height: 1.6; }
 
-  .reviews { padding: 90px 6vw; background: var(--cream); }
-
-  .reviews-header { text-align: center; margin-bottom: 50px; }
-
-  .reviews-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    color: var(--text);
-  }
-
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  .review-card { background: var(--white); padding: 32px; box-shadow: 0 4px 30px rgba(0,0,0,0.07); }
-
-  .stars { color: var(--orange); font-size: 1.1rem; margin-bottom: 14px; letter-spacing: 2px; }
-
-  .review-text {
-    font-family: 'Libre Baskerville', serif;
-    font-style: italic;
-    font-size: 0.95rem;
-    line-height: 1.75;
-    color: var(--text-muted);
-    margin-bottom: 18px;
-  }
-
-  .reviewer {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+  #recensioni { display: none; }
 
   .buy {
     background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 50%, var(--orange) 100%);
@@ -398,7 +359,6 @@
   }
 
   .nav-logo span { color: var(--orange); }
-
   .nav-links { display: flex; gap: 32px; list-style: none; }
 
   .nav-links a {
@@ -410,7 +370,6 @@
   }
 
   .nav-links a:hover { color: var(--orange); }
-
   .nav-cta { background: var(--red); color: var(--white) !important; padding: 8px 20px; font-weight: 500; }
 
   @keyframes fadeInLeft {
@@ -433,6 +392,7 @@
     .book-wrapper { width: min(220px, 60vw); }
     .about { grid-template-columns: 1fr; gap: 50px; }
     .nav-links { display: none; }
+    .themes-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -444,7 +404,6 @@
   <ul class="nav-links">
     <li><a href="#about">Il Libro</a></li>
     <li><a href="#temi">Temi</a></li>
-    
     <li><a href="#acquista" class="nav-cta">Prossimamente</a></li>
   </ul>
 </nav>
@@ -520,14 +479,14 @@
   <div class="themes-header fade-in">
     <p class="section-label" style="color: var(--orange)">Temi del libro</p>
     <h2>Cosa troverai tra queste pagine</h2>
-    <p>Un viaggio emotivo attraverso le sfumature più umane dell’esistenza</p>
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
   </div>
 
   <div class="themes-grid">
     <div class="theme-card fade-in">
       <span class="theme-icon">⚡</span>
       <h3>Attraversare il conflitto</h3>
-      <p>«Non è l’assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
+      <p>«Non è l'assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
     </div>
     <div class="theme-card fade-in">
       <span class="theme-icon">🌱</span>
@@ -542,44 +501,17 @@
     <div class="theme-card fade-in">
       <span class="theme-icon">📵</span>
       <h3>FOMO, iperconnessione e ansia da perdita</h3>
-      <p>Sempre connessi, mai davvero presenti: il timore di ciò che sfugge ci fa smarrire. Riconoscere l’ansia digitale e tornare a scegliere, non a inseguire.</p>
+      <p>Sempre connessi, mai davvero presenti: il timore di ciò che sfugge ci fa smarrire. Riconoscere l'ansia digitale e tornare a scegliere, non a inseguire.</p>
     </div>
     <div class="theme-card fade-in">
       <span class="theme-icon">🏆</span>
-      <h3>Oltre la prestazione: educare alla vulnerabilità e all’incontro</h3>
+      <h3>Oltre la prestazione: educare alla vulnerabilità e all'incontro</h3>
       <p>Oltre lo scudo della perfezione, pulsa la vita. È nelle tue crepe che brilla la tua vera forza. Scegli di esistere, oltre il dovere di riuscire.</p>
     </div>
     <div class="theme-card fade-in">
       <span class="theme-icon">💥</span>
       <h3>Love Bombing</h3>
       <p>L'eccesso non è amore ma seduzione dell'io che vuole possedere. Ciò che dona tutto subito, spesso prepara a togliere dopo. La vera bellezza non acceca, illumina.</p>
-    </div>
-  </div>
-</section>
-
-<!-- REVIEWS -->
-<style>#recensioni { display: none; }</style>
-<section class="reviews" id="recensioni">
-  <div class="reviews-header fade-in">
-    <p class="section-label">Recensioni</p>
-    <h2>Cosa dicono i lettori</h2>
-  </div>
-
-  <div class="reviews-grid">
-    <div class="review-card fade-in">
-      <div class="stars">★★★★★</div>
-      <p class="review-text">«L’ho letto in un weekend, incapace di smettere. Ogni capitolo era uno specchio in cui mi ritrovavo. Raro trovare una storia così autentica.»</p>
-      <p class="reviewer">— Maria G., Napoli</p>
-    </div>
-    <div class="review-card fade-in">
-      <div class="stars">★★★★★</div>
-      <p class="review-text">«Un libro che ti rimane addosso per giorni. La scrittura è precisa, tagliente al punto giusto, e i personaggi sembrano persone che conosci davvero.»</p>
-      <p class="reviewer">— Luca F., Milano</p>
-    </div>
-    <div class="review-card fade-in">
-      <div class="stars">★★★★☆</div>
-      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l’autore ci riesce con una naturalezza disarmante.»</p>
-      <p class="reviewer">— Claudia R., Roma</p>
     </div>
   </div>
 </section>
