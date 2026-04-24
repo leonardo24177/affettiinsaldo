@@ -135,7 +135,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
-    align-items: center;
+    align-items: start;
   }
 
   .section-label {
@@ -144,28 +144,40 @@
     text-transform: uppercase;
     color: var(--orange);
     font-weight: 500;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
   .about-heading {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.4;
     color: var(--text);
-    margin-bottom: 28px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--red);
+    padding-left: 16px;
   }
 
   .about-heading em { font-style: italic; color: var(--red); }
 
+  .about-intro {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-left: 19px;
+  }
+
   .about-body {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1.05rem;
+    font-size: 0.97rem;
     line-height: 1.85;
     color: var(--text-muted);
   }
 
-  .about-body p + p { margin-top: 18px; }
+  .about-body p + p { margin-top: 14px; }
 
   .quote-block {
     position: relative;
@@ -259,8 +271,6 @@
   }
 
   .theme-card p { font-size: 0.9rem; color: rgba(245,236,215,0.6); line-height: 1.6; }
-
-  #recensioni { display: none; }
 
   .buy {
     background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 50%, var(--orange) 100%);
@@ -393,6 +403,7 @@
     .about { grid-template-columns: 1fr; gap: 50px; }
     .nav-links { display: none; }
     .themes-grid { grid-template-columns: 1fr; }
+    .about-heading { font-size: 1.3rem; }
   }
 </style>
 </head>
@@ -439,25 +450,26 @@
   <div class="fade-in">
     <p class="section-label">Il Libro</p>
     <h2 class="about-heading">
-      Relazioni rapide, sempre esposte, continuamente confrontate con altre possibilità.<br>
-      Ci si cerca, ci si sceglie… ma con una <em>via d'uscita</em> sempre pronta.
+      Ci si cerca, ci si sceglie…<br>ma con una <em>via d'uscita</em> sempre pronta.
     </h2>
+    <p class="about-intro">
+      Relazioni rapide, sempre esposte, continuamente confrontate con altre possibilità.
+    </p>
     <div class="about-body">
       <p>
         Non perché manchi il desiderio di amare, ma perché il tempo in cui viviamo rende difficile restare.
-        Affetti in saldo è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami?
+        <em>Affetti in saldo</em> è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami?
       </p>
       <p>
         Attraverso le voci di giovani studentesse che intrecciano riflessioni pedagogiche alla dimensione narrativa,
         il libro prova a dare prospettive nuove dentro le contraddizioni del nostro presente:
         la paura di perdere e quella di legarsi, il bisogno di essere riconosciuti e la fatica di durare,
-        la connessione continua e la solitudine che resta. Non offre risposte semplici.
+        la connessione continua e la solitudine che resta.
       </p>
       <p>
-        Fa qualcosa di più difficile: prova a capire.
-        Perché forse il problema non è che non sappiamo più amare.
-        È che viviamo in un mondo che rende le relazioni più fragili, più esposte, più facili da perdere.
-        Affetti in Saldo invita a sostare dove le fragilità non sono mancanze, ma aperture in cui il senso dei legami si rivela.
+        Non offre risposte semplici. Fa qualcosa di più difficile: <em>prova a capire</em>.
+        Affetti in Saldo invita a sostare dove le fragilità non sono mancanze,
+        ma aperture in cui il senso dei legami si rivela.
       </p>
     </div>
   </div>
@@ -469,7 +481,7 @@
         di diventare parola pubblica. Nasce da un tratto di strada condiviso, da una prossimità costruita nel tempo,
         da un ascolto reciproco che ha permesso a vissuti, inquietudini e riflessioni di trovare lentamente forma.»
       </p>
-      <p class="quote-attr">— Giovambattista Trebisacce</p>
+      <p class="quote-attr">— Giovanbattista Trebisacce</p>
     </div>
   </div>
 </section>
@@ -479,7 +491,7 @@
   <div class="themes-header fade-in">
     <p class="section-label" style="color: var(--orange)">Temi del libro</p>
     <h2>Cosa troverai tra queste pagine</h2>
-    
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
   </div>
 
   <div class="themes-grid">
@@ -547,7 +559,7 @@
   <p style="margin-bottom: 8px;">
     <strong style="color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-style: italic;">Affetti in Saldo</strong>
   </p>
-  <p>© 2026 · Tutti i diritti riservati ·</p>
+  <p>© 2025 · Tutti i diritti riservati · <a href="#">Privacy Policy</a> · <a href="#">Contatti</a></p>
 </footer>
 
 <script>
