@@ -384,6 +384,112 @@
   .nav-links a:hover { color: var(--orange); }
   .nav-cta { background: var(--red); color: var(--white) !important; padding: 8px 20px; font-weight: 500; }
 
+  /* ── AUTRICI ── */
+  .autrici {
+    background: var(--cream);
+    padding: 90px 6vw;
+  }
+
+  .autrici-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .autrici-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .autrici-header p {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  .autrici-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 36px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    /* 9 autrici: prima riga 5, seconda riga 4 centrata */
+  }
+
+  /* seconda riga centrata per le ultime 4 */
+  .autrici-grid .autrice:nth-child(6) { grid-column: 1; }
+  .autrici-grid .autrice:nth-child(n+6) {
+    /* usa auto-placement; centramento via justify-content sul grid */
+  }
+
+  .autrici-grid {
+    justify-items: center;
+  }
+
+  /* wrap le ultime 4 al centro */
+  .autrici-row-2 {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .autrice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .autrice-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--cream-dark);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    background: var(--cream-dark);
+  }
+
+  .autrice:hover .autrice-photo {
+    transform: translateY(-5px) scale(1.04);
+    box-shadow: 0 14px 36px rgba(192,57,43,0.2);
+    border-color: var(--red);
+  }
+
+  .autrice-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 768px) {
+    .autrici-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px 16px;
+    }
+    .autrici-row-2 {
+      gap: 16px;
+    }
+    .autrice-photo { width: 90px; height: 90px; }
+  }
+
+  @media (max-width: 480px) {
+    .autrici-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .autrici-row-2 {
+      justify-content: center;
+    }
+  }
+
   @keyframes fadeInLeft {
     from { opacity: 0; transform: translateX(-40px); }
     to { opacity: 1; transform: translateX(0); }
@@ -538,6 +644,68 @@
       <span class="theme-icon">💥</span>
       <h3>Love Bombing</h3>
       <p>L'eccesso non è amore ma seduzione dell'io che vuole possedere. Ciò che dona tutto subito, spesso prepara a togliere dopo. La vera bellezza non acceca, illumina.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUTRICI -->
+<section class="autrici" id="autrici">
+  <div class="autrici-header fade-in">
+    <p class="section-label">Chi ha scritto questo libro</p>
+    <h2>Le Autrici</h2>
+    <p>Nove voci, nove sguardi sul mondo dei legami</p>
+  </div>
+
+  <div class="autrici-grid">
+    <!-- Prima riga: 5 autrici -->
+    <div class="autrice fade-in">
+      <img class="autrice-photo" src="autrici/autrice1.jpg" alt="Autrice 1"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="autrice-name">Chiara Chiaravalloti</span>
+    </div>
+    <div class="autrice fade-in">
+      <img class="autrice-photo" src="autrici/autrice2.jpg" alt="Federica Salineto"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="autrice-name">Federica Salineto</span>
+    </div>
+    <div class="autrice fade-in">
+      <img class="autrice-photo" src="autrici/autrice3.jpg" alt="Erica Spadafora"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="autrice-name">Erica Spadafora</span>
+    </div>
+    <div class="autrice fade-in">
+      <img class="autrice-photo" src="autrici/autrice4.jpg" alt="Serena Spezzano"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="autrice-name">Serena Spezzano</span>
+    </div>
+    <div class="autrice fade-in">
+      <img class="autrice-photo" src="autrici/autrice5.jpg" alt="Miriam Cetera"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="autrice-name">Miriam Cetera</span>
+    </div>
+
+    <!-- Seconda riga: 4 autrici centrate -->
+    <div class="autrici-row-2">
+      <div class="autrice fade-in">
+        <img class="autrice-photo" src="autrici/autrice6.jpg" alt="Veronica Iantorno"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+        <span class="autrice-name">Veronica Iantorno</span>
+      </div>
+      <div class="autrice fade-in">
+        <img class="autrice-photo" src="autrici/autrice7.jpg" alt="Loredana Mazzaferro"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+        <span class="autrice-name">Loredana Mazzaferro</span>
+      </div>
+      <div class="autrice fade-in">
+        <img class="autrice-photo" src="autrici/autrice8.jpg" alt="Carola Fusaro"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+        <span class="autrice-name">Carola Fusaro</span>
+      </div>
+      <div class="autrice fade-in">
+        <img class="autrice-photo" src="autrici/autrice9.jpg" alt="Gaia Tocci"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+        <span class="autrice-name">Gaia Tocci</span>
+      </div>
     </div>
   </div>
 </section>
