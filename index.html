@@ -515,6 +515,87 @@
     }
   }
 
+  /* ── CURATORE & INTRODUZIONE ── */
+  .ruoli-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 60px auto 48px;
+  }
+
+  .ruoli-divider::before,
+  .ruoli-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cream-dark);
+  }
+
+  .ruoli-divider span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .ruoli-grid {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .ruolo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .ruolo-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--red);
+    box-shadow: 0 6px 28px rgba(192,57,43,0.2);
+    background: var(--cream-dark);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ruolo-card:hover .ruolo-photo {
+    transform: translateY(-5px) scale(1.04);
+    box-shadow: 0 14px 40px rgba(192,57,43,0.3);
+  }
+
+  .ruolo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .ruolo-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .ruoli-grid { gap: 40px; }
+    .ruolo-photo { width: 110px; height: 110px; }
+  }
+
   @keyframes fadeInLeft {
     from { opacity: 0; transform: translateX(-40px); }
     to { opacity: 1; transform: translateX(0); }
@@ -684,27 +765,27 @@
   <div class="autrici-grid">
     <!-- Prima riga: 5 autrici -->
     <div class="autrice fade-in">
-      <img class="autrice-photo" src="autrici/autrice1.jpg" alt="Autrice 1"
+      <img class="autrice-photo" src="autrice1.jpg" alt="Autrice 1"
            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
       <span class="autrice-name">Chiara Chiaravalloti</span>
     </div>
     <div class="autrice fade-in">
-      <img class="autrice-photo" src="autrici/autrice2.jpg" alt="Federica Salineto"
+      <img class="autrice-photo" src="autrice2.jpg" alt="Federica Salineto"
            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
       <span class="autrice-name">Federica Salineto</span>
     </div>
     <div class="autrice fade-in">
-      <img class="autrice-photo" src="autrici/autrice3.jpg" alt="Erica Spadafora"
+      <img class="autrice-photo" src="autrice3.jpg" alt="Erica Spadafora"
            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
       <span class="autrice-name">Erica Spadafora</span>
     </div>
     <div class="autrice fade-in">
-      <img class="autrice-photo" src="autrici/autrice4.jpg" alt="Serena Spezzano"
+      <img class="autrice-photo" src="autrice4.jpg" alt="Serena Spezzano"
            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
       <span class="autrice-name">Serena Spezzano</span>
     </div>
     <div class="autrice fade-in">
-      <img class="autrice-photo" src="autrici/autrice5.jpg" alt="Miriam Cetera"
+      <img class="autrice-photo" src="autrice5.jpg" alt="Miriam Cetera"
            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
       <span class="autrice-name">Miriam Cetera</span>
     </div>
@@ -712,30 +793,50 @@
     <!-- Seconda riga: 4 autrici centrate -->
     <div class="autrici-row-2">
       <div class="autrice fade-in">
-        <img class="autrice-photo" src="autrici/autrice6.jpg" alt="Veronica Iantorno"
+        <img class="autrice-photo" src="autrice6.jpg" alt="Veronica Iantorno"
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
         <span class="autrice-name">Veronica Iantorno</span>
       </div>
       <div class="autrice fade-in">
-        <img class="autrice-photo" src="autrici/autrice7.jpg" alt="Loredana Mazzaferro"
+        <img class="autrice-photo" src="autrice7.jpg" alt="Loredana Mazzaferro"
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
         <span class="autrice-name">Loredana Mazzaferro</span>
       </div>
       <div class="autrice fade-in">
-        <img class="autrice-photo" src="autrici/autrice8.jpg" alt="Carola Fusaro"
+        <img class="autrice-photo" src="autrice8.jpg" alt="Carola Fusaro"
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
         <span class="autrice-name">Annamaria Carola Fusaro</span>
       </div>
       <div class="autrice fade-in">
-        <img class="autrice-photo" src="autrici/autrice9.jpg" alt="Gaia Tocci"
+        <img class="autrice-photo" src="autrice9.jpg" alt="Gaia Tocci"
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'130\' height=\'130\'%3E%3Ccircle cx=\'65\' cy=\'65\' r=\'65\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'65\' cy=\'50\' r=\'22\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'65\' cy=\'95\' rx=\'32\' ry=\'22\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
         <span class="autrice-name">Gaia Tocci</span>
       </div>
     </div>
   </div>
-</section>
 
-<!-- BUY -->
+  <!-- Divisore -->
+  <div class="ruoli-divider fade-in">
+    <span>A cura di &amp; Introduzione</span>
+  </div>
+
+  <!-- Curatore + Autore Introduzione -->
+  <div class="ruoli-grid">
+    <div class="ruolo-card fade-in">
+      <img class="ruolo-photo" src="trebisacce.jpg" alt="Giovanbattista Trebisacce"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'%3E%3Ccircle cx=\'75\' cy=\'75\' r=\'75\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'75\' cy=\'58\' r=\'26\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'75\' cy=\'110\' rx=\'38\' ry=\'26\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="ruolo-label">A cura di</span>
+      <span class="ruolo-name">Giovanbattista Trebisacce</span>
+    </div>
+    <div class="ruolo-card fade-in">
+      <img class="ruolo-photo" src="presta.jpg" alt="Lucio Presta"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'%3E%3Ccircle cx=\'75\' cy=\'75\' r=\'75\' fill=\'%23E8D5B0\'/%3E%3Ccircle cx=\'75\' cy=\'58\' r=\'26\' fill=\'%23C0A080\'/%3E%3Cellipse cx=\'75\' cy=\'110\' rx=\'38\' ry=\'26\' fill=\'%23C0A080\'/%3E%3C/svg%3E'">
+      <span class="ruolo-label">Introduzione di</span>
+      <span class="ruolo-name">Lucio Presta</span>
+    </div>
+  </div>
+
+</section>
 <section class="buy" id="acquista">
   <h2>Prossimamente disponibile</h2>
   <p>Vuoi sapere quando sarà in vendita? Lascia la tua email e sarai tra i primi a saperlo.</p>
