@@ -644,8 +644,8 @@
 <section class="themes" id="temi">
   <div class="themes-header fade-in">
     <p class="section-label" style="color: var(--orange)">Temi del romanzo</p>
-    <h2>Cosa troverai in questo libro.</h2>
-   
+    <h2>Cosa troverai tra queste pagine</h2>
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
   </div>
 
   <div class="themes-grid">
@@ -687,4 +687,67 @@
     </div>
     <div class="review-card fade-in">
       <div class="stars">★★★★☆</div>
-      <p class
+      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l'autore ci riesce con una naturalezza disarmante.»</p>
+      <p class="reviewer">— Claudia R., Roma</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUY -->
+<section class="buy" id="acquista">
+  <h2>Prossimamente disponibile</h2>
+  <p>Vuoi sapere quando sarà in vendita? Lascia la tua email e sarai tra i primi a saperlo.</p>
+
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; margin-top: 8px;">
+    <input type="email" placeholder="La tua email" style="
+      padding: 16px 24px;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      min-width: 280px;
+      font-family: 'DM Sans', sans-serif;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.4);
+    " id="emailInput">
+    <button onclick="handleNotify()" class="btn-buy" style="padding: 16px 32px;">
+      🔔 Avvisami
+    </button>
+  </div>
+  <p id="notifyMsg" style="margin-top: 20px; font-size: 0.9rem; opacity: 0; transition: opacity 0.4s; font-style: normal; position:relative;">
+    ✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom: 8px;">
+    <strong style="color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-style: italic;">Affetti in Saldo</strong>
+  </p>
+  <p>© 2025 · Tutti i diritti riservati · <a href="#">Privacy Policy</a> · <a href="#">Contatti</a></p>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  function handleNotify() {
+    const msg = document.getElementById('notifyMsg');
+    msg.style.opacity = '1';
+  }
+
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  fadeEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
