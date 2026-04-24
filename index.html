@@ -644,15 +644,16 @@
         msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
       }
       msg.style.opacity = '1';
-      delete window[callbackName];
-      document.body.removeChild(script);
     };
+    const url = 'https://script.google.com/macros/s/AKfycbzJhmHVqlyESuqLNJa4xLn-PtYyc3LMY82VqEwj9Cq6JoQP25Kd0gWrFcSSORzJgq5i/exec?email=' + encodeURIComponent(email) + '&callback=' + callbackName;
     const script = document.createElement('script');
-    script.src = 'https://script.google.com/macros/s/AKfycbzJhmHVqlyESuqLNJa4xLn-PtYyc3LMY82VqEwj9Cq6JoQP25Kd0gWrFcSSORzJgq5i/exec?email=' + encodeURIComponent(email) + '&callback=' + callbackName;
+    script.src = url;
+    script.onload = function() { document.body.removeChild(script); };
     script.onerror = function() {
       msg.style.color = '#ffe0b2';
       msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
       msg.style.opacity = '1';
+      document.body.removeChild(script);
     };
     document.body.appendChild(script);
   }
