@@ -624,9 +624,31 @@
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  function handleNotify() {
+  async function handleNotify() {
+    const email = document.getElementById('emailInput').value;
     const msg = document.getElementById('notifyMsg');
-    msg.style.opacity = '1';
+    if (!email || !email.includes('@')) {
+      msg.style.color = '#ffe0b2';
+      msg.textContent = '⚠️ Inserisci un indirizzo email valido.';
+      msg.style.opacity = '1';
+      return;
+    }
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbzexICMNBKf3GUWNoN-8w0g6zBCl_QNQp7HRKxkhBmc5mx-upGiq30mFeqQ0T8GOwPd/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'email=' + encodeURIComponent(email)
+      });
+      msg.style.color = '#fff';
+      msg.textContent = '✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.';
+      msg.style.opacity = '1';
+      document.getElementById('emailInput').value = '';
+    } catch(err) {
+      msg.style.color = '#ffe0b2';
+      msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
+      msg.style.opacity = '1';
+    }
   }
 
   const fadeEls = document.querySelectorAll('.fade-in');
