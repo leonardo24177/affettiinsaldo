@@ -21,7 +21,6 @@
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -158,93 +157,6 @@
 
   .book-wrapper:hover {
     transform: perspective(800px) rotateY(-3deg) rotateX(1deg) scale(1.03);
-  }
-
-  .book-cover {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(160deg, var(--red) 0%, var(--red-dark) 60%, var(--red-deep) 100%);
-    border-radius: 4px 10px 10px 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px 24px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .book-cover::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 8px; height: 100%;
-    background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
-  }
-
-  .book-cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 60%);
-    pointer-events: none;
-  }
-
-  .book-tag-hole {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: #1B3A6B;
-    border: 2px solid rgba(0,0,0,0.3);
-    margin-bottom: 4px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-tag-string {
-    width: 2px;
-    height: 30px;
-    background: linear-gradient(180deg, #C8A87A, #8B6542);
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-title-text {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(2rem, 5vw, 3rem);
-    color: var(--white);
-    text-align: center;
-    line-height: 1;
-    text-shadow: 2px 3px 8px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-subtitle-text {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    color: var(--orange);
-    text-align: center;
-    text-shadow: 1px 2px 6px rgba(0,0,0,0.4);
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-heart {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    color: var(--white);
-    opacity: 0.9;
-    text-shadow: 2px 3px 10px rgba(0,0,0,0.3);
-    animation: heartbeat 2s ease-in-out infinite;
-    position: relative;
-    z-index: 2;
-  }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.12); }
   }
 
   /* ─── TAGLINE BAND ─── */
@@ -531,45 +443,6 @@
     position: relative;
   }
 
-  .price-tag {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    background: rgba(255,255,255,0.15);
-    border: 2px solid rgba(255,255,255,0.3);
-    padding: 10px 24px;
-    margin-bottom: 32px;
-    position: relative;
-  }
-
-  .price-currency {
-    font-size: 1.4rem;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-  }
-
-  .price-amount {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--white);
-  }
-
-  .price-cents {
-    font-size: 1.4rem;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .buy-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative;
-  }
-
   .btn-buy {
     background: var(--white);
     color: var(--red);
@@ -591,26 +464,6 @@
     background: var(--cream);
     transform: translateY(-3px);
     box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-  }
-
-  .btn-buy-outline {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid rgba(255,255,255,0.6);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 16px 40px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .btn-buy-outline:hover {
-    border-color: var(--white);
-    background: rgba(255,255,255,0.1);
   }
 
   /* ─── FOOTER ─── */
@@ -735,12 +588,9 @@
     </div>
   </div>
 
-      <div class="hero-book">
+  <div class="hero-book">
     <div class="book-wrapper">
       <img src="libro.jpg" alt="Copertina Affetti in Saldo" style="width:100%; height:100%; object-fit:cover; border-radius: 4px 10px 10px 4px; display:block;">
-    </div>
-  </div>
-  </div>
     </div>
   </div>
 </section>
@@ -761,18 +611,18 @@
     </h2>
     <div class="about-body">
       <p>
-        In un mondo che misura tutto in termini di convenienza, 
-        <em>Affetti in Saldo</em> racconta le vite di persone comuni 
-        che si ritrovano a fare i conti con sentimenti che non hanno 
+        In un mondo che misura tutto in termini di convenienza,
+        <em>Affetti in Saldo</em> racconta le vite di persone comuni
+        che si ritrovano a fare i conti con sentimenti che non hanno
         prezzo — eppure sembrano sempre in offerta.
       </p>
       <p>
-        Un romanzo che tocca le corde più profonde dell'anima, 
-        tra ironia e malinconia, tra il rumore del quotidiano e 
+        Un romanzo che tocca le corde più profonde dell'anima,
+        tra ironia e malinconia, tra il rumore del quotidiano e
         il silenzio di ciò che non siamo riusciti a dire in tempo.
       </p>
       <p>
-        Una lettura che fa riflettere, sorridere, e a volte — 
+        Una lettura che fa riflettere, sorridere, e a volte —
         piangere di nascosto.
       </p>
     </div>
@@ -781,9 +631,11 @@
   <div class="fade-in">
     <div class="quote-block">
       <p class="quote-text">
-        «Questo volume, in fondo, nasce da una relazione educativa che a un certo punto ha sentito il bisogno di diventare parola pubblica. Nasce da un tratto di strada condiviso, da una prossimità costruita nel tempo, da un ascolto reciproco che ha permesso a vissuti, inquietudini e riflessioni di trovare lentamente forma.»
+        «Ho scritto questo libro pensando a tutte le volte che ho detto
+        "ci penserò domani" alle persone che amavo.
+        Domani arriva sempre troppo presto — o troppo tardi.»
       </p>
-      <p class="quote-attr">— Giovanbattista Trebisacce</p>
+      <p class="quote-attr">— L'Autore</p>
     </div>
   </div>
 </section>
@@ -792,30 +644,25 @@
 <section class="themes" id="temi">
   <div class="themes-header fade-in">
     <p class="section-label" style="color: var(--orange)">Temi del romanzo</p>
-    <h2>Cosa troverai tra queste pagine</h2>
-    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
+    <h2>Cosa troverai in questo libro.</h2>
+   
   </div>
 
   <div class="themes-grid">
     <div class="theme-card fade-in">
-      <span class="theme-icon">❤️</span>
-      <h3>Amore e Perdita</h3>
-      <p>I sentimenti non si liquidano: restano, cambiano forma, ma non spariscono mai davvero.</p>
+      <span class="theme-icon">⚡</span>
+      <h3>Attraversare il conflitto</h3>
+      <p>«Non è l'assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
     </div>
     <div class="theme-card fade-in">
-      <span class="theme-icon">👨‍👩‍👧</span>
-      <h3>Famiglia</h3>
-      <p>I legami di sangue che logorano e che salvano — spesso le stesse persone, nello stesso momento.</p>
+      <span class="theme-icon">🌱</span>
+      <h3>Restare nel tempo</h3>
+      <p>Quando tutto passa in fretta, la durata resta il gesto più fragile: dare tempo a un legame perché diventi cura.</p>
     </div>
     <div class="theme-card fade-in">
-      <span class="theme-icon">🕰️</span>
-      <h3>Il Tempo</h3>
-      <p>Quello che sprechiamo, quello che vorremmo indietro, e quello che ci rimane da vivere.</p>
-    </div>
-    <div class="theme-card fade-in">
-      <span class="theme-icon">🌿</span>
-      <h3>Rinascita</h3>
-      <p>Perché anche quando tutto sembra finito, c'è sempre qualcosa — o qualcuno — che ricomincia.</p>
+      <span class="theme-icon">🍂</span>
+      <h3>Lasciare andare</h3>
+      <p>Non un fallimento, ma una meravigliosa e dolorosa opportunità: una ferita che, se guardata con cura, lascia una traccia che ci trasforma.</p>
     </div>
   </div>
 </section>
@@ -840,70 +687,4 @@
     </div>
     <div class="review-card fade-in">
       <div class="stars">★★★★☆</div>
-      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l'autore ci riesce con una naturalezza disarmante.»</p>
-      <p class="reviewer">— Claudia R., Roma</p>
-    </div>
-  </div>
-</section>
-
-<!-- BUY -->
-<section class="buy" id="acquista">
-  <h2>Prossimamente disponibile</h2>
-  <p>Vuoi sapere quando sarà in vendita? Lascia la tua email e sarai tra i primi a saperlo.</p>
-
-  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; margin-top: 8px;">
-    <input type="email" placeholder="La tua email" style="
-      padding: 16px 24px;
-      font-size: 1rem;
-      border: none;
-      outline: none;
-      min-width: 280px;
-      font-family: 'DM Sans', sans-serif;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: 1.5px solid rgba(255,255,255,0.4);
-    " id="emailInput">
-    <button onclick="handleNotify()" class="btn-buy" style="padding: 16px 32px;">
-      🔔 Avvisami
-    </button>
-  </div>
-  <p id="notifyMsg" style="margin-top: 20px; font-size: 0.9rem; opacity: 0; transition: opacity 0.4s; font-style: normal; position:relative;">
-    ✅ Grazie! Ti contatteremo non appena il libro sarà disponibile.
-  </p>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p style="margin-bottom: 8px;">
-    <strong style="color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-style: italic;">Affetti in Saldo</strong>
-  </p>
-  <p>© 2025 · Tutti i diritti riservati · <a href="#">Privacy Policy</a> · <a href="#">Contatti</a></p>
-</footer>
-
-<script>
-  // Nav scroll
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
-
-  // Notify
-  function handleNotify() {
-    const msg = document.getElementById('notifyMsg');
-    msg.style.opacity = '1';
-  }
-
-  // Fade in on scroll
-  const fadeEls = document.querySelectorAll('.fade-in');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  fadeEls.forEach(el => observer.observe(el));
-</script>
-</body>
-</html>
+      <p class
