@@ -21,7 +21,6 @@
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -31,7 +30,6 @@
     overflow-x: hidden;
   }
 
-  /* ─── HERO ─── */
   .hero {
     min-height: 100vh;
     background: linear-gradient(135deg, #1B3A6B 0%, #2E5491 40%, #4A6FA5 100%);
@@ -51,21 +49,7 @@
     background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
-  .hero-text {
-    position: relative;
-    z-index: 2;
-    animation: fadeInLeft 1s ease forwards;
-  }
-
-  .hero-eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 20px;
-    opacity: 0.9;
-  }
+  .hero-text { position: relative; z-index: 2; animation: fadeInLeft 1s ease forwards; }
 
   .hero-title {
     font-family: 'Playfair Display', serif;
@@ -83,16 +67,6 @@
     font-size: 0.85em;
   }
 
-  .hero-subtitle {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(0.95rem, 1.5vw, 1.2rem);
-    color: var(--cream);
-    opacity: 0.85;
-    line-height: 1.7;
-    margin: 28px 0 40px;
-    max-width: 460px;
-  }
-
   .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
 
   .btn-primary {
@@ -108,7 +82,6 @@
     text-decoration: none;
     display: inline-block;
     transition: all 0.3s ease;
-    position: relative;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   }
 
@@ -118,31 +91,9 @@
     box-shadow: 0 8px 30px rgba(192,57,43,0.4);
   }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 15px 32px;
-    border: 1.5px solid rgba(245,236,215,0.4);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--cream);
-    background: rgba(245,236,215,0.08);
-  }
-
-  /* Book mockup */
   .hero-book {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
     animation: fadeInRight 1s ease 0.2s forwards;
     opacity: 0;
   }
@@ -160,102 +111,11 @@
     transform: perspective(800px) rotateY(-3deg) rotateX(1deg) scale(1.03);
   }
 
-  .book-cover {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(160deg, var(--red) 0%, var(--red-dark) 60%, var(--red-deep) 100%);
-    border-radius: 4px 10px 10px 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px 24px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .book-cover::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 8px; height: 100%;
-    background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
-  }
-
-  .book-cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 60%);
-    pointer-events: none;
-  }
-
-  .book-tag-hole {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: #1B3A6B;
-    border: 2px solid rgba(0,0,0,0.3);
-    margin-bottom: 4px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-tag-string {
-    width: 2px;
-    height: 30px;
-    background: linear-gradient(180deg, #C8A87A, #8B6542);
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-title-text {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(2rem, 5vw, 3rem);
-    color: var(--white);
-    text-align: center;
-    line-height: 1;
-    text-shadow: 2px 3px 8px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-subtitle-text {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    color: var(--orange);
-    text-align: center;
-    text-shadow: 1px 2px 6px rgba(0,0,0,0.4);
-    position: relative;
-    z-index: 2;
-  }
-
-  .book-heart {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    color: var(--white);
-    opacity: 0.9;
-    text-shadow: 2px 3px 10px rgba(0,0,0,0.3);
-    animation: heartbeat 2s ease-in-out infinite;
-    position: relative;
-    z-index: 2;
-  }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.12); }
-  }
-
-  /* ─── TAGLINE BAND ─── */
   .tagline-band {
     background: var(--red);
     padding: 22px 6vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; overflow: hidden;
   }
 
   .tagline-band p {
@@ -267,13 +127,8 @@
     line-height: 1.5;
   }
 
-  .tagline-band .ornament {
-    color: var(--orange);
-    font-size: 1.5rem;
-    flex-shrink: 0;
-  }
+  .tagline-band .ornament { color: var(--orange); font-size: 1.5rem; flex-shrink: 0; }
 
-  /* ─── ABOUT SECTION ─── */
   .about {
     padding: 100px 6vw;
     background: var(--cream);
@@ -294,17 +149,14 @@
 
   .about-heading {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.3;
     color: var(--text);
     margin-bottom: 28px;
   }
 
-  .about-heading em {
-    font-style: italic;
-    color: var(--red);
-  }
+  .about-heading em { font-style: italic; color: var(--red); }
 
   .about-body {
     font-family: 'Libre Baskerville', serif;
@@ -324,7 +176,7 @@
   }
 
   .quote-block::before {
-    content: '\201C';
+    content: '“';
     font-family: 'Playfair Display', serif;
     font-size: 8rem;
     color: var(--red);
@@ -338,11 +190,10 @@
   .quote-text {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: clamp(1.15rem, 2vw, 1.5rem);
-    line-height: 1.6;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    line-height: 1.7;
     color: var(--text);
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
   }
 
   .quote-attr {
@@ -351,20 +202,12 @@
     font-size: 0.85rem;
     color: var(--text-muted);
     letter-spacing: 0.05em;
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
   }
 
-  /* ─── THEMES ─── */
-  .themes {
-    background: #1A2A3A;
-    padding: 90px 6vw;
-  }
+  .themes { background: #1A2A3A; padding: 90px 6vw; }
 
-  .themes-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
+  .themes-header { text-align: center; margin-bottom: 60px; }
 
   .themes-header h2 {
     font-family: 'Playfair Display', serif;
@@ -373,19 +216,13 @@
     margin-bottom: 12px;
   }
 
-  .themes-header p {
-    color: var(--cream-dark);
-    opacity: 0.7;
-    font-size: 1rem;
-    max-width: 500px;
-    margin: 0 auto;
-  }
+  .themes-header p { color: var(--cream-dark); opacity: 0.7; font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
   .themes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
   }
 
@@ -409,42 +246,24 @@
     transition: transform 0.3s ease;
   }
 
-  .theme-card:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-4px);
-  }
-
+  .theme-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
   .theme-card:hover::after { transform: scaleX(1); }
 
-  .theme-icon {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-    display: block;
-  }
+  .theme-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
 
   .theme-card h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--white);
     margin-bottom: 10px;
+    line-height: 1.3;
   }
 
-  .theme-card p {
-    font-size: 0.9rem;
-    color: rgba(245,236,215,0.6);
-    line-height: 1.6;
-  }
+  .theme-card p { font-size: 0.9rem; color: rgba(245,236,215,0.6); line-height: 1.6; }
 
-  /* ─── REVIEWS ─── */
-  .reviews {
-    padding: 90px 6vw;
-    background: var(--cream);
-  }
+  .reviews { padding: 90px 6vw; background: var(--cream); }
 
-  .reviews-header {
-    text-align: center;
-    margin-bottom: 50px;
-  }
+  .reviews-header { text-align: center; margin-bottom: 50px; }
 
   .reviews-header h2 {
     font-family: 'Playfair Display', serif;
@@ -460,19 +279,9 @@
     margin: 0 auto;
   }
 
-  .review-card {
-    background: var(--white);
-    padding: 32px;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.07);
-    position: relative;
-  }
+  .review-card { background: var(--white); padding: 32px; box-shadow: 0 4px 30px rgba(0,0,0,0.07); }
 
-  .stars {
-    color: var(--orange);
-    font-size: 1.1rem;
-    margin-bottom: 14px;
-    letter-spacing: 2px;
-  }
+  .stars { color: var(--orange); font-size: 1.1rem; margin-bottom: 14px; letter-spacing: 2px; }
 
   .review-text {
     font-family: 'Libre Baskerville', serif;
@@ -492,7 +301,6 @@
     text-transform: uppercase;
   }
 
-  /* ─── BUY ─── */
   .buy {
     background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 50%, var(--orange) 100%);
     padding: 90px 6vw;
@@ -524,49 +332,9 @@
     color: rgba(255,255,255,0.85);
     margin-bottom: 40px;
     max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto; margin-right: auto;
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
-    position: relative;
-  }
-
-  .price-tag {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    background: rgba(255,255,255,0.15);
-    border: 2px solid rgba(255,255,255,0.3);
-    padding: 10px 24px;
-    margin-bottom: 32px;
-    position: relative;
-  }
-
-  .price-currency {
-    font-size: 1.4rem;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-  }
-
-  .price-amount {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--white);
-  }
-
-  .price-cents {
-    font-size: 1.4rem;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .buy-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
     position: relative;
   }
 
@@ -593,27 +361,6 @@
     box-shadow: 0 12px 40px rgba(0,0,0,0.25);
   }
 
-  .btn-buy-outline {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid rgba(255,255,255,0.6);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 16px 40px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .btn-buy-outline:hover {
-    border-color: var(--white);
-    background: rgba(255,255,255,0.1);
-  }
-
-  /* ─── FOOTER ─── */
   footer {
     background: var(--text);
     color: rgba(255,255,255,0.5);
@@ -625,7 +372,6 @@
 
   footer a { color: var(--orange); text-decoration: none; }
 
-  /* ─── NAV ─── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -653,11 +399,7 @@
 
   .nav-logo span { color: var(--orange); }
 
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
 
   .nav-links a {
     color: rgba(255,255,255,0.75);
@@ -669,14 +411,8 @@
 
   .nav-links a:hover { color: var(--orange); }
 
-  .nav-cta {
-    background: var(--red);
-    color: var(--white) !important;
-    padding: 8px 20px;
-    font-weight: 500;
-  }
+  .nav-cta { background: var(--red); color: var(--white) !important; padding: 8px 20px; font-weight: 500; }
 
-  /* ─── ANIMATIONS ─── */
   @keyframes fadeInLeft {
     from { opacity: 0; transform: translateX(-40px); }
     to { opacity: 1; transform: translateX(0); }
@@ -687,21 +423,11 @@
     to { opacity: 1; transform: translateX(0); }
   }
 
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
+  .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; padding-top: 90px; text-align: center; }
-    .hero-subtitle { margin-left: auto; margin-right: auto; }
     .hero-cta-group { justify-content: center; }
     .hero-book { order: -1; }
     .book-wrapper { width: min(220px, 60vw); }
@@ -735,12 +461,9 @@
     </div>
   </div>
 
-      <div class="hero-book">
+  <div class="hero-book">
     <div class="book-wrapper">
       <img src="libro.jpg" alt="Copertina Affetti in Saldo" style="width:100%; height:100%; object-fit:cover; border-radius: 4px 10px 10px 4px; display:block;">
-    </div>
-  </div>
-  </div>
     </div>
   </div>
 </section>
@@ -748,7 +471,7 @@
 <!-- TAGLINE BAND -->
 <div class="tagline-band">
   <span class="ornament">♥</span>
-  <p>«Cosa vale davvero un sentimento, quando il mondo lo mette in vetrina con un cartellino del prezzo?»</p>
+  <p>«Prendere sul serio gli affetti, oggi, è già un gesto controcorrente»</p>
   <span class="ornament">♥</span>
 </div>
 
@@ -757,23 +480,25 @@
   <div class="fade-in">
     <p class="section-label">Il Libro</p>
     <h2 class="about-heading">
-      Una storia di affetti, perdite<br>e <em>riscatti inaspettati</em>
+      Relazioni rapide, sempre esposte, continuamente confrontate con altre possibilità.<br>
+      Ci si cerca, ci si sceglie… ma con una <em>via d’uscita</em> sempre pronta.
     </h2>
     <div class="about-body">
       <p>
-        In un mondo che misura tutto in termini di convenienza, 
-        <em>Affetti in Saldo</em> racconta le vite di persone comuni 
-        che si ritrovano a fare i conti con sentimenti che non hanno 
-        prezzo — eppure sembrano sempre in offerta.
+        Non perché manchi il desiderio di amare, ma perché il tempo in cui viviamo rende difficile restare.
+        Affetti in saldo è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami?
       </p>
       <p>
-        Un romanzo che tocca le corde più profonde dell'anima, 
-        tra ironia e malinconia, tra il rumore del quotidiano e 
-        il silenzio di ciò che non siamo riusciti a dire in tempo.
+        Attraverso le voci di giovani studentesse che intrecciano riflessioni pedagogiche alla dimensione narrativa,
+        il libro prova a dare prospettive nuove dentro le contraddizioni del nostro presente:
+        la paura di perdere e quella di legarsi, il bisogno di essere riconosciuti e la fatica di durare,
+        la connessione continua e la solitudine che resta. Non offre risposte semplici.
       </p>
       <p>
-        Una lettura che fa riflettere, sorridere, e a volte — 
-        piangere di nascosto.
+        Fa qualcosa di più difficile: prova a capire.
+        Perché forse il problema non è che non sappiamo più amare.
+        È che viviamo in un mondo che rende le relazioni più fragili, più esposte, più facili da perdere.
+        Affetti in Saldo invita a sostare dove le fragilità non sono mancanze, ma aperture in cui il senso dei legami si rivela.
       </p>
     </div>
   </div>
@@ -781,11 +506,11 @@
   <div class="fade-in">
     <div class="quote-block">
       <p class="quote-text">
-        «Ho scritto questo libro pensando a tutte le volte che ho detto 
-        "ci penserò domani" alle persone che amavo. 
-        Domani arriva sempre troppo presto — o troppo tardi.»
+        «Questo volume, in fondo, nasce da una relazione educativa che a un certo punto ha sentito il bisogno
+        di diventare parola pubblica. Nasce da un tratto di strada condiviso, da una prossimità costruita nel tempo,
+        da un ascolto reciproco che ha permesso a vissuti, inquietudini e riflessioni di trovare lentamente forma.»
       </p>
-      <p class="quote-attr">— L'Autore</p>
+      <p class="quote-attr">— Giovambattista Trebisacce</p>
     </div>
   </div>
 </section>
@@ -793,16 +518,16 @@
 <!-- THEMES -->
 <section class="themes" id="temi">
   <div class="themes-header fade-in">
-    <p class="section-label" style="color: var(--orange)">Temi del romanzo</p>
+    <p class="section-label" style="color: var(--orange)">Temi del libro</p>
     <h2>Cosa troverai tra queste pagine</h2>
-    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell’esistenza</p>
   </div>
 
   <div class="themes-grid">
     <div class="theme-card fade-in">
       <span class="theme-icon">⚡</span>
       <h3>Attraversare il conflitto</h3>
-      <p>«Non è l'assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
+      <p>«Non è l’assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
     </div>
     <div class="theme-card fade-in">
       <span class="theme-icon">🌱</span>
@@ -817,14 +542,13 @@
     <div class="theme-card fade-in">
       <span class="theme-icon">📵</span>
       <h3>FOMO, iperconnessione e ansia da perdita</h3>
-      <p>Sempre connessi, mai davvero presenti: la paura di perdere qualcosa ci fa perdere noi stessi. Riconoscere l'ansia digitale e tornare a scegliere, non inseguire.</p>
+      <p>Sempre connessi, mai davvero presenti: la paura di perdere qualcosa ci fa perdere noi stessi. Riconoscere l’ansia digitale e tornare a scegliere, non inseguire.</p>
     </div>
     <div class="theme-card fade-in">
       <span class="theme-icon">🫧</span>
-      <h3>Oltre la prestazione: educare alla vulnerabilità e all'incontro</h3>
+      <h3>Oltre la prestazione: educare alla vulnerabilità e all’incontro</h3>
       <p>Oltre lo scudo della perfezione, pulsa la vita. È nelle tue crepe che brilla la tua vera forza. Scegli di esistere, oltre il dovere di riuscire.</p>
     </div>
-
   </div>
 </section>
 
@@ -838,7 +562,7 @@
   <div class="reviews-grid">
     <div class="review-card fade-in">
       <div class="stars">★★★★★</div>
-      <p class="review-text">«L'ho letto in un weekend, incapace di smettere. Ogni capitolo era uno specchio in cui mi ritrovavo. Raro trovare una storia così autentica.»</p>
+      <p class="review-text">«L’ho letto in un weekend, incapace di smettere. Ogni capitolo era uno specchio in cui mi ritrovavo. Raro trovare una storia così autentica.»</p>
       <p class="reviewer">— Maria G., Napoli</p>
     </div>
     <div class="review-card fade-in">
@@ -848,7 +572,7 @@
     </div>
     <div class="review-card fade-in">
       <div class="stars">★★★★☆</div>
-      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l'autore ci riesce con una naturalezza disarmante.»</p>
+      <p class="review-text">«Ironico e malinconico allo stesso tempo. Un equilibrio difficilissimo da trovare, eppure l’autore ci riesce con una naturalezza disarmante.»</p>
       <p class="reviewer">— Claudia R., Roma</p>
     </div>
   </div>
@@ -889,19 +613,16 @@
 </footer>
 
 <script>
-  // Nav scroll
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // Notify
   function handleNotify() {
     const msg = document.getElementById('notifyMsg');
     msg.style.opacity = '1';
   }
 
-  // Fade in on scroll
   const fadeEls = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
