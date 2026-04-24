@@ -648,7 +648,7 @@
       document.body.removeChild(script);
     };
     const script = document.createElement('script');
-    script.src = 'https://script.google.com/macros/s/AKfycbzexICMNBKf3GUWNoN-8w0g6zBCl_QNQp7HRKxkhBmc5mx-upGiq30mFeqQ0T8GOwPd/exec?email=' + encodeURIComponent(email) + '&callback=' + callbackName;
+    script.src = 'https://script.google.com/macros/s/AKfycbzJhmHVqlyESuqLNJa4xLn-PtYyc3LMY82VqEwj9Cq6JoQP25Kd0gWrFcSSORzJgq5i/exec?email=' + encodeURIComponent(email) + '&callback=' + callbackName;
     script.onerror = function() {
       msg.style.color = '#ffe0b2';
       msg.textContent = '⚠️ Qualcosa è andato storto. Riprova.';
