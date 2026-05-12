@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affetti in Saldo – Il Libro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0392B;
+    --red-dark: #922B21;
+    --red-deep: #641E16;
+    --orange: #E07B1F;
+    --cream: #F5ECD7;
+    --cream-dark: #E8D5B0;
+    --blue-denim: #4A6FA5;
+    --blue-dark: #1B3A6B;
+    --white: #FDFAF4;
+    --text: #1A0A00;
+    --text-muted: #5C3A1E;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1B3A6B 0%, #2E5491 40%, #4A6FA5 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 6vw;
+    gap: 40px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-text { position: relative; z-index: 2; animation: fadeInLeft 1s ease forwards; }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--orange);
+    font-style: italic;
+    font-size: 0.85em;
+  }
+
+  .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .btn-primary:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(192,57,43,0.4);
+  }
+
+  .hero-book {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeInRight 1s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  .book-wrapper {
+    position: relative;
+    width: min(320px, 45vw);
+    aspect-ratio: 2/3;
+    transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+    transition: transform 0.5s ease;
+    filter: drop-shadow(-20px 30px 60px rgba(0,0,0,0.5));
+  }
+
+  .book-wrapper:hover {
+    transform: perspective(800px) rotateY(-3deg) rotateX(1deg) scale(1.03);
+  }
+
+  .tagline-band {
+    background: var(--red);
+    padding: 22px 6vw;
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; overflow: hidden;
+  }
+
+  .tagline-band p {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: var(--white);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .tagline-band .ornament { color: var(--orange); font-size: 1.5rem; flex-shrink: 0; }
+
+  .about {
+    padding: 100px 6vw;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 8px;
+    border-left: 3px solid var(--red);
+    padding-left: 16px;
+  }
+
+  .about-heading em { font-style: italic; color: var(--red); }
+
+  .about-intro {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-left: 19px;
+  }
+
+  .about-body {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.97rem;
+    text-align: justify;
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  .about-body p + p { margin-top: 14px; }
+
+  .quote-block {
+    position: relative;
+    border-left: 4px solid var(--red);
+    padding: 28px 32px;
+    background: var(--white);
+    box-shadow: 4px 8px 40px rgba(0,0,0,0.08);
+  }
+
+  .quote-block::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: var(--red);
+    opacity: 0.15;
+    position: absolute;
+    top: -10px; left: 10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--text);
+    position: relative; z-index: 1;
+    text-align: justify;
+  }
+
+  .quote-attr {
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    position: relative; z-index: 1;
+  }
+
+  .themes { background: #1A2A3A; padding: 90px 6vw; }
+  .themes-header { text-align: center; margin-bottom: 60px; }
+
+  .themes-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .themes-header p { color: var(--cream-dark); opacity: 0.7; font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .theme-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 32px 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .theme-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+  .theme-card:hover::after { transform: scaleX(1); }
+
+  .theme-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
+
+  .theme-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .theme-card p { font-size: 0.9rem; color: rgba(245,236,215,0.6); line-height: 1.6; }
+
+  .buy {
+    background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 50%, var(--orange) 100%);
+    padding: 90px 6vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .buy::before {
+    content: '♥';
+    position: absolute;
+    font-size: 30vw;
+    color: rgba(255,255,255,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .buy h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .buy p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto; margin-right: auto;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    position: relative;
+  }
+
+  .btn-buy {
+    background: var(--white);
+    color: var(--red);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 18px 48px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-buy:hover {
+    background: var(--cream);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 36px 6vw;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  footer a { color: var(--orange); text-decoration: none; }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(27, 58, 107, 0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta { background: var(--red); color: var(--white) !important; padding: 8px 20px; font-weight: 500; }
+
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding-top: 90px; text-align: center; }
+    .hero-cta-group { justify-content: center; }
+    .hero-book { order: -1; }
+    .book-wrapper { width: min(220px, 60vw); }
+    .about { grid-template-columns: 1fr; gap: 50px; }
+    .nav-links { display: none; }
+    .themes-grid { grid-template-columns: 1fr; }
+    .about-heading { font-size: 1.3rem; }
+  }
+
+  /* ── SHOP ── */
+  .shop {
+    background: var(--cream);
+    padding: 100px 6vw;
+  }
+
+  .shop-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .shop-book-col { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+  .shop-book-img {
+    width: min(240px, 80%);
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: 4px 10px 10px 4px;
+    filter: drop-shadow(-10px 16px 40px rgba(0,0,0,0.25));
+  }
+
+  .shop-price-box {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    padding: 22px 28px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+
+  .shop-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .shop-price-row:last-child { border-bottom: none; }
+
+  .shop-price-row strong {
+    color: var(--text);
+    font-size: 1rem;
+  }
+
+  .shop-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0 0;
+    margin-top: 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--red);
+    border-top: 2px solid var(--red);
+  }
+
+  .shop-form-col {}
+
+  .shop-form-col h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .shop-form-col .section-label { margin-bottom: 4px; }
+
+  .shop-subtitle {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  .form-group label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .form-group input, .form-group select {
+    padding: 12px 16px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--red);
+  }
+
+  .form-group input.error, .form-group select.error {
+    border-color: var(--orange);
+  }
+
+  .form-note {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .order-summary-box {
+    background: #f8f3ea;
+    border: 1px solid var(--cream-dark);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .order-summary-box.visible { display: block; }
+
+  .order-summary-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .order-summary-line {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+  }
+
+  .order-summary-line strong { color: var(--text); }
+
+  #paypal-button-container { margin-top: 4px; }
+
+  .shop-error-msg {
+    background: #fff3e0;
+    border-left: 3px solid var(--orange);
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    color: #7B3F00;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .shop-error-msg.visible { display: block; }
+
+  .shop-success {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+
+  .shop-success.visible { display: block; }
+
+  .shop-success .success-icon { font-size: 3.5rem; margin-bottom: 16px; }
+
+  .shop-success h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .shop-success p {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .shop-inner { grid-template-columns: 1fr; gap: 40px; }
+    .shop-book-col { flex-direction: row; align-items: flex-start; gap: 20px; }
+    .shop-book-img { width: 100px; }
+    .shop-price-box { flex: 1; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">Affetti <span>in Saldo</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Il Libro</a></li>
+    <li><a href="#temi">Temi</a></li>
+    <li><a href="#acquista" class="nav-cta">Acquista</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-title">
+      Affetti
+      <span>in saldo</span>
+    </h1>
+    <div class="hero-cta-group">
+      <a href="#about" class="btn-primary">Scopri di più</a>
+    </div>
+  </div>
+
+  <div class="hero-book">
+    <div class="book-wrapper">
+      <img src="libro.jpg" alt="Copertina Affetti in Saldo" style="width:100%; height:100%; object-fit:cover; border-radius: 4px 10px 10px 4px; display:block;">
+    </div>
+  </div>
+</section>
+
+<!-- TAGLINE BAND -->
+<div class="tagline-band">
+  <span class="ornament">♥</span>
+  <p>«Prendere sul serio gli affetti, oggi, è già un gesto controcorrente»</p>
+  <span class="ornament">♥</span>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="fade-in">
+    <p class="section-label">Il Libro</p>
+    <h2 class="about-heading">
+      Ci si cerca, ci si sceglie…<br>ma con una <em>via d'uscita</em> sempre pronta.
+    </h2>
+    <p class="about-intro">
+      Relazioni rapide, sempre esposte, continuamente confrontate con altre possibilità.
+    </p>
+    <div class="about-body">
+      <p>
+        Non perché manchi il desiderio di amare, ma perché il tempo in cui viviamo rende difficile restare.
+        <em>Affetti in saldo</em> è un testo che interroga nel profondo: che cosa sta succedendo davvero ai nostri legami.
+      </p>
+      <p>
+        Attraverso le voci di giovani studentesse che intrecciano riflessioni pedagogiche alla dimensione narrativa,
+        il libro prova a dare prospettive nuove dentro le contraddizioni del nostro presente:
+        la paura di perdere e quella di legarsi, il bisogno di essere riconosciuti e la fatica di durare,
+        la connessione continua e la solitudine che resta.
+      </p>
+      <p>
+        Non offre risposte semplici. Fa qualcosa di più difficile: <em>prova a capire</em>.
+        Affetti in Saldo invita a sostare dove le fragilità non sono mancanze,
+        ma aperture in cui il senso dei legami si rivela.
+      </p>
+    </div>
+  </div>
+
+  <div class="fade-in" style="display:flex; flex-direction:column; gap:24px;">
+    <div class="quote-block">
+      <p class="quote-text">
+        «Questo volume, in fondo, nasce da una relazione educativa che a un certo punto ha sentito il bisogno
+        di diventare parola pubblica. Nasce da un tratto di strada condiviso, da una prossimità costruita nel tempo,
+        da un ascolto reciproco che ha permesso a vissuti, inquietudini e riflessioni di trovare lentamente forma.»
+      </p>
+      <p class="quote-attr">— Giovanbattista Trebisacce</p>
+    </div>
+    <div class="quote-block">
+      <p class="quote-text">
+        «I sentimenti non sono un fatto minore. Sono uno dei luoghi in cui si decide la qualità della nostra vita...   I libri più necessari non sono quelli che semplicemente spiegano il mondo, ma quelli che ci costringono a guardarci dentro mentre il mondo cambia.»
+      </p>
+      <p class="quote-attr">— Lucio Presta, dall'Introduzione</p>
+    </div>
+    <div class="quote-block">
+      <p class="quote-text">
+        «In questa fase storica è fondamentale sensibilizzare sulla fragilità relazionale ed emotiva che interessa molti giovani, riportando al centro il valore dei legami e promuovendo percorsi educativi capaci di accompagnarli nella costruzione di relazioni autentiche e consapevoli.»
+      </p>
+      <p class="quote-attr">— On. Giusi Princi, Europarlamentare</p>
+    </div>
+  </div>
+</section>
+
+<!-- THEMES -->
+<section class="themes" id="temi">
+  <div class="themes-header fade-in">
+    <p class="section-label" style="color: var(--orange)">Temi del libro</p>
+    <h2>Cosa troverai tra queste pagine</h2>
+    <p>Un viaggio emotivo attraverso le sfumature più umane dell'esistenza</p>
+  </div>
+
+  <div class="themes-grid">
+    <div class="theme-card fade-in">
+      <span class="theme-icon">⚡</span>
+      <h3>Attraversare il conflitto</h3>
+      <p>«Non è l'assenza di attrito a rendere un legame autentico, ma la capacità di attraversarlo».</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">🌱</span>
+      <h3>Restare nel tempo</h3>
+      <p>Quando tutto passa in fretta, la durata resta il gesto più fragile: dare tempo a un legame perché diventi cura.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">🍂</span>
+      <h3>Lasciare andare</h3>
+      <p>Non un fallimento, ma una meravigliosa e dolorosa opportunità: una ferita che, se guardata con cura, lascia una traccia che ci trasforma.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">📵</span>
+      <h3>FOMO, iperconnessione e ansia da perdita</h3>
+      <p>Sempre connessi, mai davvero presenti: il timore di ciò che sfugge ci fa smarrire. Riconoscere l'ansia digitale e tornare a scegliere, non a inseguire.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">🏆</span>
+      <h3>Oltre la prestazione: educare alla vulnerabilità e all'incontro</h3>
+      <p>Oltre lo scudo della perfezione, pulsa la vita. È nelle tue crepe che brilla la tua vera forza. Scegli di esistere, oltre il dovere di riuscire.</p>
+    </div>
+    <div class="theme-card fade-in">
+      <span class="theme-icon">💥</span>
+      <h3>Love Bombing</h3>
+      <p>L'eccesso non è amore ma seduzione dell'io che vuole possedere. Ciò che dona tutto subito, spesso prepara a togliere dopo. La vera bellezza non acceca, illumina.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="shop" id="acquista">
+  <div class="shop-inner">
+
+    <!-- Colonna sinistra: copertina + riepilogo prezzi -->
+    <div class="shop-book-col fade-in">
+      <img src="libro.jpg" alt="Copertina Affetti in Saldo" class="shop-book-img">
+      <div class="shop-price-box">
+        <div class="shop-price-row">
+          <span>Affetti in Saldo</span>
+          <strong>€ 18,00</strong>
+        </div>
+        <div class="shop-price-row">
+          <span>Spedizione in Italia</span>
+          <strong>€ 5,00</strong>
+        </div>
+        <div class="shop-total-row">
+          <span>Totale</span>
+          <span>€ 23,00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonna destra: form + PayPal -->
+    <div class="shop-form-col fade-in">
+      <p class="section-label">Acquista ora</p>
+      <h2>Ordina il tuo esemplare</h2>
+      <p class="shop-subtitle">Compila i dati di spedizione e procedi al pagamento sicuro tramite PayPal.</p>
+
+      <div id="shopError" class="shop-error-msg"></div>
+
+      <div id="orderForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="s_nome">Nome *</label>
+            <input type="text" id="s_nome" placeholder="Mario">
+          </div>
+          <div class="form-group">
+            <label for="s_cognome">Cognome *</label>
+            <input type="text" id="s_cognome" placeholder="Rossi">
+          </div>
+          <div class="form-group full">
+            <label for="s_email">Email *</label>
+            <input type="email" id="s_email" placeholder="mario@esempio.it">
+          </div>
+          <div class="form-group full">
+            <label for="s_indirizzo">Indirizzo *</label>
+            <input type="text" id="s_indirizzo" placeholder="Via Roma 12, interno 3">
+          </div>
+          <div class="form-group">
+            <label for="s_cap">CAP *</label>
+            <input type="text" id="s_cap" placeholder="00100" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label for="s_citta">Città *</label>
+            <input type="text" id="s_citta" placeholder="Roma">
+          </div>
+          <div class="form-group full">
+            <label for="s_provincia">Provincia *</label>
+            <input type="text" id="s_provincia" placeholder="RM" maxlength="2" style="text-transform:uppercase;">
+          </div>
+          <div class="form-group full">
+            <label for="s_note">Note per la spedizione (opzionale)</label>
+            <input type="text" id="s_note" placeholder="Es. citofono, orari di consegna…">
+          </div>
+        </div>
+
+        <p class="form-note">🔒 Pagamento sicuro tramite PayPal. Riceverai una email di conferma dopo l'acquisto. Spedizione entro 5 giorni lavorativi.</p>
+
+        <div id="orderSummary" class="order-summary-box">
+          <h4>Riepilogo ordine</h4>
+          <div class="order-summary-line" id="summaryContent"></div>
+        </div>
+
+        <div id="paypal-button-container"></div>
+      </div>
+
+      <div id="shopSuccess" class="shop-success">
+        <div class="success-icon">📦</div>
+        <h3>Ordine ricevuto!</h3>
+        <p>Grazie per il tuo acquisto. Riceverai una email di conferma a breve. Spediremo il tuo esemplare entro 5 giorni lavorativi.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom: 8px;">
+    <strong style="color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-style: italic;">Affetti in Saldo</strong>
+  </p>
+  <p>© 2026 · Tutti i diritti riservati ·</p>
+</footer>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR&locale=it_IT"></script>
+
+<script>
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── FADE IN ──
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // ── SHOP LOGIC ──
+  const PRICE_LIBRO = 18.00;
+  const PRICE_SPEDIZIONE = 5.00;
+  const PRICE_TOTALE = (PRICE_LIBRO + PRICE_SPEDIZIONE).toFixed(2);
+
+  function getField(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function setError(id, flag) {
+    const el = document.getElementById(id);
+    if (flag) el.classList.add('error');
+    else el.classList.remove('error');
+  }
+
+  function validateForm() {
+    const fields = ['s_nome','s_cognome','s_email','s_indirizzo','s_cap','s_citta','s_provincia'];
+    let valid = true;
+    fields.forEach(f => {
+      const val = getField(f);
+      const empty = !val;
+      const emailBad = f === 's_email' && val && !val.includes('@');
+      const capBad = f === 's_cap' && val && !/^\d{5}$/.test(val);
+      const provBad = f === 's_provincia' && val && !/^[A-Za-z]{2}$/.test(val);
+      if (empty || emailBad || capBad || provBad) {
+        setError(f, true);
+        valid = false;
+      } else {
+        setError(f, false);
+      }
+    });
+    return valid;
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('shopError');
+    el.textContent = '⚠️ ' + msg;
+    el.classList.add('visible');
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideError() {
+    document.getElementById('shopError').classList.remove('visible');
+  }
+
+  function buildSummary() {
+    const nome = getField('s_nome');
+    const cognome = getField('s_cognome');
+    const email = getField('s_email');
+    const indirizzo = getField('s_indirizzo');
+    const cap = getField('s_cap');
+    const citta = getField('s_citta');
+    const prov = getField('s_provincia').toUpperCase();
+    const note = getField('s_note');
+
+    return `
+      <strong>Destinatario:</strong> ${nome} ${cognome}<br>
+      <strong>Email:</strong> ${email}<br>
+      <strong>Indirizzo:</strong> ${indirizzo}, ${cap} ${citta} (${prov})<br>
+      ${note ? '<strong>Note:</strong> ' + note + '<br>' : ''}
+      <strong>Libro:</strong> Affetti in Saldo — € ${PRICE_LIBRO.toFixed(2)}<br>
+      <strong>Spedizione:</strong> € ${PRICE_SPEDIZIONE.toFixed(2)}<br>
+      <strong style="color:var(--red); font-size:1rem;">Totale: € ${PRICE_TOTALE}</strong>
+    `;
+  }
+
+  // Aggiorna riepilogo in tempo reale
+  ['s_nome','s_cognome','s_email','s_indirizzo','s_cap','s_citta','s_provincia','s_note'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const summary = document.getElementById('orderSummary');
+      const allFilled = ['s_nome','s_cognome','s_email','s_indirizzo','s_cap','s_citta','s_provincia']
+        .every(f => getField(f).length > 0);
+      if (allFilled) {
+        document.getElementById('summaryContent').innerHTML = buildSummary();
+        summary.classList.add('visible');
+      } else {
+        summary.classList.remove('visible');
+      }
+    });
+  });
+
+  // ── PAYPAL BUTTONS ──
+  paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'gold',
+      shape: 'rect',
+      label: 'pay',
+      height: 48
+    },
+
+    onClick: function(data, actions) {
+      hideError();
+      if (!validateForm()) {
+        showError('Compila tutti i campi obbligatori correttamente prima di procedere.');
+        return actions.reject();
+      }
+      return actions.resolve();
+    },
+
+    createOrder: function(data, actions) {
+      const nome = getField('s_nome');
+      const cognome = getField('s_cognome');
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: PRICE_TOTALE,
+            currency_code: 'EUR',
+            breakdown: {
+              item_total: { value: PRICE_LIBRO.toFixed(2), currency_code: 'EUR' },
+              shipping: { value: PRICE_SPEDIZIONE.toFixed(2), currency_code: 'EUR' }
+            }
+          },
+          items: [{
+            name: 'Affetti in Saldo – libro cartaceo',
+            unit_amount: { value: PRICE_LIBRO.toFixed(2), currency_code: 'EUR' },
+            quantity: '1',
+            category: 'PHYSICAL_GOODS'
+          }],
+          shipping: {
+            name: { full_name: nome + ' ' + cognome },
+            address: {
+              address_line_1: getField('s_indirizzo'),
+              postal_code: getField('s_cap'),
+              city: getField('s_citta'),
+              state: getField('s_provincia').toUpperCase(),
+              country_code: 'IT'
+            }
+          },
+          description: 'Affetti in Saldo – spedizione: ' + getField('s_indirizzo') + ', ' + getField('s_cap') + ' ' + getField('s_citta') + ' (' + getField('s_provincia').toUpperCase() + ') – email: ' + getField('s_email') + (getField('s_note') ? ' – note: ' + getField('s_note') : '')
+        }],
+        application_context: {
+          shipping_preference: 'SET_PROVIDED_ADDRESS'
+        }
+      });
+    },
+
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        document.getElementById('orderForm').style.display = 'none';
+        document.getElementById('shopSuccess').classList.add('visible');
+        document.getElementById('shopError').classList.remove('visible');
+        window.scrollTo({ top: document.getElementById('acquista').offsetTop - 80, behavior: 'smooth' });
+      });
+    },
+
+    onError: function(err) {
+      showError('Si è verificato un errore durante il pagamento. Riprova o contattaci.');
+      console.error('PayPal error:', err);
+    },
+
+    onCancel: function() {
+      showError('Pagamento annullato. Puoi riprovare quando vuoi.');
+    }
+
+  }).render('#paypal-button-container');
+</script>
+</body>
+</html>
