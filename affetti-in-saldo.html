@@ -1,0 +1,4298 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affetti in saldo — Assistente di studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F7F5F1;--bg-card:#FFFFFF;--text:#1A1814;
+  --text-muted:#7A7570;--text-light:#B0AAA4;
+  --border:rgba(26,24,20,0.09);--border-strong:rgba(26,24,20,0.18);
+  --navy:#3D2B6B;--navy-light:#F0ECF9;--navy-mid:#5A3F9A;
+  --rose:#8B3A52;--rose-light:#FAF0F3;--rose-mid:#B05470;
+  --amber:#7A5520;--amber-light:#FDF5E8;
+  --teal:#1A5C52;--teal-light:#E8F5F3;--teal-mid:#2A8070;
+  --green:#1A5C38;--green-light:#E8F5EE;
+  --shv:0 6px 24px rgba(26,24,20,0.10);
+  --fd:"Cormorant Garamond",Georgia,serif;
+  --fb:"DM Sans",sans-serif;
+}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── WELCOME SCREEN ── */
+#ws{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden;}
+#ws::before{content:"";position:fixed;top:-20%;right:-10%;width:55vw;height:55vw;border-radius:50%;background:radial-gradient(circle,rgba(139,58,82,0.07) 0%,transparent 70%);pointer-events:none;}
+#ws::after{content:"";position:fixed;bottom:-20%;left:-10%;width:40vw;height:40vw;border-radius:50%;background:radial-gradient(circle,rgba(61,43,107,0.06) 0%,transparent 70%);pointer-events:none;}
+.wi{max-width:540px;width:100%;position:relative;z-index:1;animation:fu .6s ease forwards;}
+@keyframes fu{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.book-cover{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:18px;
+  padding:1.25rem 1.5rem;margin-bottom:2rem;
+}
+.bc-spine{
+  width:6px;height:70px;border-radius:3px;flex-shrink:0;
+  background:linear-gradient(to bottom,var(--rose-mid),var(--navy-mid));
+}
+.bc-info{flex:1;}
+.bc-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);font-weight:500;margin-bottom:.3rem;}
+.bc-title{font-family:var(--fd);font-size:1.25rem;font-weight:400;line-height:1.2;color:var(--text);}
+.bc-sub{font-size:12px;color:var(--text-muted);font-weight:300;margin-top:.25rem;}
+.bc-icon{font-size:2rem;flex-shrink:0;}
+
+.wl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem;font-weight:500;}
+.wt{font-family:var(--fd);font-size:clamp(2rem,5vw,2.8rem);font-weight:300;line-height:1.2;margin-bottom:.75rem;}
+.wt em{font-style:italic;color:var(--rose-mid);}
+.ws2{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-weight:300;}
+
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+@media(max-width:480px){.mg{grid-template-columns:1fr;}}
+.mc{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:18px;
+  padding:1.2rem;cursor:pointer;text-align:left;transition:all .2s;position:relative;overflow:hidden;
+}
+.mc::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .2s;}
+.mc:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shv);}
+.mc.cr::before{background:var(--rose-light);}
+.mc.cn::before{background:var(--navy-light);}
+.mc.ct::before{background:var(--teal-light);}
+.mc.cam::before{background:var(--amber-light);}
+.mc:hover::before{opacity:1;}
+.mc>*{position:relative;z-index:1;}
+.ci2{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:.65rem;font-size:17px;}
+.mc.cr .ci2{background:var(--rose-light);}
+.mc.cn .ci2{background:var(--navy-light);}
+.mc.ct .ci2{background:var(--teal-light);}
+.mc.cam .ci2{background:var(--amber-light);}
+.ctt{font-size:13px;font-weight:500;color:var(--text);margin-bottom:.25rem;line-height:1.3;}
+.cd{font-size:11.5px;color:var(--text-muted);line-height:1.5;font-weight:300;}
+.wn{font-size:12px;color:var(--text-light);font-weight:300;text-align:center;}
+
+/* ── CHAT SCREEN ── */
+#cs{display:none;flex-direction:column;height:100vh;max-width:740px;margin:0 auto;width:100%;}
+.ch{
+  padding:.75rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;background:var(--bg);flex-shrink:0;
+}
+.bb{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;padding:4px;border-radius:6px;transition:color .15s;display:flex;align-items:center;}
+.bb:hover{color:var(--text);}
+.hb{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.hi{flex:1;min-width:0;}
+.ht{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hs{font-size:11px;color:var(--text-muted);font-weight:300;}
+.ha{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text-muted);font-family:var(--fb);transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.ha:hover{border-color:var(--border-strong);color:var(--text);}
+
+/* messaggi */
+.cws{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.cws::-webkit-scrollbar{width:4px;}
+.cws::-webkit-scrollbar-thumb{background:rgba(26,24,20,.1);border-radius:2px;}
+.msg{display:flex;gap:.75rem;animation:fu .3s ease;}
+.msg.user{flex-direction:row-reverse;}
+.ma{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.msg.assistant .ma{background:var(--navy-light);color:var(--navy-mid);}
+.msg.user .ma{background:var(--rose-light);color:var(--rose-mid);font-size:12px;font-weight:500;}
+.mb{max-width:74%;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:.9rem 1.1rem;font-size:14px;line-height:1.75;font-weight:300;}
+.msg.user .mb{background:var(--navy-light);border-color:rgba(61,43,107,.12);}
+.mb strong{font-weight:500;}
+.mb em{font-style:italic;color:var(--text-muted);}
+
+/* suggerimenti */
+.sp{padding:0 1.5rem .75rem;flex-shrink:0;}
+.sp-pills{display:flex;gap:7px;flex-wrap:wrap;}
+.spp{padding:6px 13px;border-radius:20px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);font-size:12px;font-family:var(--fb);cursor:pointer;transition:all .15s;font-weight:300;}
+.spp:hover{border-color:var(--rose-mid);color:var(--rose-mid);}
+
+/* input */
+.cia{display:flex;gap:8px;align-items:flex-end;padding:.85rem 1.5rem 1.25rem;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0;}
+.cit{flex:1;background:var(--bg-card);border:1px solid var(--border-strong);border-radius:14px;padding:.7rem 1rem;font-size:14px;font-family:var(--fb);color:var(--text);outline:none;resize:none;min-height:46px;max-height:110px;line-height:1.6;font-weight:300;transition:border-color .15s;}
+.cit:focus{border-color:var(--navy-mid);}
+.cit::placeholder{color:var(--text-light);}
+.sb{width:44px;height:44px;border-radius:12px;background:var(--navy);border:none;color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;}
+.sb:hover{background:var(--navy-mid);transform:scale(1.05);}
+.sb:disabled{opacity:.35;transform:none;cursor:not-allowed;}
+
+/* typing */
+.ti{display:flex;gap:4px;align-items:center;padding:3px 0;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--text-light);animation:pulse 1.2s infinite;}
+.td:nth-child(2){animation-delay:.2s;}
+.td:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,60%,100%{opacity:.3;transform:scale(1);}30%{opacity:1;transform:scale(1.25);}}
+
+@media(max-width:600px){
+  .mb{max-width:88%;}
+  .ch{padding:.65rem 1rem;}
+  .cws{padding:1rem;}
+  .cia{padding:.75rem 1rem 1.1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ WELCOME ═══ -->
+<div id="ws">
+  <div class="wi">
+    <div class="book-cover">
+      <div class="bc-spine"></div>
+      <div class="bc-info">
+        <div class="bc-label">Saggio pedagogico · 2026</div>
+        <div class="bc-title">Affetti in saldo</div>
+        <div class="bc-sub">Per una pedagogia dei legami fragili</div>
+      </div>
+      <div class="bc-icon">📖</div>
+    </div>
+
+    <p class="wl">Assistente di studio</p>
+    <h1 class="wt">Di cosa vuoi<br><em>parlare?</em></h1>
+    <p class="ws2">Scegli come vuoi lavorare sul libro. Puoi fare domande libere, chiedere riassunti, analisi dei temi o quiz di verifica.</p>
+
+    <div class="mg">
+      <div class="mc cr" onclick="startChat('domande')">
+        <div class="ci2">💬</div>
+        <div class="ctt">Domande libere</div>
+        <div class="cd">Fai qualsiasi domanda sul contenuto del libro.</div>
+      </div>
+      <div class="mc cn" onclick="startChat('riassunto')">
+        <div class="ci2">📝</div>
+        <div class="ctt">Riassunti</div>
+        <div class="cd">Riassunti di capitoli, temi o sezioni specifiche.</div>
+      </div>
+      <div class="mc ct" onclick="startChat('analisi')">
+        <div class="ci2">🔍</div>
+        <div class="ctt">Analisi dei temi</div>
+        <div class="cd">Approfondisci i concetti pedagogici e le tesi principali.</div>
+      </div>
+      <div class="mc cam" onclick="startChat('quiz')">
+        <div class="ci2">🎯</div>
+        <div class="ctt">Quiz di verifica</div>
+        <div class="cd">Metti alla prova la tua comprensione del testo.</div>
+      </div>
+    </div>
+    <p class="wn">Puoi cambiare modalità in qualsiasi momento</p>
+  </div>
+</div>
+
+<!-- ═══ CHAT ═══ -->
+<div id="cs">
+  <div class="ch">
+    <button class="bb" onclick="goBack()">←</button>
+    <div class="hb" id="hb"></div>
+    <div class="hi">
+      <div class="ht" id="ht"></div>
+      <div class="hs">Affetti in saldo</div>
+    </div>
+    <button class="ha" onclick="newChat()">+ Nuova</button>
+  </div>
+  <div class="cws" id="cws"></div>
+  <div class="sp" id="sp"><div class="sp-pills" id="spp"></div></div>
+  <div class="cia">
+    <textarea class="cit" id="ci" placeholder="Scrivi qui la tua domanda…" rows="1"
+      oninput="resize(this)" onkeydown="onKey(event)"></textarea>
+    <button class="sb" id="sb" onclick="send()">↑</button>
+  </div>
+</div>
+
+<script>
+const API_KEY = "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";
+
+const LIBRO = `È vietata la riproduzione, anche parziale, con
+qualsiasi mezzo effettuat a, compresa la fotocopia,
+anche ad uso interno o didattico.
+Fotocopie per uso perso nale del lettore possono
+essere effettuate nei limiti del 15% di ciascun
+volume dietro pagamento alla SIAE del compenso
+previsto dall’art. 68, com ma 4, della legge 22 apri-
+le 1941 n. 633.
+Copyright 2026
+JONIA EDITRICE SAS
+Via Sandro Botticelli, 11 - 87036 Rende (Cs)
+joniaeditrice@gmail.com
+dedica
+Indice
+Prefazione
+Ci sono incontri che finiscono quando si spen-
+gono le luci. E ce ne sono altri che, invece, co-
+minciano davvero dopo.
+Questo libro, per come lo leggo io, nasce così.
+Non nasce soltanto da un’idea, da un progetto
+o da una volontà editoriale. Nasce da una scia.
+Da ciò che resta quando un’esperienza condi-
+visa non si esaurisce nel momento in cui ac-
+cade, ma continua a muoversi dentro, a fare
+domande, a chiedere parole nuove. Nasce da
+un dopo che non ha voluto dissolversi. E forse
+è proprio questa la sua prima verità. Viviamo
+in un tempo che brucia tutto in fretta. I rap-
+porti, le emozioni, le parole, perfino i silenzi.
+Tutto passa velocemente, tutto si consuma,
+tutto sembra dover essere esibito, commen-
+tato, superato. Anche i sentimenti, troppo
+spesso, sembrano finiti dentro questa logica:
+vissuti in fretta, mostrati in fretta, dimenticati
+in fretta. Per questo un libro come Affetti in
+saldo non arriva per caso. Arriva perché ce
+9
+n’era bisogno. Ce n’era bisogno non solo sul
+piano culturale, ma su quello umano. Perché
+oggi parlare di affetti significa entrare in uno
+dei luoghi più fragili e più decisivi del nostro
+tempo. Significa interrogarsi su che cosa resta
+dei legami quando tutto intorno spinge alla so-
+stituzione, alla leggerezza forzata, alla rever-
+sibilità di ogni scelta. Significa chiedersi che
+cosa stia accadendo alle nuove generazioni,
+esposte come mai prima d’ora a una connes-
+sione continua e, nello stesso tempo, a una so-
+litudine che spesso non trova parole per dirsi.
+La forza di questo libro sta innanzitutto nel
+fatto che non parla sui giovani, ma
+parla con loro e, in molti passaggi, diretta-
+mente da loro. E questa non è una differenza
+secondaria. È la differenza che passa tra un di-
+scorso costruito dall’esterno e una riflessione
+che nasce da dentro un’esperienza vissuta, at-
+traversata, pensata. Qui non c’è lo sguardo
+compiaciuto di chi giudica una generazione.
+C’è, piuttosto, il tentativo serio di ascoltarla,
+di capirne le ferite, le esitazioni, i desideri, le
+paure, le forme nuove della vulnerabilità. E in
+questo sta anche il valore profondo della cu-
+ratela di Giovanbattista Trebisacce: nell’aver
+saputo trasformare un’intuizione in un’espe-
+rienza formativa, e un’esperienza formativa in
+10
+un libro. Non era la strada più semplice. La
+strada più semplice sarebbe stata parlare dei
+sentimenti. Qui, invece, si è scelto qualcosa di
+più difficile e più vero: attraversarli, interro-
+garli, metterli a tema senza addomesticarli.
+Dentro una cornice pedagogica, certo, ma
+senza spegnere mai la vita concreta da cui
+queste pagine prendono voce. Ed è proprio
+questa la ragione per cui Affetti in saldo col-
+pisce. Perché non usa la pedagogia come una
+griglia fredda o come un linguaggio che si so-
+vrappone alle storie. La usa nel modo più alto:
+come uno sguardo capace di custodire la com-
+plessità dell’umano. Le pagine che seguono
+parlano di perdita, di durata, di iper-connes-
+sione, di conflitto, di frustrazione, di paura
+dell’abbandono, di desiderio di restare e, in-
+sieme, di fuga. Parlano di ciò che oggi accade
+ai legami quando vengono attraversati dalla
+velocità del digitale, dalla fatica della pre-
+senza, dall’ansia di essere sempre all’altezza,
+sempre visibili, sempre desiderabili. Ma so-
+prattutto parlano di una cosa che oggi ri-
+schiamo spesso di dimenticare: che i
+sentimenti non sono un fatto minore. Non
+sono un residuo privato da lasciare ai margini
+della riflessione seria. Sono uno dei luoghi in
+cui si decide la qualità della nostra umanità.
+11
+Da come amiamo, da come restiamo, da come
+lasciamo andare, da come attraversiamo un
+conflitto o un silenzio, si capisce molto di
+quello che siamo diventati. Per questa ragione,
+leggere questo libro significa anche accettare
+una sfida. La sfida di non fermarsi alla super-
+ficie. Di non accontentarsi delle formule facili
+con cui spesso descriviamo il mondo affettivo
+contemporaneo. Di non liquidare tutto di-
+cendo che i tempi sono cambiati, che i social
+hanno rovinato i rapporti, che i giovani non
+sanno più amare. Sarebbe troppo semplice. E
+forse anche troppo comodo. Questo libro sce-
+glie invece una via più onesta: prova a stare
+dentro la contraddizione. Riconosce la fragi-
+lità, ma non rinuncia a cercare un senso. Vede
+il disorientamento, ma non smette di interro-
+gare la possibilità di educare ancora ai legami.
+Ecco perché, a mio avviso, Affetti in saldo è
+un libro importante. Non perché offra risposte
+definitive. Non perché chiuda il discorso. Ma
+perché lo apre nel punto giusto. Là dove fa più
+male e, proprio per questo, dove è più neces-
+sario tornare a pensare. Ci ricorda che dietro
+l’apparente facilità dei contatti contemporanei
+sopravvive una domanda antica e radicale:
+quella di essere riconosciuti, accolti, amati
+senza dover continuamente esibire una ver-
+12
+sione spendibile di sé. In fondo, ogni epoca ha
+i suoi linguaggi e le sue illusioni. La nostra ha
+certamente quella della connessione perma-
+nente, dell’accessibilità assoluta, dell’emo-
+zione rapida, della libertà intesa come assenza
+di vincoli. Ma nessuna tecnologia, nessuna
+piattaforma, nessuna accelerazione del pre-
+sente potrà mai cancellare il bisogno umano
+di legami veri. Potrà semmai complicarlo, de-
+formarlo, esporlo a nuove fragilità. Ed è pro-
+prio qui che un libro come questo trova la sua
+necessità: nel ricordarci che l’umano non si la-
+scia ridurre a prestazione, vetrina o consumo.
+E che gli affetti, anche quando sembrano sva-
+lutati, restano il luogo in cui più radicalmente
+ci giochiamo. Per questo considero queste pa-
+gine preziose. Perché hanno il coraggio di en-
+trare in un territorio che oggi tutti
+attraversano, ma che pochi si fermano davvero
+ad ascoltare. E lo fanno con una serietà che
+non rinuncia alla sensibilità, con una profon-
+dità che non spegne la voce viva di chi scrive,
+con una tensione educativa che non mortifica
+mai la verità dell’esperienza. C’è, in queste
+pagine, qualcosa che considero raro: la capa-
+cità di tenere insieme pensiero e vita. Ed è
+forse questo il segno migliore di un libro riu-
+scito. Perché i libri più necessari non sono
+13
+quelli che semplicemente spiegano il mondo,
+ma quelli che ci costringono a guardarci den-
+tro mentre il mondo cambia. Affetti in saldo fa
+esattamente questo. E per questa ragione me-
+rita di essere letto con attenzione, con rispetto
+e, soprattutto, con disponibilità a lasciarsi in-
+terrogare.
+Lucio Presta
+14
+Introduzione
+Affetti in saldo.
+Per una pedagogia dei legami fragili.
+Non so se questo libro sia nato prima come
+idea o prima come gratitudine. So però che,
+mentre provo a scrivere queste righe, il pen-
+siero corre subito alle ragazze che lo hanno
+reso possibile. Corre ai loro volti, alle loro pa-
+role, alla fiducia con cui hanno accolto una
+proposta che, all’inizio, non era ancora un
+libro, ma solo un’intuizione fragile, una pos-
+sibilità appena accennata, il desiderio di non
+lasciare cadere alcune domande che ci stavano
+attraversando. Questo volume, in fondo, nasce
+da qui: da una relazione educativa che a un
+certo punto ha sentito il bisogno di diventare
+parola pubblica. Nasce dentro i corsi di Peda-
+gogia sociale, ma non resta chiuso dentro il
+loro perimetro. Nasce da un tratto di strada
+condiviso, da una prossimità costruita nel
+tempo, da un ascolto reciproco che ha per-
+15
+messo a vissuti, inquietudini e riflessioni di
+trovare lentamente forma. In questo percorso,
+anche l’incontro con Cesare Cremonini, e la
+presenza sensibile di Lucio Presta, hanno rap-
+presentato un passaggio importante. Non
+tanto, o non solo, per il valore pubblico del-
+l’evento, ma per ciò che esso ha lasciato dopo.
+Ha lasciato una scia ulteriore di domande sui
+linguaggi dell’emozione, sulla fragilità dei le-
+gami, sul bisogno di riconoscimento, sul
+modo in cui oggi i giovani provano a cercarsi,
+a esporsi, a restare, o talvolta a perdersi. In
+qualche modo, Affetti in saldo nasce anche da
+questa scia, dalla volontà di non lasciarla dis-
+solvere, ma di trasformarla in occasione di
+pensiero, di scrittura e di consapevolezza con-
+divisa. Ed è per questo che, prima ancora di
+ogni riflessione teorica, sento il bisogno di
+dire una cosa semplice: questo libro appar-
+tiene anzitutto alle ragazze che lo hanno
+scritto. Alla loro intelligenza, alla loro sensi-
+bilità, al loro coraggio. Appartiene alla serietà
+con cui hanno accettato di attraversare temi
+tutt’altro che semplici - la perdita, la durata,
+la paura di essere esclusi, il conflitto, il silen-
+zio, il desiderio di restare - senza mai ridurli
+a sfogo o a superficie. Appartiene alla loro ca-
+pacità di fare della scrittura non un esercizio
+16
+decorativo, ma un gesto di verità. A voi, ra-
+gazze, devo un ringraziamento profondo. Non
+formale, non di circostanza. Un ringrazia-
+mento vero. Perché questo libro non sarebbe
+nato senza la vostra disponibilità a mettervi in
+gioco fino in fondo. Senza il vostro coraggio
+di sostare dentro zone difficili, esposte, fragili.
+Senza il vostro modo serio, partecipe, mai ba-
+nale, di accogliere una proposta e trasformarla
+lentamente in un lavoro condiviso. Avete
+scritto di ciò che spesso si vive senza riuscire
+davvero a dirlo. Avete scritto di amori che fi-
+niscono in silenzio, di attese che consumano,
+di paure che si insinuano dentro la connes-
+sione continua, di relazioni che si logorano
+non per mancanza di sentimento ma per diffi-
+coltà di restare, di scegliere, di sopportare la
+verità dell’altro. E lo avete fatto senza indul-
+gere nel sentimentalismo, senza cedere alla
+scorciatoia dello sfogo, senza trattare i senti-
+menti come una materia minore. Questo, ai
+miei occhi, è stato il segno più bello e più alto
+del lavoro compiuto insieme. Avete preso sul
+serio gli affetti. E prendere sul serio gli affetti,
+oggi, è già un gesto controcorrente. In un
+tempo che tende a banalizzare tutto, a consu-
+mare tutto in fretta, a ridurre anche le espe-
+rienze più profonde a contenuti rapidi,
+17
+esibibili, reversibili, voi avete accettato di ral-
+lentare. Di stare. Di pensare. Di cercare parole
+adeguate là dove la vita affettiva spesso si pre-
+senta come confusione, eccesso, ferita, nostal-
+gia, timore di perdere, paura di non bastare.
+Per questo, mentre scrivo queste pagine, non
+penso soltanto a un libro. Penso a un’espe-
+rienza. Penso a un tratto di strada condiviso.
+Penso a ciò che l’università dovrebbe essere
+molto più spesso di quanto non riesca a essere:
+non soltanto luogo di trasmissione del sapere,
+ma spazio in cui la vita può ancora essere in-
+terrogata, custodita, accompagnata, pensata
+insieme. Troppo spesso l’università rischia di
+diventare il luogo della prestazione, del-
+l’adempimento, della formalità, dell’effi-
+cienza, del compito da assolvere. Eppure io
+continuo a credere, ostinatamente, che il suo
+compito più alto resti un altro: generare occa-
+sioni in cui il sapere non si separi dall’esi-
+stenza, in cui il pensiero incontri le ferite del
+presente, in cui anche ciò che appare più in-
+timo, più fragile, più esposto, possa diventare
+oggetto di riflessione seria, rigorosa, condi-
+visa. Questo libro, almeno per me, rappresenta
+proprio questo. Il tentativo di non lasciare che
+i sentimenti restino ai margini del discorso
+educativo, come se fossero una faccenda pri-
+18
+vata, secondaria, quasi imbarazzante. Perché
+non è così. I sentimenti sono uno dei luoghi
+più profondi in cui si forma o si deforma
+l’umano. Da come si ama, da come si attende,
+da come si fugge, da come si tace, da come si
+sopporta o si elude il conflitto, da come si vive
+il desiderio di essere riconosciuti, si capisce
+molto non solo della qualità di una soggetti-
+vità, ma anche del tempo storico che la pla-
+sma. Parlare di affetti, allora, non significa
+allontanarsi dalla pedagogia. Significa entrare
+in uno dei suoi territori più decisivi. È questa,
+del resto, la convinzione che ha accompagnato
+anche il mio saggio Affetti in saldo e che
+orienta, più in generale, l’intera architettura
+del volume. Viviamo dentro un’epoca che
+tende a trascinare anche i legami dentro la lo-
+gica del consumo. Tutto deve essere rapido,
+visibile, leggero, disponibile, reversibile.
+Anche le relazioni rischiano di essere pensate
+così: intense ma a bassa permanenza, deside-
+rate ma con una via d’uscita sempre pronta,
+vissute dentro una continua esposizione pub-
+blica, misurate più sulla loro rappresentabilità
+che sulla loro verità. Nei testi del volume
+emergono con chiarezza proprio queste soglie:
+il congedo come trasformazione, la durata
+come resistenza della cura, la FOMO come
+19
+ansia dell’altrove, il conflitto come prova
+della verità relazionale. Il titolo del libro
+nasce da qui. Affetti in saldo non è soltanto
+una formula evocativa. È, prima di tutto, una
+diagnosi. È il tentativo di nominare una deriva
+del presente: la svalutazione progressiva
+dell’esperienza affettiva, la sua esposizione
+alla logica dello scarto, della sostituibilità,
+della prestazione, della vetrina. In una cultura
+che ci abitua a cambiare rapidamente oggetti,
+immagini, stimoli, occasioni, anche il legame
+rischia di essere vissuto come qualcosa da
+consumare, da esibire, da abbandonare non
+appena cessa di gratificare immediatamente.
+Non perché sia venuto meno il bisogno di
+amare o di essere amati, ma perché le forme
+simboliche dentro cui oggi si cercano i legami
+li espongono continuamente alla velocità, al
+confronto, alla reversibilità, alla paura di per-
+dere altro. Ma il punto, pedagogicamente, non
+è fermarsi alla denuncia. Non mi interessava
+scrivere un testo moralistico sui giovani, sui
+social o sulla presunta decadenza dei senti-
+menti. Sarebbe stato troppo facile, e forse
+anche troppo ingiusto. Mi interessava piutto-
+sto comprendere che cosa stia accadendo ai le-
+gami dentro ambienti digitali che hanno
+trasformato profondamente il rapporto con il
+20
+tempo, con il desiderio, con l’attesa, con la
+presenza, con l’assenza, con il riconosci-
+mento. Mi interessava chiedermi se oggi sia
+ancora possibile educare ai legami senza ca-
+dere né nella nostalgia né nella superficialità.
+Mi interessava capire se esista ancora uno spa-
+zio per una pedagogia della durata, della cura,
+dell’opacità, del limite, dentro un mondo che
+ci spinge costantemente verso la massima
+esposizione e verso la minima tolleranza della
+frustrazione. Perché è proprio qui, a mio giu-
+dizio, che si gioca una parte decisiva della
+questione educativa contemporanea. I social
+media non sono semplicemente strumenti.
+Sono ambienti simbolici che plasmano
+sguardi, desideri, aspettative, forme della sog-
+gettività. Dentro questi ambienti si impara a
+mostrarsi, a confrontarsi, a cercare approva-
+zione, a temere l’esclusione, a percepire il le-
+game anche come prestazione, come
+conferma, come visibilità. Non è un caso che
+oggi emergano con tanta forza temi come la
+FOMO, l’iper-connessione, la paura di man-
+care qualcosa, la fatica di stare davvero nel
+presente, la difficoltà di durare, la tendenza a
+evitare il conflitto come se fosse sempre il
+segno di un fallimento. Il volume lo restituisce
+bene, mostrando come la connessione non
+21
+coincida con l’incontro e come la visibilità
+non basti a generare riconoscimento auten-
+tico. Eppure, proprio in questo scenario, la
+pedagogia è chiamata a non arretrare. A non
+rifugiarsi in analisi generiche o in nostalgie
+sterili. A provare, invece, a restituire spessore
+a ciò che il presente tende a consumare. A ri-
+cordare che il legame non coincide con il con-
+tatto, che la connessione non garantisce
+l’incontro, che la visibilità non coincide con
+il riconoscimento, che la durata non è una
+forma di ingenuità, che il conflitto non è sem-
+pre una minaccia, che il limite non è una mu-
+tilazione ma una condizione della profondità.
+Educare agli affetti, oggi, significa allora
+molte cose. Significa educare all’attesa in un
+tempo dell’immediatezza. Educare alla scelta
+in un tempo che idolatra la moltiplicazione in-
+finita delle opzioni. Educare alla presenza in
+un tempo dell’altrove permanente. Educare
+alla cura in un tempo della sostituzione ve-
+loce. Educare alla promessa in un tempo che
+diffida di ogni vincolo. Educare alla frustra-
+zione in un tempo che la percepisce come
+scandalo. Educare, perfino, al congedo,
+quando necessario, senza ridurre ogni fine a
+fallimento e senza trasformare ogni perma-
+nenza in virtù assoluta. In questo senso, il
+22
+libro non vuole proporre un ideale ingenuo del
+legame. Non sostiene che durare sia sempre
+bene, né che restare sia sempre segno di ma-
+turità. Sarebbe falso. Ci sono relazioni che
+umiliano, consumano, svuotano. Ci sono per-
+manenze che non educano, ma intrappolano.
+Ci sono conflitti che non aprono, ma feriscono
+irreparabilmente. La questione non è celebrare
+il legame a ogni costo. La questione è resti-
+tuirgli verità. È comprendere quando esso tra-
+sformi e quando, invece, impoverisca. Quando
+chieda attraversamento e quando, al contrario,
+domandi la forza del congedo. Ed è proprio
+per questo che considero le pagine delle ra-
+gazze così preziose. Perché non semplificano.
+Non offrono slogan. Non cercano facili asso-
+luzioni. Stanno dentro la complessità. Fanno
+emergere la fatica di legami che non finiscono
+con uno strappo ma si consumano nel silenzio;
+la paura di essere esclusi da un altrove sempre
+più seducente; il desiderio di restare e, in-
+sieme, la difficoltà di reggere la profondità; il
+bisogno di vicinanza e il timore di esserne
+trattenuti. Sono pagine che, proprio perché
+non hanno paura di mostrarsi fragili, riescono
+anche a diventare pensiero. E questo, dal
+punto di vista pedagogico, è già moltissimo.
+Qui, forse, sta anche una delle cose che più mi
+23
+hanno toccato lungo questo percorso: vedere
+come la scrittura possa diventare non soltanto
+esercizio espressivo, ma forma di consapevo-
+lezza. Forma di crescita. Forma di educazione.
+Quando un vissuto trova parole adeguate, non
+è più soltanto subito: comincia a essere pen-
+sato. E quando è pensato, può iniziare a tra-
+sformarsi. In questo senso, questo libro non è
+soltanto il risultato finale di un lavoro. È esso
+stesso parte del lavoro educativo che lo ha ge-
+nerato. Per me, che ho avuto il privilegio di
+accompagnare questo percorso, resta soprat-
+tutto la gratitudine. Gratitudine verso le ra-
+gazze, certo. Ma anche verso quella
+possibilità, sempre rara e sempre preziosa, che
+si dà quando tra docente e studenti si crea uno
+spazio autentico di fiducia, di ascolto, di li-
+bertà reciproca. Uno spazio in cui non si la-
+vora soltanto sui contenuti, ma anche sulle
+domande vere della vita. Uno spazio in cui il
+sapere non mortifica l’esperienza, ma la illu-
+mina. Uno spazio in cui le parole non servono
+a coprire le ferite, ma a renderle pensabili. Se
+questo libro riuscirà a dire qualcosa a chi lo
+leggerà, credo che il suo merito starà proprio
+qui: nell’essere nato non da una costruzione
+artificiale, ma da una relazione educativa
+reale. Nell’essere insieme testimonianza e ri-
+24
+flessione. Nell’avere provato a tenere uniti
+pensiero e vita, analisi e ferita, teoria e pros-
+simità umana. Alle ragazze che hanno scritto
+queste pagine va il mio affetto più sincero e la
+mia riconoscenza più profonda. Per aver cre-
+duto in questo percorso. Per averlo abitato con
+intelligenza e verità. Per aver dimostrato che,
+anche in un tempo di dispersione, di velocità
+e di consumo simbolico, è ancora possibile
+fermarsi, ascoltare, scrivere, pensare. E
+quindi, in fondo, educare. Questo libro è vo-
+stro. Ma, nel momento in cui prende forma
+pubblica, spero possa diventare anche qual-
+cosa di più: un invito a guardare con maggiore
+profondità il mondo affettivo contemporaneo,
+senza pregiudizi e senza semplificazioni. Un
+invito a restituire dignità pedagogica ai senti-
+menti. Un invito a non lasciare che gli affetti
+vengano definitivamente messi in saldo.
+Giovanbattista Trebisacce
+25
+I Parte
+Oltre la logica dello scarto. Pedagogia della
+trasformazione.
+Quando il dolore incontra l’amore
+Ieri ci siamo lasciati. Continuo a ripensare a
+quando tutto è iniziato, come se tornare indie-
+tro potesse aiutarmi a capire meglio questo si-
+lenzio che è rimasto. Ci sono storie che non
+finiscono con una lite, né con una verità pro-
+nunciata fino in fondo. Finiscono lentamente,
+come se qualcosa si ritirasse un poco alla
+volta, lasciando dietro di sé non tanto una
+frattura evidente quanto una specie di vuoto
+pieno di tracce. È in quel vuoto che provo a
+guardare. Quando il fratello morì, tutto si
+fermò. Non era soltanto il dolore per una per-
+dita improvvisa. Era come se venisse meno
+l’ordine stesso delle cose. Quel fratello non
+era stato solo una presenza affettiva: era stato
+una figura che orientava, proteggeva, soste-
+neva. La sua morte aprì uno strappo che nes-
+27
+suno, nei giorni successivi, riusciva davvero
+a comprendere. Nei giorni del funerale e nelle
+settimane successive si sentiva perso. Non
+usciva quasi più, parlava poco, quasi niente.
+C’erano persone, parole, gesti di vicinanza.
+Ma il dolore restava lì, opaco, irriducibile. At-
+traversava le giornate come se il tempo avesse
+smesso di scorrere. Fu allora che gli rimasi
+accanto. Non come chi sa che cosa fare, ma
+come chi sceglie di non andarsene. Eravamo
+amici da tempo, eppure fino a quel momento
+non ci eravamo mai incontrati davvero in
+quella forma più nuda che la sofferenza co-
+stringe ad assumere. Gli scrivevo ogni giorno,
+anche solo per chiedergli se avesse mangiato.
+Passavo da lui la sera. Restavamo sul divano
+in silenzio, per ore, senza il bisogno di riem-
+pire tutto con parole che sarebbero state in-
+sufficienti. In quel tempo ho capito, forse per
+la prima volta, che la vicinanza autentica non
+consiste nel risolvere il dolore dell’altro, ma
+nel saperlo abitare senza fuggire. Con il tra-
+scorrere dei mesi qualcosa cominciò a cam-
+biare. Non in modo netto, non come una
+guarigione, ma come un lento riaffacciarsi
+alla vita. Tornò a sorridere. Ricominciò a
+uscire. A volte parlava del fratello senza spro-
+fondare subito nel vuoto, come se il ricordo,
+28
+pur continuando a far male, stesse trovando
+una forma diversa. Io intanto continuavo a
+stargli accanto, ma il legame stava mutando.
+Non più soltanto amicizia. Non ancora amore
+dichiarato. Piuttosto un avvicinarsi silen-
+zioso, nato dentro la fragilità, dentro la cura,
+dentro una prossimità che si era fatta via via
+più profonda. Una sera d’inverno cammina-
+vamo per il centro, tra le luci e il freddo. Io
+tenevo le mani nelle tasche del cappotto. Lui
+si fermò, mi guardò e senza dire quasi nulla
+mi prese la mano. Quel gesto semplicissimo
+cambiò tutto. Non perché segnasse l’inizio di
+una favola, ma perché dava forma a qualcosa
+che nel frattempo era cresciuto lentamente,
+senza clamore, nel luogo più difficile: quello
+del dolore condiviso. Da quel giorno ini-
+ziammo davvero a stare insieme. Per un po’
+sembrò bastare. Uscivamo, andavamo al ci-
+nema, ridevamo, ci concedevamo la legge-
+rezza delle giornate semplici. Io ero felice di
+vederlo sorridere di nuovo come un tempo e,
+senza accorgermene, legavo la mia felicità
+proprio a quel suo tornare alla vita. Pensavo
+che l’amore potesse ricomporre ciò che il do-
+lore aveva spezzato. Pensavo che la vicinanza,
+la dolcezza, la pazienza, alla lunga, sarebbero
+state sufficienti. Ma solo l’amore non basta
+29
+per curare certe ferite. Dentro di lui qualcosa
+restava inconcluso. Il dolore non era scom-
+parso: si era ritirato in profondità, in una
+zona meno visibile ma ancora attiva, pronta a
+riaffiorare nei silenzi, nelle assenze improv-
+vise, nei pensieri che tornavano a chiuderlo.
+A poco a poco cominciai a sentire che nel no-
+stro rapporto abitavano due tempi diversi: il
+mio, che cercava continuità e futuro; e il suo,
+che talvolta sembrava ancora fermo davanti
+a una perdita non del tutto attraversata. Non
+era cattiveria, né mancanza di sentimento.
+Era la prova, più dolorosa, proprio perché
+non colpevole, che l’amore non sempre incon-
+tra nell’altro uno spazio capace di accoglierlo
+fino in fondo. Ieri sera eravamo seduti su una
+panchina, nel parco dove andavamo spesso.
+Era stranamente silenzioso. Ma non era il si-
+lenzio quieto delle sere in cui non c’era biso-
+gno di parlare. Era un silenzio denso, quasi
+già pieno di un distacco in arrivo. Guardan-
+dolo, ho avuto la sensazione netta che i suoi
+pensieri fossero tornati a imprigionarlo. A un
+certo punto mi ha preso la mano. Io l’ho
+stretta appena. Poi l’ho lasciata andare. In
+quel gesto non c’era rabbia. C’era una luci-
+dità dolorosa. Ci siamo alzati e abbiamo
+preso strade diverse. Poi ho continuato a
+30
+camminare lungo il vialetto del parco senza
+voltarmi. Sentivo ancora il calore della sua
+mano nella mia, anche se ormai non c’era più.
+Il rumore dei miei passi sulla ghiaia era
+l’unica cosa che rompeva il silenzio. Arrivata
+all’uscita mi sono fermata un attimo. Per un
+istante ho avuto voglia di tornare indietro, di
+sedermi di nuovo su quella panchina e restare
+lì ancora un po’, come abbiamo fatto tante
+volte. Ma sapevo che non sarebbe servito. Ha
+bisogno di tempo, di spazio, di ricomporre i
+pezzi della sua vita senza appoggiarsi a qual-
+cuno che provi a tenerli insieme per lui. Ho
+fatto un respiro profondo e ho ripreso a cam-
+minare verso casa. Mentre attraversavo la
+strada ho pensato che alcune persone entrano
+nella nostra vita non per restarci per sempre,
+ma per accompagnarci per un tratto e per in-
+segnarci qualcosa. E forse voler bene signi-
+fica anche questo: sapere quando è il
+momento di lasciare andare.
+Lasciare andare, quando si è profondamente
+coinvolti in una relazione, è uno dei gesti più
+difficili da accettare e da compiere. Lo si in-
+terpreta spesso come una sconfitta, come se
+significasse non essere stati abbastanza, non
+aver insistito abbastanza, non aver amato ab-
+31
+bastanza. E invece, talvolta, lasciare andare è
+un atto di verità. Significa smettere di tratte-
+nere ciò che non può più essere trattenuto,
+senza violenza. Significa riconoscere i propri
+bisogni più autentici, proteggere il proprio
+equilibrio emotivo, avere il coraggio di non
+restare in situazioni che non permettono più
+di stare bene. Non è una rinuncia all’amore.
+È, piuttosto, la decisione di non sacrificare la
+serenità sull’altare di una promessa che, da
+sola, non basta più. Da un punto di vista pe-
+dagogico, la fine di una relazione non è sol-
+tanto un evento privato. È una soglia. Invita
+la persona a rimettere in discussione il proprio
+modo di percepirsi dentro i legami, i desideri
+che vi si erano intrecciati, l’immagine di sé
+costruita accanto all’altro. Quando un rap-
+porto termina, infatti, non si perde soltanto
+qualcuno: si incrina anche una forma di
+mondo. Si spezza una continuità immaginata,
+si disorganizzano abitudini, attese, progetti,
+gesti dati per acquisiti. Perfino il futuro cam-
+bia configurazione.
+Ripenso a tutte le cose che avrei voluto fare
+con lui: quell’aereo che non prenderemo mai,
+quel concerto di Vasco per cui avevo pensato
+di comprare i biglietti e al quale, probabil-
+32
+mente, dovrò andare da sola. Vedo i nostri
+progetti e i nostri sogni materializzarsi e poi
+scivolare via come sabbia tra le mani. Ed è
+proprio qui che si comprende quanto lasciare
+andare non significhi semplicemente sepa-
+rarsi da una persona, ma separarsi anche
+dalla forma che quella relazione aveva preso
+dentro di noi: le parole dette, i gesti condivisi,
+le versioni di sé che nel legame si erano co-
+struite.
+Per questo il congedo implica spesso l’attra-
+versamento di un lutto simbolico. Anche se
+non si tratta di una perdita nel senso stretto del
+termine, la fine di una relazione può generare
+emozioni simili a quelle che accompagnano il
+lutto: tristezza, nostalgia, rabbia, senso di
+vuoto, disorientamento. Bowlby ha mostrato
+come la perdita di una figura di attaccamento
+produca reazioni emotive profonde, proprio
+perché il legame affettivo costituisce un ele-
+mento centrale dell’equilibrio psicologico
+(Bowlby, 1980). Tali vissuti non devono es-
+sere negati o neutralizzati troppo in fretta.
+Hanno bisogno di un tempo di elaborazione,
+di uno spazio interiore in cui poter essere ac-
+colti, pensati, integrati. Come ricorda Luigina
+Mortari l’esperienza diventa sapere solo
+33
+quando viene sostata e riflessa (Mortari,
+2003). E proprio qui sta il valore pedagogico
+del lasciare andare: non nel cancellare ciò che
+è stato, ma nel trasformarlo in apprendimento.
+La pedagogia della trasformazione non mira a
+evitare il dolore della perdita; mira a restituir-
+gli significato. Ciò che termina può diventare
+occasione di crescita, di comprensione, di
+apertura verso nuove possibilità relazionali.
+Non tutto ciò che finisce è stato inutile. E non
+tutto ciò che dura è stato autentico. In una cul-
+tura che misura tutto in termini di permanenza
+e di prestazione, ciò che finisce rischia di es-
+sere percepito come fallimento. Ma questa è
+una delle illusioni più diffuse. Una relazione
+non è significativa perché dura. È significativa
+perché trasforma. Ogni incontro, anche
+quando si conclude, lascia un segno nella no-
+stra storia e contribuisce a plasmare la nostra
+identità. Il valore non è soltanto nella perma-
+nenza. È nella traccia. Le prime esperienze di
+distacco avvengono già nell’infanzia, quando
+il bambino si separa gradualmente dalle figure
+di riferimento, dagli oggetti, dalle immagini
+di sé che lo avevano sostenuto. Crescere signi-
+fica imparare progressivamente a lasciare an-
+dare: abitudini, dipendenze, legami. Gli
+oggetti transizionali1 aprono uno spazio dia-
+34
+logico in cui il bambino incontra l’Altro (Han,
+2022). La separazione è dolorosa, ma proprio
+se vissuta e attraversata può aprire nuove con-
+sapevolezze. Già qui si comprende che il la-
+sciare andare non è un gesto secondario: è una
+competenza formativa fondamentale. Nella
+società contemporanea, però, sembra emer-
+gere una crescente difficoltà a elaborare il
+congedo. La logica consumistica tende a so-
+stituire ciò che non soddisfa più, evitando il
+lavoro simbolico della perdita. Tuttavia, men-
+tre gli oggetti possono essere sostituiti rapida-
+mente, i legami no. Le relazioni non sono
+merci intercambiabili. Ogni relazione auten-
+tica lascia una traccia identitaria, e per questo
+non può essere ridotta alla logica dello scarto.
+Se la società liquida-consumistica è caratte-
+rizzata dalla semplice sostituibilità rapida di
+partner, oggetti, esperienze e perfino identità,
+allora il rischio è che non si elabori mai dav-
+vero la perdita. La perdita viene evitata, non
+trasformata. Molti credono che la solitudine
+nasca dallo stare da soli, quando spesso la
+forma più profonda di solitudine è sentirsi cir-
+condati dalle persone sbagliate. Per paura del
+vuoto si resta aggrappati, si trattiene l’Altro,
+si accetta ciò che non nutre pur di non restare
+soli. Si rimane dove ci si spegne lentamente,
+35
+solo per non affrontare il silenzio di una
+stanza vuota. Eppure quel silenzio, spesso, fa
+meno male di certe parole mancate, di certe
+indifferenze quotidiane, di legami che consu-
+mano invece di nutrire. E allora scegliere la
+propria solitudine diventa un atto di coraggio:
+perché ci sono assenze che feriscono meno di
+presenze che svuotano. Come osserva Byung-
+Chul Han ne L’espulsione dell’Altro, la nostra
+epoca tende a eliminare la differenza, a re-
+spingere ciò che è davvero altro da noi, sosti-
+tuendo l’incontro autentico con relazioni
+funzionali e rassicuranti (Han, 2017). Così re-
+stiamo circondati da presenze, ma sempre più
+lontani dalla vera relazione. Oggi si confonde
+troppo spesso la vicinanza con la disponibilità
+immediata e la relazione con la semplice pre-
+senza. Essere raggiungibili non significa es-
+sere davvero presenti, così come condividere
+spazi, messaggi o abitudini non equivale a in-
+contrarsi davvero. A volte si resta insieme per
+paura, per abitudine, per il bisogno di confer-
+mare a sé stessi di non essere soli, ma in que-
+sto modo si finisce per usare l’altro come
+riparo invece che riconoscerlo come persona.
+E forse la vera sfida è proprio questa: non evi-
+tare la solitudine, ma imparare ad attraversarla
+senza riempirla o sostituirla in fretta con le-
+36
+gami qualsiasi. Solo chi sa stare con sé stesso
+può scegliere l’Altro liberamente, senza ca-
+tene, senza dipendenza, senza pretendere che
+ogni vuoto venga colmato. E solo allora la re-
+lazione smette di essere un rifugio e diventa
+incontro autentico. Educare al lasciare andare
+significa allora restituire valore all’esperienza
+autentica del legame e anche alla possibilità
+di elaborarne la fine. Significa riconoscere
+che, così come il bambino a un certo punto si
+separa dal suo pupazzo preferito senza cancel-
+lare il valore di ciò che ha vissuto, anche
+nell’arco della vita incontriamo persone e re-
+cidiamo legami che non perdono di significato
+solo perché non più presenti nel quotidiano.
+Amare e crescere significa avere la capacità
+di riconoscere quando fermarsi, voltarsi dal-
+l’altra parte e non tornare più. Non per egoi-
+smo, ma talvolta per amore verso l’altro: per
+restituirgli uno spazio di crescita, per consen-
+tirgli di vivere il proprio cammino senza trat-
+tenerlo in una relazione che non può più
+essere il luogo della sua trasformazione. Ci
+sono cambiamenti che non si decidono. Acca-
+dono. Non sono gesti eclatanti, ma piccoli
+spostamenti interiori. Il tempo, in questo
+senso, non cancella. Rielabora. Trasforma
+l’intensità in memoria, la presenza in traccia,
+37
+l’attesa in distanza. Per questo la fine di una
+relazione richiede un attraversamento. Non si
+tratta di cancellare ciò che è stato, ma di rico-
+noscerne il significato e di integrarlo nella
+propria esperienza.
+A volte mi torna ancora in mente. Ma non mi
+blocca più.
+Il ricordo non è il problema. Il problema è
+quando il ricordo impedisce il movimento,
+quando trattiene, immobilizza, occupa tutto lo
+spazio. Lasciare andare non significa elimi-
+nare il passato, ma permettere a quel passato
+di non colonizzare interamente il presente. In
+questo senso il congedo non è soltanto perdita.
+È anche libertà ritrovata, possibilità di ripren-
+dere il proprio cammino senza negare ciò che
+si è vissuto. Molto spesso ci si separa senza
+rumore, su una panchina qualunque, in una
+sera come tante. Si scelgono strade diverse, si
+cambiano percorsi, si prendono nuove vie. A
+volte non c’è rabbia, non c’è colpa: solo il ri-
+conoscimento silenzioso che alcune relazioni
+arrivano nella nostra vita quando ancora
+stiamo cercando di comprendere parti di noi
+stessi. E forse il senso più alto del lasciare an-
+dare sta proprio qui: non nel rinunciare a ciò
+38
+che si è amato, ma nel riconoscere che la
+forma più matura dell’amore non coincide
+sempre con il trattenere. Spesso significa
+saper lasciare andare, affinché ciò che è stato
+possa restare come traccia, non come una pri-
+gione dalla quale non sembra esserci via di
+uscita. Bisogna imparare a riconoscere che ci
+sono incontri che non nascono per durare, ma
+per accompagnare per un tratto di strada. In-
+fatti, l’essere accanto a qualcuno in modo si-
+lenzioso e discreto, apre uno spazio in cui il
+dolore può essere, per un tempo, condiviso e
+abitato. Alcune relazioni non restano nella no-
+stra vita, ma restano dentro di noi. E proprio
+per questo continuano, silenziosamente, a
+educarci.
+Chiara Chiaravalloti
+Federica Salineto
+39
+Bibliografia
+Bowlby, J. (1980). Loss: Sadness and Depres-
+sion. New York: Basic Books Classic.
+Han, B.-C. (2017). L’espulsione dell’altro. Mi-
+lano: Nottetempo.
+Han, B.-C. (2022). Le non cose. Come abbiamo
+smesso di vivere il reale. Torino: Einaudi.
+Mortari, L. (2003). Apprendere dall’esperienza.
+Il pensare riflessivo nella formazione. Roma:
+Carocci Editore.
+Note
+1 Secondo il pediatra e psicoanalista inglese Donald W.
+Winnicott, che coniò l’espressione nel 1951, l’oggetto tran-
+sizionale è un oggetto materiale capace di soddisfare, nel
+lattante, la rappresentazione di un qualcosa relativo al pos-
+sesso e all’unione con la madre. […] (Gli oggetti transizio-
+nali) permettono al lattante di sopportare il proprio stato di
+separatezza, facilitando l’angoscioso e inevitabile passaggio
+dal me al non-me, dal mondo interno al mondo esterno at-
+traverso l’invenzione di una zona intermedia, di margine,
+tra il dentro e il fuori, tra me e l’altro. (Enciclopedia Trec-
+cani).
+40
+II Parte
+Durare.
+La cura come forma di resistenza.
+Per molto tempo ho pensato che la durata
+fosse una parola semplice. Una di quelle pa-
+role che sembrano trasparenti finché non ci si
+accorge che dentro di esse si nasconde una vi-
+sione intera dell’esistenza. Dicevo “durare”
+come si dicono le parole abituali, senza sof-
+fermarmi davvero sul loro peso. Solo più tardi
+ho capito che la durata non coincide affatto
+con il semplice passare del tempo. Non è il ca-
+lendario a stabilirla. Non basta che qualcosa
+continui per poter dire che davvero dura. La
+durata riguarda piuttosto ciò che resiste
+quando l’entusiasmo iniziale si attenua,
+quando la novità smette di bastare, quando un
+legame non vive più soltanto di slancio ma co-
+mincia a chiedere presenza, pazienza, fedeltà
+al quotidiano, capacità di attraversare anche
+ciò che non corrisponde più all’immagine
+41
+ideale da cui tutto era partito. Forse ho ini-
+ziato a interrogarmi su questa parola proprio
+osservando il modo in cui oggi i rapporti na-
+scono e finiscono. C’è una rapidità che inve-
+ste tutto: incontri, attese, dichiarazioni,
+distacchi. Nulla sembra più avere il diritto di
+maturare lentamente. Le relazioni si accen-
+dono in fretta, con la stessa velocità con cui
+si accendono le conversazioni, i messaggi, le
+immagini, le promesse. Ma con la stessa faci-
+lità possono anche spegnersi. A volte non c’è
+neppure una vera frattura. Semplicemente ci
+si allontana, ci si sottrae, si diventa meno pre-
+senti, meno necessari. Il legame perde inten-
+sità e, quasi senza essere nominato, scivola
+via. Non è soltanto una questione di superfi-
+cialità individuale. Sarebbe troppo semplice
+leggere tutto in termini morali, come se ba-
+stasse accusare i soggetti di essere più deboli
+o meno capaci di amare. Il punto è più pro-
+fondo. Viviamo dentro un tempo che esalta il
+nuovo, il reversibile, il possibile. Tutto sembra
+potersi modificare, sostituire, ricalibrare. E
+dentro questo orizzonte anche i legami ven-
+gono spesso pensati come esperienze a bassa
+permanenza: coinvolgenti, sì, ma sempre con
+una via d’uscita pronta sullo sfondo. Intensità
+senza obbligo di continuità. Vicinanza senza
+42
+peso. Contatto senza vera esposizione. A un
+certo punto ho avuto la sensazione che restare
+fosse diventato quasi sospetto. Come se la du-
+rata fosse un segno di ingenuità, o peggio una
+prova di scarsa libertà. Come se ciò che dura
+fosse meno desiderabile di ciò che cambia. Il
+nuovo sembrava sempre più attraente del co-
+struito, il possibile più seducente del reale,
+l’apertura infinita delle opzioni più eccitante
+della pazienza richiesta da un legame che si
+approfondisce. Eppure, qualcosa, in questa
+logica, non tornava. Perché le esperienze più
+profonde della vita non nascono quasi mai
+dall’immediatezza. Hanno bisogno di sedi-
+mentazione, di ritorno, di attraversamento.
+Hanno bisogno di tempo.
+Da qui nasce la domanda che attraversa questo
+capitolo: che cosa significa oggi durare? Si-
+curamente non significa restare a ogni costo.
+Non significa trasformare la sopportazione in
+virtù, né sacralizzare qualunque permanenza
+solo perché si prolunga nel tempo. Non signi-
+fica difendere un legame quando quel legame
+ha smesso di nutrire, quando umilia, svuota, o
+rende impossibile la crescita.
+Esistono rapporti in cui interrompere non è un
+tradimento della durata, ma una fedeltà più
+43
+profonda alla verità di sé. E tuttavia, proprio
+dopo aver riconosciuto questo, la domanda
+resta aperta: abbiamo ancora la capacità di
+pensare il legame come qualcosa che possa
+durare senza per questo apparire opprimente,
+antiquato, ingenuo? Restare, oggi, appare
+quasi un gesto controcorrente. Non perché il
+passato fosse necessariamente migliore, né
+perché le relazioni di un tempo fossero più au-
+tentiche per definizione. Ma perché la nostra
+presente fatica a tollerare tutto ciò che ri-
+chiede lentezza, elaborazione, manutenzione
+affettiva. La durata è esigente. Chiede di non
+ridurre l’altro a ciò che ci fa stare bene nel-
+l’immediato. Chiede di sostenere momenti di
+opacità, di noia, di scarto tra attese e realtà.
+Chiede di attraversare la frustrazione senza
+tradurla subito in desiderio di fuga. Chiede,
+soprattutto, di distinguere tra ciò che è sem-
+plicemente difficile e ciò che invece è davvero
+distruttivo. In questo senso la durata si lega
+strettamente alla cura. Non c’è permanenza
+autentica senza una forma di cura, e non c’è
+cura senza tempo.
+Luigina Mortari lo ha mostrato con grande
+chiarezza: la cura non è una semplice attitu-
+dine sentimentale, né un’aggiunta morale op-
+zionale all’esistenza. È una struttura originaria
+44
+del vivere umano. Prendersi cura significa
+prestare attenzione, sostare presso l’altro, cu-
+stodire, accompagnare, sostenere. Significa
+assumere la fragilità come dato costitutivo
+della condizione umana, e non come incidente
+da correggere. Tutto questo richiede tempo.
+Un tempo che non può essere misurato solo
+sulla base della resa, dell’efficienza, della gra-
+tificazione immediata. La cura, però, non
+coincide con una dolcezza indistinta. Non è
+soltanto tenerezza. È anche disciplina dello
+sguardo, responsabilità, perseveranza. Signi-
+fica restare presenti quando la relazione
+smette di brillare e comincia a chiedere
+ascolto, aggiustamento reciproco, capacità di
+nominare ciò che non funziona senza dissol-
+vere subito tutto. Significa non abbandonare
+il campo appena l’altra cessa di coincidere con
+l’immagine ideale con cui lo avevamo inve-
+stito. In questo senso la cura si rivela una
+forma di resistenza culturale. Resiste alla ve-
+locità, alla sostituzione, alla continua sedu-
+zione dell’altrove (Mortari, 2006).
+Dentro una cultura che esalta l’accessibilità
+permanente e la disponibilità continua al cam-
+biamento, il tempo lungo della cura appare
+quasi improduttivo (Heidegger, 2005). Ep-
+pure, è proprio questo tempo, sottratto alla lo-
+45
+gica dell’efficienza, a rendere possibile la pro-
+fondità dei legami (Han, 2012). Senza durata
+non c’è vera conoscenza dell’altro. C’è al
+massimo attrazione, proiezione, desiderio,
+compatibilità iniziale. Tutto importante, certo.
+Ma non ancora sufficiente. L’altro diventa
+reale solo quando smette di essere la
+figura perfetta che avevamo immaginato e co-
+mincia a mostrarci il suo limite, la sua opacità,
+le sue fratture, le sue discontinuità. È lì che il
+legame entra davvero nella sua verità. Zyg-
+munt Bauman ha colto con precisione questo
+paradosso, mostrando come i soggetti contem-
+poranei siano insieme affamati di legame e
+spaventati dal suo potere di trattenere. Cer-
+chiamo vicinanza, ma senza sentirci vincolati.
+Desideriamo intimità, ma senza il peso della
+dipendenza reciproca. Vogliamo essere scelti,
+ma senza rinunciare alla sensazione che po-
+tremmo sempre scegliere altro. Questa ambi-
+valenza produce rapporti fragili non perché
+manchi il desiderio d’amore, ma perché il de-
+siderio stesso è continuamente attraversato dal
+timore di perdere libertà.
+Dal punto di vista pedagogico, il problema è
+decisivo. Se il legame viene pensato fin dal-
+l’inizio come esperienza revocabile, facil-
+mente sostituibile, difficilmente potrà
+46
+diventare uno spazio realmente formativo.
+Non perché la formazione richieda relazioni
+eterne, ma perché richiede relazioni capaci di
+incidere. E per incidere davvero, per trasfor-
+mare, per obbligarci a uscire da noi stessi, un
+rapporto ha bisogno di tempo. Ha bisogno di
+non essere interrotto al primo segnale di fa-
+tica. Ha bisogno di essere attraversato abba-
+stanza a lungo da far emergere non solo ciò
+che conferma, ma anche ciò che mette alla
+prova.
+Questo significa anche riconoscere che una re-
+lazione formativa non è quella che evita ogni
+crisi. Al contrario, spesso è proprio nella crisi
+che il legame si rivela. Non quando tutto è
+perfetto, ma quando l’imperfezione non di-
+strugge immediatamente la possibilità di re-
+stare. Non quando la differenza viene
+cancellata, ma quando può essere sostenuta.
+Non quando la delusione non arriva mai, ma
+quando la delusione non viene subito interpre-
+tata come prova definitiva dell’impossibilità
+del rapporto. Naturalmente, sarebbe ingenuo
+fare della durata un valore assoluto.
+Esistono forme di permanenza che non sono
+affatto educative. Esistono rapporti che diven-
+tano gabbie, dipendenze, luoghi di umilia-
+zione. In quei casi, il tempo non costruisce:
+47
+consuma. Restare non significa allora curare,
+ma smarrirsi. Per questo occorre distinguere
+con fermezza tra il valore della durata e il
+mito della sopportazione.
+Durare non significa sopportare tutto. Signi-
+fica riconoscere che alcune esperienze meri-
+tano di essere attraversate abbastanza a lungo
+da rivelare il loro senso, senza essere recise al
+primo attrito (Bauman, 2013). La vera do-
+manda, allora, non è semplicemente: quanto
+dura un legame? La domanda decisiva è un’al-
+tra: che cosa accade dentro quella durata? C’è
+crescita? C’è libertà? C’è riconoscimento re-
+ciproco? C’è uno spazio in cui il limite, il con-
+flitto, la frustrazione, la riparazione possano
+essere abitati senza annientare il legame? Op-
+pure il tempo diventa solo inerzia, paura, di-
+pendenza, svuotamento? Solo dentro questa
+distinzione la durata smette di essere un fetic-
+cio e torna a essere una categoria viva, capace
+di orientare.
+In questo quadro assume rilievo anche il tema
+della promessa. Non la promessa ingenua, as-
+soluta, grandiosa, pronunciata come se il fu-
+turo fosse già nelle nostre mani. Ma la
+promessa come forma minima di affidamento
+reciproco. Promettere, in fondo, non significa
+garantire l’impossibile. Significa assumere un
+48
+orientamento, dichiarare una volontà di es-
+serci, accettare che il legame non sia solo
+emozione del presente ma anche responsabi-
+lità verso ciò che potrebbe diventare. In un
+tempo che diffida di ogni vincolo, la promessa
+può apparire fuori luogo. Eppure, senza una
+qualche forma di promessa, anche implicita,
+nessuna relazione può davvero prendere spes-
+sore. Tutto resta sospeso nel regime dell’even-
+tualità.
+Lévinas ha mostrato come il rapporto con l’al-
+tro non si esaurisca mai nella pura conoscenza
+o nel semplice desiderio: l’altro mi chiama, mi
+espone, mi responsabilizza. In questo senso la
+durata non è solo una questione psicologica o
+sentimentale. È anche una questione etica. Re-
+stare presso l’altro, quando il legame conserva
+verità e dignità, significa riconoscere che l’in-
+contro non è un’esperienza neutra ma una
+chiamata. Significa accettare che l’altro non
+sia solo ciò che mi piace o mi rassicura, ma
+ciò che, nella sua alterità, mi chiede di uscire
+da me stesso (Lévinas, 2023). Anche Paul Ri-
+coeur, parlando dell’identità narrativa, ci aiuta
+a comprendere che la durata ha a che fare con
+il modo in cui costruiamo il filo della nostra
+esistenza. Non siamo fatti soltanto di istanti
+intensi. Siamo fatti di continuità, di promesse,
+49
+di fedeltà, di ritorni, di permanenze che ci
+consentono di riconoscerci nel tempo. Un sog-
+getto che non riesce più a legare i propri vis-
+suti in una storia, che vive soltanto per
+frammenti e sostituzioni, rischia di perdere
+non solo la profondità dei legami ma anche
+una parte della propria consistenza interiore
+(Ricoeur, 2025). In un mondo che moltiplica
+possibilità e occasioni, la durata non è più un
+dato spontaneo. Va quasi scelta. Va voluta. Va
+difesa contro la tentazione continua della di-
+spersione. Per questo restare acquista oggi un
+significato etico e pedagogico profondo. Si-
+gnifica dire che non tutto ciò che vale deve es-
+sere immediatamente facile. Significa
+riconoscere che la presenza non è solo inten-
+sità, ma anche continuità. Significa dare al-
+l’altro il tempo di diventare reale, e a sé stessi
+il tempo di essere trasformati dall’incontro.
+Forse, allora, il problema non è se oggi sap-
+piamo ancora amare. È se sappiamo ancora
+custodire ciò che amiamo abbastanza a lungo
+da permettergli di cambiarci. Se sappiamo an-
+cora distinguere tra la libertà di interrompere
+e la difficoltà, ben più esigente, di restare
+senza annullarci. Se sappiamo ancora imma-
+ginare il legame non come una parentesi pia-
+cevole nel flusso delle possibilità, ma come
+50
+un luogo in cui l’esistenza, proprio attraverso
+il tempo condiviso, acquista forma.
+Parlare di durata, oggi, significa difendere la
+possibilità che i rapporti non siano soltanto
+passaggi. Significa restituire valore alla pa-
+zienza, alla cura, alla fedeltà al quotidiano,
+alla capacità di stare. Significa opporsi al-
+l’idea che il nuovo sia sempre migliore del co-
+struito, che il possibile valga più del vissuto,
+che la revocabilità sia sempre una forma su-
+periore di libertà. In realtà, forse, una delle
+forme più alte di libertà consiste proprio nello
+scegliere ciò che merita di durare e nel dargli
+il tempo necessario per diventare esperienza.
+La durata non è immobilità. Non è fissità. Non
+è ripetizione senza vita. Al contrario, è un mo-
+vimento lento, spesso impercettibile, in cui
+due persone imparano a riconoscersi oltre la
+prima immagine, oltre l’entusiasmo iniziale,
+oltre la seduzione del cominciare. Durare si-
+gnifica continuare a generare senso dentro il
+tempo. Significa permettere a un legame di
+non ridursi né a pura intensità né a pura abi-
+tudine. Significa custodire una possibilità di
+verità. E forse è proprio questo che oggi ap-
+pare più difficile e più necessario: non sem-
+plicemente trovare qualcuno, ma costruire un
+tempo. Non vivere una successione di mo-
+51
+menti riusciti, ma abitare una continuità
+(Rosa, 2021). Non cercare soltanto rapporti
+che facciano sentire vivi nell’immediato, ma
+legami capaci di lasciare una traccia duratura
+nel modo in cui pensiamo, sentiamo, diven-
+tiamo (Bauman, 2011). In questo senso la du-
+rata è davvero una forma di resistenza.
+Resistenza alla logica del consumo, alla sosti-
+tuzione veloce, alla paura dell’impegno, all’il-
+lusione che la libertà coincida con il non
+appartenere mai a nulla. Durare non significa
+rinunciare a sé. Significa, piuttosto, scommet-
+tere sul fatto che alcune esperienze meritino
+di essere abitate abbastanza a lungo da trasfor-
+marci (Dewey, 2014). E che proprio in questa
+trasformazione, lenta e non spettacolare, si na-
+sconda una delle possibilità più alte della vita
+affettiva.
+Gaia Tocci
+52
+Bibliografia
+Bauman Z. (2011). Modernità liquida. Laterza:
+Roma-Bari.
+Bauman Z. (2013). Amore liquido. Sulla fragi-
+lità dei legami affettivi. Laterza: Roma-Bari.
+Dewey J. (2014). Esperienza e educazione. Raf-
+faello Cortina Editore: Milano.
+Han B.-C. (2012) La società della stanchezza.
+Milano: Nottetempo.
+Heidegger M. (2005). Essere e tempo. Longa-
+nesi: Milano.
+Lévinas E. (2023). Totalità e infinito. Saggio sul-
+l’esteriorità. Jaca Book: Milano
+Mortari L. (2006). La pratica dell’aver cura.
+Mondadori: Milano.
+Ricoeur P. (2025). Il sé come un altro. Jaca
+Book: Milano.
+Rosa H. (2021). Accelerazione e alienazione.
+Per una teoria critica del tempo nella tarda mo-
+dernità. Einaudi: Torino.
+53
+III Parte
+FOMO, iper-connessione e ansia da perdita.
+Inizia come una curiosità innocente.
+Un sussurro che ti invita a guardare, a scri-
+vere, a mostrarti agli altri, a essere visibile e
+presente. Ho imparato che una volta ascoltati
+– questi sussurri – rischiano di lasciarti ad-
+dosso il loro marchio per sempre, come trap-
+pole pronte a scattare; vortici pronti a
+risucchiare. E con queste convinzioni nella
+mente, ad un certo punto, mi sentii tanto fidu-
+ciosa da tentare, anche solo per un secondo,
+di assaporarli.
+La stessa umana e ingenua curiosità che di-
+venne quiete e rassicurazione quando il primo
+scroll in una timeline mi fece sentire solo più
+come un abisso, o quando il primo “mi piace”
+che ricevetti non mi regalò la soddisfazione
+che pensavo. Non vi era alcun rischio, riflet-
+tei, che tutto questo potesse essere una parte
+essenziale della mia vita.
+55
+E con questa spensieratezza nel cuore, nel
+tempo, imparai che non avevo imparato
+niente.
+Ciò che prima era una piacevole distrazione,
+divenne un’abitudine, e non mi accorsi che a
+quel punto era già troppo tardi, poiché l’abi-
+tudine siede a un passo sottile dal bisogno,
+dall’esigenza. Ma la realizzazione è difficile,
+mentre tutto sembra sotto controllo, e tutto
+viene così naturale.
+Mi sentivo connessa, viva, partecipe.
+Eppure, più mi abituavo e conoscevo questo
+mondo, più le notifiche, i messaggi, le storie
+mi diventavano indispensabili. Non erano vor-
+tici, come pensavo all’inizio. Erano ombre, a
+poco a poco sempre più grandi, che riempi-
+vano le stanze della mia mente. Non fu la
+paura di rimanere fuori a spingermi a rima-
+nere dentro. Non fu la paura di perdere qual-
+cosa di visibile, ma la convinzione – profonda,
+agli inizi – che avrei potuto farlo in qualsiasi
+occasione, senza esserne consumata.
+I social furono la bestia peggiore; la loro lin-
+gua suadente sussurrò alle mie orecchie
+quando più ne avevo bisogno. Condivisa tra
+amici, funzionava come un collante che incor-
+niciava momenti di leggerezza e connes-
+sione… e quel senso di sollievo, ah! Scoprii
+56
+che mi piaceva fin troppo. In un mondo dove
+ciò che mostri diventa semplicemente ciò che
+sei, coinvolgendoti completamente, quando il
+peso che ogni giorno ti schiaccia sembra sol-
+levarsi dal tuo corpo, quando vivi solo ed
+esclusivamente per quei momenti di gioia;
+spensieratezza; connessione, trasformata
+nella versione migliore di te stessa, ti dimen-
+tichi che questa meravigliosa e coinvolgente
+versione è tutta costruita sulla tua immagine
+online.
+Guardavo gli altri, vedevo le loro perfor-
+mance, i loro momenti scintillanti e pensavo
+che sarebbe stato facile. Mi dicevo che ba-
+stava poco: una foto in più, un tweet in più,
+un video che mostrasse e, anzi, affermasse,
+che c’ero anche io! Che avevo qualcosa da of-
+frire, da dire. E quando tutto cominciò a sem-
+brare indispensabile, la tranquillità
+dell’assenza iniziò a farmi paura. Mi accorsi
+che non volevo mai più sentire quel silenzio
+che lasciava spazio alla vera me stessa, a una
+vita senza pubblico.
+La mia mente esigeva sempre di più: rispon-
+dere, postare, aggiornare, essere sempre là,
+sempre in attività. Quando riuscivo a “stac-
+care”, la sensazione di malessere era intolle-
+rabile. Il peso di un silenzio privo di stimoli,
+57
+il disagio di non essere più parte di quella
+continua danza di connessione. Mi sentivo
+fuori dal gioco… e quel richiamo mi prosciu-
+gava, mettendo in guerra la mia mente e il
+mio corpo, la mia ragione e il mio bisogno.
+Come una dipendenza fisica, sentivo che
+avevo bisogno di tornare, di essere parte di
+quella “festa” che mi dava sollievo, che mi
+dava la sensazione di essere viva.
+Mi piaceva da impazzire la persona che ero
+quando lo schermo filtrava la realtà. E
+quando qualcosa regala così tante piacevoli
+sensazioni, il pensiero che ti stia in realtà con-
+sumando non viene razionalizzato ed esami-
+nato come dovrebbe. Ma forse, infondo non mi
+importava. Forse a 17 anni mi sentivo invin-
+cibile.
+C’è una forma di inquietudine che non
+esplode mai completamente, che non si mani-
+festa con la chiarezza di un dolore acuto, ma
+che si insinua tra le pieghe di ogni giorno.
+Non ha sempre il volto riconoscibile della tri-
+stezza né quello della paura, ma si fa strada
+come una sensazione sfuggente, difficile da
+fermare, da definire con precisione. È come
+una strana sensazione di perdita che ci accom-
+pagna in ogni momento, come se, mentre vi-
+58
+viamo, stessimo inconsciamente perdendo
+qualcosa, come se il presente non fosse mai
+abbastanza, come se ci fosse sempre un altro
+momento da vivere, una possibilità migliore
+da inseguire, un’esperienza più intensa da non
+lasciarsi sfuggire. È la consapevolezza che,
+forse, non stiamo vivendo la vita che
+avremmo potuto vivere.
+In uno stato perenne di insoddisfazione, que-
+sta forma di inquieta attesa - la fear of missing
+out - si fa strada, non solo come la paura di
+perdere un evento o una notizia, ma come una
+sensazione più profonda, più perturbante:
+quella di non sentirsi mai davvero nel posto
+giusto, nel momento giusto, di non essere mai
+veramente “dove si dovrebbe essere”. Non è
+anomalo sentirsi, di tanto in tanto, inadeguati
+di fronte a vite diverse dalla propria, ma negli
+ultimi anni, con l’esplosione dei social net-
+work, questa sensazione si è acuita e radica-
+lizzata, soprattutto nei più giovani. Le vite
+degli altri sono diventate specchi dai quali non
+possiamo distogliere lo sguardo, riflessi che
+amplificano il nostro desiderio di appartenere,
+di essere parte di qualcosa. In questo flusso
+costante, la nostra identità si fonde con ciò che
+vediamo e ciò che desideriamo, e diventa sem-
+pre più difficile rimanere soddisfatti di ciò che
+59
+abbiamo. Con il passare del tempo, questa
+ansia di mancare qualcosa, questa paura di ri-
+manere esclusi, di essere tagliati fuori dall’es-
+senza stessa della vita, di vedersi scivolare via
+le esperienze come polvere fra le dita, ha
+preso una forma nuova. Un nome preciso:
+FOMO (Przybylski et al., 2013). Non si trat-
+tava più solo della paura di perdere una festa
+o una notizia, ma della crescente ansia di es-
+sere tagliati fuori da un’esperienza gratifi-
+cante alla quale, in qualche modo, sentiamo di
+non poter accedere. Un bisogno che ci spinge
+a restare sempre connessi, a seguire ogni ag-
+giornamento, a non perdere mai nulla, anche
+a costo di sacrificare il nostro benessere. Que-
+sta sensazione è una parte ormai integrante
+della nostra esperienza quotidiana, un riflesso
+della nostra innata necessità di sentirci visti,
+considerati, riconosciuti come membri di un
+gruppo. Eppure, in questo vortice, non fac-
+ciamo che avvertire un vuoto crescente, una
+sensazione di essere sempre in ritardo rispetto
+a ciò che accade, come se ogni momento fosse
+una corsa che non riusciamo mai a vincere.
+L’iper-connessione ha amplificato enorme-
+mente questa condizione. Ma dire che la con-
+nessione ci mette in rapporto con gli altri è
+ormai insufficiente. In realtà ha trasformato il
+60
+modo in cui percepiamo il tempo, il desiderio,
+la soglia tra presenza e assenza, la consistenza
+stessa dell’esperienza. Siamo sempre poten-
+zialmente raggiungibili. Sempre esposti. Sem-
+pre vicini a qualcosa che potrebbe interessarci
+di più, gratificarci di più, “renderci meno ai
+margini”. Questa apparente ricchezza di pos-
+sibilità, tuttavia, non produce automatica-
+mente maggiore intensità di vita.
+Spesso produce dispersione. Affatica. Lascia
+addosso una specie di fame che nessun conte-
+nuto riesce davvero a saziare.
+A volte basta scorrere pochi secondi di imma-
+gini per sentirsi improvvisamente mancanti.
+Gli altri sembrano vivere meglio: più amati,
+più desiderati, più felici, più inseriti, più belli,
+più al centro. Le loro giornate scorrono da-
+vanti ai nostri occhi in una sequenza di istanti
+selezionati, puliti, vincenti. Non vediamo ciò
+che non è mostrato: le pause, le paure, le at-
+tese, le umiliazioni, i giorni vuoti, le relazioni
+spente, i silenzi, le crisi. Vediamo soltanto
+frammenti esposti. Ma quei frammenti, pro-
+prio perché ripetuti e continui, finiscono per
+esercitare un potere reale sul nostro sguardo.
+Non ci confrontiamo più con persone, bensì
+con narrazioni accuratamente ritagliate. Ep-
+pure, è proprio quel confronto a incrinare il
+61
+rapporto con ciò che stiamo vivendo.
+Il problema, allora, non è soltanto psicologico.
+È culturale, simbolico, pedagogico. Quando il
+valore dell’esperienza viene continuamente
+misurato in rapporto a ciò che appare, ciò che
+non appare sembra perdere consistenza. Si fa
+strada l’idea che conti davvero solo ciò che è
+visibile, condivisibile, riconoscibile, rapida-
+mente leggibile dagli altri. Tutto il resto —
+l’attesa, il dubbio, la complessità, la noia, il
+tempo lungo della maturazione, la vulnerabi-
+lità non esibita — sembra collocarsi ai mar-
+gini, come se la vita fosse ridotta a una
+superficie da svelare in tempo reale, costante-
+mente in mostra. Ma è proprio lì, in quelle
+zone meno esposte, che si svolgono spesso le
+esperienze più profonde, quelle che non si ve-
+dono ma si sentono, quelle che non si raccon-
+tano ma che viviamo con la pienezza di ogni
+respiro, in ogni sguardo che incrocia il nostro,
+nei silenzi che ci attraversano senza dirsi. In
+quei momenti di opacità, che non necessitano
+di audience, che non implorano attenzione,
+cresce la vera essenza del nostro essere. È lì
+che si disegna la profondità dell’esistenza.
+Byung-Chul Han (Han, 2014) ha mostrato con
+lucidità come l’eccesso di visibilità e di espo-
+sizione non produca più verità, ma piuttosto
+62
+una riduzione della profondità. Tutto ciò che
+è opaco, lento, non immediatamente condivi-
+sibile, rischia di essere percepito come irrile-
+vante. Ma la vita affettiva, come ogni
+esperienza umanamente significativa, ha biso-
+gno proprio di ciò che eccede l’esposizione: di
+tempi non performativi, di silenzi, di parti di
+sé che non si offrono subito allo sguardo altrui.
+Una relazione non cresce davvero sotto il do-
+minio esclusivo della visibilità. Ha bisogno
+anche di interiorità, di riserbo, di quell’ombra
+senza la quale ogni legame si appiattisce in
+superficie.
+Ed è proprio in questa tensione tra visibilità e
+invisibilità che nasce la connessione con i no-
+stri simili, un legame che non si misura solo
+nel contesto immediato, ma che affonda le ra-
+dici in un fluire di incontri e di sguardi, di pa-
+role scambiate e di silenzi condivisi. La
+presenza stabile, quella che non chiede, che
+non reclama, che non si espone con ostenta-
+zione, è la vera tessitura dell’anima. Ogni
+scambio, ogni gesto che accoglie l’altro in un
+abbraccio non fisico ma emotivo (Schore,
+2008), diventa un punto luminoso in un dise-
+gno invisibile, che lentamente sostiene e nutre
+l’essenza di chi siamo. Quella connessione
+che non si vede ma si sente, che si manifesta
+63
+nei piccoli segnali, nei momenti di attenzione
+reciproca, genera un’armonia che non ha bi-
+sogno di essere raccontata per essere viva e
+reale. La verità, infatti, non abita nei riflessi
+immediati, ma nell’ascolto profondo di ciò
+che non si dice.
+Questa continuità dell’incontro, che si radica
+nell’autenticità di relazioni che non si consu-
+mano nell’istante, ma si nutrono della loro
+stessa lentezza, è ciò che stabilizza le tempe-
+ste interiori. La presenza di un altro, quando
+non è effimera, ma continua e costante, agisce
+come un raggio di sole che, lentamente e di-
+scretamente, accarezza la pelle, distendendo
+le ansie invisibili, e infonde nel nostro respiro
+la certezza che non siamo mai del tutto soli. È
+attraverso questa trama di legami che l’essere
+umano trova il suo diritto di fiducia, non solo
+in sé stesso, ma nell’altro, riconoscendo nella
+fragilità dell’altro la propria grandezza, e nella
+reciprocità la radice di ogni vera relazione.
+Ogni piccolo atto di condivisione, di genero-
+sità, è una preghiera silenziosa che consacra
+la nostra integrità.
+L’iper-connessione, invece, spinge verso una
+presenza continua che spesso non è presenza,
+ma semplice accessibilità. Siamo connessi, ma
+non per questo incontrati. Siamo raggiungi-
+64
+bili, ma non per questo ascoltati. Siamo visi-
+bili, ma non per questo riconosciuti. Questo
+slittamento ha conseguenze profonde. Ci abi-
+tua a pensare che la relazione coincida con il
+contatto e che il contatto continuo equivalga
+a vicinanza. Ma non è così. La connessione
+moltiplica i passaggi; non garantisce la pro-
+fondità. Anzi, in alcuni casi la rende più diffi-
+cile, perché sostituisce la fatica dell’incontro
+con la comodità della reperibilità permanente.
+È qui che la FOMO smette di essere un sem-
+plice acronimo e diventa una vera e propria
+postura esistenziale. Si fatica a stare dove si
+è. Si fatica a investire davvero in ciò che si
+vive. Si fatica a scegliere, perché ogni scelta
+sembra accompagnata dalla perdita insoppor-
+tabile di tutte le alternative. L’orizzonte resta
+sempre aperto e, proprio per questo, nulla si
+lascia abitare fino in fondo. Si esce da una
+conversazione per controllarne un’altra. Si in-
+terrompe un momento per documentarlo. Si è
+presenti e assenti nello stesso istante. La vita
+viene continuamente sfiorata, raramente trat-
+tenuta.
+Questa dinamica investe anche il rapporto con
+il desiderio. In un ambiente saturo di stimoli,
+il desiderio non ha il tempo di maturare: viene
+continuamente rilanciato, deviato, disperso.
+65
+Tutto appare disponibile e, proprio per questo,
+nulla sembra avere abbastanza peso da im-
+porsi davvero. La disponibilità illimitata ge-
+nera un paradosso: moltiplica le opzioni ma
+indebolisce l’investimento. Se tutto è sempre
+potenzialmente accessibile, allora ogni scelta
+appare prematura, ogni legame rischia di sem-
+brare una rinuncia troppo grande rispetto a ciò
+che potrebbe ancora arrivare. La libertà si tra-
+sforma così in esitazione permanente.
+Ciò che più caratterizza le relazioni moderne
+è allora la temporaneità, il rifiuto verso rela-
+zioni stabili, l’individualismo, il bisogno im-
+mediato di soddisfacimento, ma anche la
+costante paura di essere abbandonati (Bau-
+man, 2017).
+Da un punto di vista pedagogico, questa con-
+dizione è tutt’altro che secondaria. Ogni pro-
+cesso formativo richiede infatti una certa
+capacità di sostare. Richiede attenzione, con-
+tinuità, pazienza, disponibilità ad abitare
+l’esperienza senza essere subito attratti al-
+trove. Se il presente è costantemente indebo-
+lito dal timore di perdere altro, diventa
+difficile non solo apprendere, ma anche
+amare, ascoltare, restare. L’ansia da perdita fi-
+nisce così per svuotare proprio ciò che vor-
+rebbe proteggere: la possibilità di partecipare
+66
+pienamente alla vita.
+La questione riguarda anche il modo in cui co-
+struiamo il nostro rapporto con noi stessi.
+Quando lo sguardo è costantemente orientato
+verso l’esterno, verso ciò che fanno gli altri,
+verso ciò che gli altri mostrano, verso ciò che
+appare desiderabile, anche l’identità si strut-
+tura in forma reattiva. Non si parte più dalla
+domanda “che cosa desidero davvero?”, ma da
+un interrogativo meno libero e più ansioso:
+“che cosa mi sto perdendo?”, “che cosa dovrei
+stare vivendo?”, “come appaio rispetto agli
+altri?”. Il sé smette così di essere uno spazio
+di elaborazione e diventa sempre più uno
+schermo di confronto.
+In questo scenario, la vetrinizzazione (Code-
+luppi, 2019) dell’esistenza svolge un ruolo de-
+cisivo. Ogni cosa tende a essere esposta come
+segno: il corpo, le amicizie, le vacanze, i suc-
+cessi, la vita di coppia, perfino il dolore, pur-
+ché si lasci tradurre in una forma visibile e
+condivisibile. La vita non viene più soltanto
+vissuta; viene anche continuamente potenzial-
+mente mostrata. Ogni singolo istante è sotto il
+microscopio della visibilità, come se non
+fosse completo se non condiviso, come se non
+avesse valore se non fosse apprezzato da occhi
+estranei. Ciò che non può essere mostrato
+67
+bene, che non può essere messo in vetrina,
+spesso appare meno degno di attenzione.
+Il suo valore sembra sminuirsi, svanire nel-
+l’ombra. Ma la pedagogia sa bene che la cre-
+scita non coincide con ciò che si vede. I
+processi più importanti - la maturazione inte-
+riore, il lavoro della coscienza, la rielabora-
+zione delle ferite, la costruzione di un legame
+autentico - avvengono quasi sempre in zone
+poco spettacolari, fuori dal campo visivo di
+questa grande vetrina digitale, in spazi silen-
+ziosi dove la vera trasformazione accade lon-
+tano dai riflettori.
+È però proprio in questo abisso di visibilità che
+la vita quotidiana è ridotta a uno spettacolo, e
+la paura di non comparire nel cast cresce in
+modo esponenziale. La costante necessità di
+essere visti, approvati, riconosciuti, trasforma
+ogni gesto in una performance.
+Per non rimanere fuori dal cerchio, ogni fram-
+mento della nostra esistenza viene esibito,
+reso più allettante possibile, come se l’auten-
+ticità fosse misurata dalla sua capacità di at-
+trarre lo sguardo degli altri. L’interattività
+diventa un’ossessione: ogni aggiornamento,
+ogni commento, ogni like sono diventati la
+nostra valuta, il nostro respiro digitale. Non
+riconosciamo lo stato di ansia continua se non
+68
+quando essa, divenuta incontrollabile, prende
+il sopravvento.
+La paura di essere tagliati fuori dalle “stanze
+digitali” in cui ci rifugiamo è tanto pervasiva
+da alterare la nostra stessa percezione di esi-
+stenza. Ogni foto postata, ogni momento con-
+diviso, diventa un appello all’approvazione,
+un grido silenzioso che chiede di essere visto,
+di non essere dimenticato.
+Ma nonostante lo sforzo disumano dell’utente,
+la paura di non “star vivendo abbastanza” è
+sempre dietro l’angolo, opprimente, tanto da
+ribaltare la gerarchia dei valori e delle priorità
+personali. A un tratto, ciò che conta non è più
+l’esperienza vissuta, ma come questa venga
+letta, giudicata, esposta. Mostrare di aver pas-
+sato la notte in discoteca, condividere il pro-
+prio successo momentaneo o esibire la propria
+felicità diventa più importante di viverli nel
+loro significato autentico. I valori più pro-
+fondi, quelli che definivano il nostro legame
+con il mondo e con gli altri, sono ridotti alla
+loro espressione più superficiale e minimali-
+sta: informazioni veloci, immateriali, condi-
+visibili con il maggior numero possibile di
+persone, ma svuotate della loro profondità.
+Non abitiamo più la Terra e il cielo, bensì
+Google Earth e il Cloud (Han, 2022), spazi
+69
+virtuali dove la nostra identità si costruisce e
+si dissolve nell’etere, lontana dalle esperienze
+che davvero ci modellano. Per questo la
+FOMO non riguarda solo il tempo libero, il di-
+vertimento o la socialità. Investe anche la vita
+affettiva. Un rapporto può essere vissuto come
+una delle tante finestre aperte, non come un
+luogo da abitare. Un incontro può essere con-
+tinuamente misurato rispetto a ciò che si sta
+escludendo. Perfino la gioia di essere con
+qualcuno può risultare attraversata da una sot-
+tile inquietudine: e se altrove ci fosse di me-
+glio? e se stessi perdendo qualcosa di più
+intenso? e se questa scelta mi chiudesse altre
+possibilità? In questo modo, però, il desiderio
+smette di concentrarsi e si trasforma in vigi-
+lanza ansiosa.
+La logica dell’onnipresenza impossibile pro-
+duce allora un duplice effetto. Da un lato
+spinge a essere sempre dentro il flusso, sem-
+pre aggiornati, sempre reattivi, sempre con-
+nessi. Dall’altro genera stanchezza,
+saturazione, desiderio di sparire (Han, 2020).
+Non è un caso che accanto alla compulsione
+alla connessione crescano anche forme di ri-
+tiro, di esaurimento, di rifiuto improvviso del-
+l’esposizione. In alcuni casi l’eccesso di
+connessione genera addirittura il suo contra-
+70
+rio: il desiderio di sottrarsi, di non rispondere,
+di non esserci, di chiudere tutto. Ma né l’im-
+mersione totale né il ritiro assoluto risolvono
+il problema.
+La questione decisiva resta: come recuperare
+una forma abitabile di presenza?
+Qui si apre uno spazio importante per la rifles-
+sione pedagogica. Educare oggi significa
+anche insegnare a stare nel limite, a scegliere,
+a rinunciare senza sentirsi mutilati. Significa
+restituire dignità al fatto che non si può essere
+ovunque, non si può sapere tutto, non si può
+vivere ogni possibilità. In una cultura che pre-
+senta la perdita come fallimento, l’educazione
+è chiamata a riformulare il senso del limite
+come condizione della profondità. Non posso
+vivere tutto, ma proprio per questo posso vi-
+vere davvero qualcosa.
+Per questo è interessante che, accanto alla
+FOMO, si sia diffusa negli ultimi anni l’idea
+della JOMO, la joy of missing out. Al di là del
+lessico talvolta modaiolo, il nucleo della que-
+stione è serio. Si tratta della possibilità di non
+vivere la perdita di alcune occasioni come una
+menomazione, ma come la condizione stessa
+per restituire densità a ciò che si sceglie. In
+termini pedagogici, potremmo dire: imparare
+la gioia del limite. Accettare che non si può
+71
+essere ovunque, vedere tutto, partecipare a
+tutto, sapere tutto. E che proprio questa fini-
+tezza rende possibile la qualità dell’espe-
+rienza.
+Educare, oggi, significa anche questo: educare
+a perdere. Non nel senso della rinuncia triste
+o passiva, ma nel senso della capacità di sce-
+gliere senza voler trattenere il mondo intero.
+Significa insegnare che ogni esperienza signi-
+ficativa porta con sé un’esclusione, e che que-
+sta esclusione non è il contrario della vita, ma
+il suo prezzo necessario.
+Non posso essere in ogni luogo, ma posso es-
+sere davvero in un luogo. Non posso vivere
+tutte le possibilità, ma posso abitarne una fino
+in fondo. Non posso tenere aperte tutte le fi-
+nestre, ma posso scegliere una stanza e final-
+mente entrarci.
+C’è, in questo, anche un valore etico. Chi non
+sa tollerare di perdere qualcosa difficilmente
+saprà davvero promettere, sostare, assumere
+un legame. Perché ogni promessa implica una
+rinuncia ad altre possibilità. Ogni scelta affet-
+tiva esclude qualcosa (Sen, 2014). Ogni forma
+di presenza autentica comporta il coraggio di
+non inseguire tutto il resto.
+La FOMO, allora, non è solo una paura indi-
+viduale. È un sintomo della difficoltà contem-
+72
+poranea a pensare la finitezza non come limite
+da subire, ma come struttura della libertà
+umana. La nostra esistenza si articola, infatti,
+su ciò che lasciamo andare, sulle opportunità
+che non seguiamo, sulle infinite vie che non
+percorriamo. È nel riconoscere e accogliere
+questo limite che troviamo la vera libertà, per-
+ché solo quando siamo in grado di accettare
+ciò che non è nostro, possiamo scegliere con-
+sapevolmente e liberamente ciò che vera-
+mente vogliamo.
+Imparare a scegliere, però, richiede un con-
+fronto diretto con il mondo reale, con i suoi
+problemi e le sue soluzioni concrete, ed è pro-
+prio questo che oggi sembra sfuggire alla
+maggior parte di noi, immersi in un universo
+di infinite alternative virtuali. La capacità di
+scegliere consapevolmente non nasce nel-
+l’astrazione, ma nella vita vissuta, nell’espe-
+rienza (Dewey, 1922). La visione deweyana
+di questa consapevolezza sottolinea che per
+fare scelte autentiche, è necessario non solo
+pensare a lungo e riflettere, ma vivere piena-
+mente la realtà con tutte le sue complessità.
+Le scelte, per essere davvero nostre, devono
+essere radicate in esperienze dirette, in errori
+che insegniamo a noi stessi, in conseguenze
+che possiamo percepire sulla nostra pelle.
+73
+Per imparare a scegliere consapevolmente è
+necessario, quindi, un approccio che faccia
+spazio alla riflessione e alla selezione. Un pro-
+cesso che richiede tempo e attenzione, che si
+nutre di esperienze dirette, che ci permette di
+valutare le conseguenze delle nostre azioni e
+di riconoscere la validità di ogni alternativa.
+Una pratica che potrebbe essere definita come
+una “dieta delle possibilità”, che ci invita a
+ridurre deliberatamente il numero delle alter-
+native disponibili, a diminuirne la velocità di
+fruizione e la quantità. Un passo indietro ri-
+spetto alla sovrabbondanza di opzioni che ci
+sovrasta, per dare spazio alla riflessione, per
+meditare con calma su ogni scelta, per valu-
+tare realmente le sue implicazioni. Perché,
+come già emerso, più possibilità non equivale
+a più libertà. Anzi, l’abbondanza di scelte può
+spesso diventare una gabbia, una trappola che
+ci rende incapaci di fare una vera scelta, di
+abbracciare la finitezza e di trovare il corag-
+gio di fermarci su un sentiero, escludendo
+tutto il resto.
+Da questo punto di vista la connessione per-
+manente non è di per sé il problema. Il pro-
+blema è l’immaginario che la accompagna:
+l’idea che vivere bene significhi essere sempre
+dentro tutto, sempre disponibili, sempre ag-
+74
+giornati, sempre raggiungibili, sempre visibili.
+Ma una vita umana degna non coincide con la
+massima esposizione. Coincide piuttosto con
+la capacità di costruire senso, di scegliere ciò
+che conta, di abitare il presente senza essere
+continuamente divorati dall’altrove.
+In un mondo di connessioni incessanti, la vera
+scarsità non è il contatto, ma la profondità. E
+forse la prima forma di resistenza consiste
+proprio nel restituire valore alla presenza non
+frammentata: una presenza capace di stare, di
+ascoltare, di attendere, di non misurare conti-
+nuamente ciò che vive in rapporto a ciò che
+perde. Solo così il limite smette di apparire
+una mutilazione e torna a essere ciò che è
+sempre stato: la condizione concreta di ogni
+vita autenticamente umana.
+Forse, allora, il compito non è imparare a es-
+sere meno connessi in senso puramente tec-
+nico. Il compito è imparare a non essere
+interiormente colonizzati dalla logica della di-
+spersione. A custodire zone di opacità, di si-
+lenzio, di concentrazione. A restituire al
+presente una densità che l’ansia del confronto
+tende continuamente a sottrarre. A capire che
+la vita non si misura dal numero delle possi-
+bilità tenute aperte, ma dalla qualità dell’espe-
+rienza che si ha il coraggio di abitare.
+75
+Ed è qui che la pedagogia torna a essere deci-
+siva. Perché educare significa anche difendere
+la possibilità di un’attenzione piena, di un de-
+siderio non disperso, di una presenza non con-
+tinuamente interrotta. Significa sottrarre
+l’umano alla tirannia del sempre-altrove. Si-
+gnifica insegnare che non perdersi nulla è im-
+possibile, e che proprio da questa
+impossibilità può nascere una forma più ma-
+tura, più libera e più vera di relazione con il
+mondo e con gli altri. Ed è nel limite accolto,
+e nel gesto del fermarsi, che l’umano non
+perde il mondo ma, finalmente, inizia a incon-
+trarlo nella sua forma più autentica.
+Miriam Aurora Cetera
+Serena Spezzano
+76
+Bibliografia
+Bauman, Z. (2017). Amore liquido: sulla fra-
+gilità dei legami affettivi. Gius. Laterza &
+Figli Spa, Roma-Bari.
+Codeluppi, V. (2019). Mi metto in vetrina:
+Selfie, Facebook, Apple, Hello Kitty Renzi e
+altre” vetrinizzazioni”. Mimesis, Milano.
+Dewey, J. (1922). Human nature and conduct:
+An introduction to social psychology. Henry
+Holt and Company, New York.
+Han, B. C. (2014). La società della traspa-
+renza. Nottetempo, Milano.
+Han, B. C. (2020). La società della stan-
+chezza. Nottetempo, Milano.
+Han, B. C. (2022). Le non cose: Come ab-
+biamo smesso di vivere il reale. Einaudi, To-
+rino.
+Przybylski, A. K., Murayama, K., DeHaan, C.
+R., & Gladwell, V. (2013). Motivational, emo-
+tional, and behavioral correlates of fear of
+missing out. Computers in human behavior,
+29(4), 1841-1848.
+Schore, A. N. (2008). La regolazione degli af-
+fetti e la riparazione del sé. Astrolabio, Roma.
+Sen, A. (2014). Lo sviluppo è libertà. Edizioni
+Mondadori, Milano.
+77
+IV Parte
+Relazione, prestazione, paura del conflitto.
+Non è finita con una lite. È finita in una forma
+più difficile da raccontare: si è consumata
+senza attrito. Come se avessimo imparato
+troppo bene a non disturbare l’equilibrio. A
+non dire le cose quando iniziavano a pesare.
+A limarle, a renderle accettabili. Ci dicevamo
+che andava tutto bene, e in effetti andava ab-
+bastanza bene da non dover cambiare nulla.
+Credo che abbiamo scambiato la cura con
+l’attenzione a non ferire. Ma nel tempo,
+quell’attenzione è diventata una forma di sot-
+trazione. Non ti ho detto quando mi sentivo
+messa da parte. Tu non hai detto quando ti
+sentivi insufficiente. Abbiamo protetto l’altro
+dalla verità, e così abbiamo protetto anche noi
+stessi dal rischio. Non litigavamo. E questa
+era la prova che funzionava. Poi, un giorno,
+mi sono accorta che non sapevo più dove fi-
+nivo io e dove iniziava quello che cercavo di
+79
+essere per non incrinare qualcosa. Non c’era
+stato uno strappo, ma una lunga adesione.
+Quando è finita, non ho provato solo dolore.
+Ho provato frustrazione. Non tanto per quello
+che non aveva funzionato, ma per tutto quello
+che non era mai stato messo davvero in gioco.
+Come se avessimo evitato il conflitto per non
+perderci, e invece ci siamo persi proprio lì.
+Adesso mi chiedo se amare significhi anche
+questo: accettare di esporsi al rischio di rom-
+pere qualcosa, invece che mantenerlo intatto.
+Ci sono relazioni che non finiscono all’im-
+provviso. Non si spezzano in un gesto ecla-
+tante, non si interrompono con parole
+definitive, non conoscono necessariamente il
+dramma visibile della rottura. Si consumano
+piuttosto in una forma più sottile e meno no-
+minata: quella dell’aggiustamento continuo,
+del trattenere ciò che potrebbe disturbare, del
+rinviare ogni verità che rischi di incrinare
+l’equilibrio. A guardarle da fuori possono per-
+sino sembrare rapporti maturi, misurati, sereni.
+Non si litiga. Non ci si ferisce apertamente.
+Tutto scorre. Ma da dentro si avverte spesso
+un’altra realtà: la fatica di non potersi dire fino
+in fondo, di dover scegliere sempre la versione
+meno ingombrante di sé. È una forma di impo-
+80
+verimento relazionale che ha molto a che ve-
+dere con il clima culturale in cui viviamo.
+Senza quasi accorgercene, impariamo a fun-
+zionare anche nell’intimità. A essere adeguati.
+A non essere troppo. A non dire una cosa nel
+modo sbagliato. A non aprire questioni che po-
+trebbero diventare difficili da gestire. A non
+domandare troppo, a non pesare, a non esigere.
+Questa logica, che appartiene alla prestazione
+e all’ottimizzazione, entra silenziosamente
+anche nei legami. Così la relazione rischia di
+trasformarsi in uno spazio da amministrare
+bene, più che da abitare davvero. In un tempo
+che premia efficienza e controllo, l’amore ri-
+schia così di scivolare in un circuito sterile. È
+un processo graduale. Emergono dubbi e insi-
+curezze che spingono a misurarsi. A restare
+aderenti a un’immagine rassicurante. Ma si
+tratta di un paradosso logico. Più si cerca la
+perfezione, più ci si irrigidisce, aumentando lo
+scarto rispetto a ciò che si vorrebbe essere. Il
+fallimento alimenta un’inadeguatezza sottile
+che spinge a performare ancora. A fare di più.
+A produrre meglio. Eppure, dentro questo mo-
+vimento, esiste una possibilità diversa. Questa
+possibilità non è un’idea astratta, ma un modo
+concreto di stare nella relazione: scegliere di
+restare nel dialogo quando sarebbe più sem-
+81
+plice ritirarsi, non chiudere il senso dell’altro
+in un giudizio definitivo, mantenere aperta la
+possibilità che qualcosa cambi anche quando
+il cambiamento non è immediato. Riscoprire
+che l’amore non è prestazione, ma tensione.
+Una tensione viva, imperfetta, che abita lo spa-
+zio della speranza. Sperare non è l’attesa pas-
+siva di un evento, ma un restare in movimento
+verso ciò che ancora non c’è. È la capacità di
+abitare l’incompiuto senza l’urgenza di col-
+marlo, di stare dentro una mancanza senza tra-
+durla in difetto. Dentro la relazione, questa
+speranza prende forma proprio nei momenti di
+attrito. Impedisce al conflitto di trasformarsi
+in chiusura. Permette di sostare nella frustra-
+zione senza tradurla in fuga. Tiene aperta la re-
+lazione quando l’altro smette di essere facile.
+Sperare significa abitare il futuro prima che ar-
+rivi. Restare dentro una realtà desiderata che,
+nel suo stesso compimento, si dissolve come
+desiderio ormai realizzato. Qui si inserisce la
+difficoltà profonda: abitare l’incompiuto vuol
+dire esporsi. Riconoscere il valore dell’altro
+nella complessità. Nel conflitto. Nella fatica.
+Accettare che la relazione non sia sempre
+fluida. Non immediata. Non leggera. In questa
+esposizione si rivela la natura profonda dell’in-
+contro umano: un’apertura che non è debo-
+82
+lezza, ma la spinta necessaria che ci costringe
+a edificare mondi comuni. Da qui, la relazione
+resta sempre uno spazio segnato dal limite,
+esposto alla possibilità della ferita, ma proprio
+per questo costantemente rivolto alla necessità
+della cura (Mortari, 2015).
+In un tempo che premia la leggerezza, la rapi-
+dità e la capacità di non complicare troppo le
+cose, il conflitto viene percepito quasi sempre
+come un segnale negativo. Se c’è tensione, si
+pensa che qualcosa non funzioni. Se emerge
+una differenza, si teme di aver sbagliato per-
+sona. Se arriva la frustrazione, si immagina su-
+bito che il rapporto stia perdendo qualità.
+Eppure, è proprio qui che si annida uno degli
+equivoci più profondi della nostra cultura af-
+fettiva. Il conflitto non è necessariamente ciò
+che rompe il legame. Molto spesso è ciò che
+gli permette di diventare reale. Finché tutto fila
+liscio, infatti, non è detto che due persone si
+siano davvero incontrate. Potrebbero sempli-
+cemente essersi adattate bene alla reciproca
+immagine. Potrebbero avere costruito una zona
+di compatibilità, piacevole ma ancora poco
+esposta alla prova della verità. Il conflitto, in-
+vece, è il momento in cui l’altro smette di
+coincidere con ciò che avevamo previsto. Mo-
+stra che c’è uno scarto. E quello scarto è pre-
+83
+zioso, perché restituisce all’altro la sua irridu-
+cibilità. Lo sottrae al ruolo di specchio rassi-
+curante e lo riconsegna alla sua differenza. In
+questo senso, la paura del conflitto coincide
+spesso con la paura della profondità. Entrare
+davvero in relazione significa accettare che
+l’altro non sia perfettamente allineato al nostro
+desiderio, che porti con sé opacità, limiti, sen-
+sibilità differenti, tempi differenti, ferite diffe-
+renti. Significa rinunciare all’illusione di una
+vicinanza senza attrito. Ma proprio in quell’at-
+trito il legame acquista spessore. Non quando
+ogni cosa è semplice, ma quando, pur nella dif-
+ficoltà, si continua a cercare un modo per re-
+stare presenti senza annullarsi. La frustrazione,
+allora, non è un incidente da evitare a ogni
+costo. È una soglia da abitare. Segnala che
+qualcosa non coincide, che l’altro non ci resti-
+tuisce immediatamente conferma, che tra noi
+e lui esiste una distanza da riconoscere e da ne-
+goziare. In una cultura abituata alla gratifica-
+zione rapida, questa esperienza diventa sempre
+più difficile da sostenere. Ci si aspetta di es-
+sere compresi subito, di trovare una sintonia
+naturale, di non dover attraversare troppa fa-
+tica. Quando questo non accade, si è tentati di
+arretrare. Ma una relazione che si ritrae ogni
+volta che incontra il limite resta inevitabil-
+84
+mente superficiale. Questo arretramento ri-
+manda a una difficoltà sistematica. Quando la
+leggerezza svanisce, la reazione è la sottra-
+zione. Soprattutto nelle giovani generazioni si
+diffonde una pressione sottile: l’obbligo di es-
+sere sempre all’altezza. Le relazioni devono
+essere fluide, eludere l’attrito. In questo sce-
+nario, il legame rischia il fraintendimento: si
+riduce a un semplice imbattersi nell’altro che
+si risolve in un incrocio casuale, superficiale e
+privo di reciprocità. Ma l’incontro autentico è
+un atto cercato, desiderato. È uno spazio in cui
+la presenza dell’altro non si limita a sfiorarci,
+ma ci riguarda. Incarna il principio secondo
+cui «ogni vita reale è incontro» (Buber, 1993).
+L’umano, infatti, non sussiste in isolamento,
+ma si realizza nella zona di confine tra un “Io”
+e un “Tu”. Qui prende forma la reciprocità:
+non come fusione, ma come riconoscimento
+che implica esposizione, rischio, possibilità di
+non combaciare. È proprio questa autenticità
+reciproca a costituire l’elemento più profondo
+dell’innamorarsi. Tuttavia, oggi, la frustra-
+zione nasce esattamente nello scarto tra questo
+ideale e l’esperienza concreta. È l’incontro con
+il limite. Oggi lo percepiamo come un errore
+da aggirare, non come una soglia da attraver-
+sare. Di conseguenza, si sceglie la chiusura in-
+85
+vece del conflitto. Si decide che la tensione sia
+priva di senso. Che il disaccordo non sia abi-
+tabile. Che ogni sforzo di traduzione sia super-
+fluo. Invece di comprendere, si accetta
+l’interruzione. Invece di restare, si sceglie l’as-
+senza. Lo spazio comune si svuota. Si rinuncia
+all’impegno di sostenere il peso dell’altro. Ac-
+cade quando l’altro smette di essere gratifi-
+cante e richiede ascolto, esposizione, cura. La
+relazione rischia di ridursi a un oggetto. Fun-
+ziona finché è facile. Finché non disturba o
+non esige. Si incrina al primo attrito. È l’illu-
+sione che amare sia possibile solo dentro una
+perfetta continuità. Ma questa fragilità non ri-
+guarda i singoli legami. Riguarda il modo in
+cui una cultura definisce il successo di un rap-
+porto. Il problema non è più affettivo. È cultu-
+rale. In un’epoca che elegge l’assenza di attrito
+a valore supremo, la stabilità diventa un simu-
+lacro. Del resto «credere che ogni educazione
+autentica proviene dall’esperienza non signi-
+fica già che tutte le esperienze siano genuina-
+mente o parimenti educative» (Dewey, 1958).
+Applicata ai legami, questa distinzione si fa ra-
+dicale: non ogni unione che funziona è capace
+di trasformare. Molti rapporti appaiono stabili,
+equilibrati, persino maturi; eppure, restano im-
+mobili. Ciò che li distingue è la postura con cui
+86
+intercettano la difficoltà, il limite, l’esposi-
+zione. Non ogni vissuto affettivo educa. Esi-
+stono legami che, proprio perché eludono il
+conflitto, la frustrazione e l’imprevisto, riman-
+gono confinati in superficie. Sono relazioni
+che si mantengono senza evolvere, che persi-
+stono senza cambiare, che durano senza inci-
+dere. In questa cornice, le emozioni non sono
+semplici impulsi: sono «giudizi di
+valore» (Nussbaum, 2004) che rivelano cosa
+consideriamo vitale per il nostro fiorire. Esse
+non si limitano a interrompere il flusso del rap-
+porto: lo denudano. Eppure, la grammatica
+contemporanea legge l’assenza di conflitto
+come un traguardo di maturità. Tutto appare
+regolato, misurato, privo di spigoli. Ma questa
+armonia di facciata nasconde spesso una rinun-
+cia progressiva alla profondità. L’evitamento
+diventa allora una strategia di sopravvivenza:
+si mette in sicurezza il legame, ma se ne sacri-
+fica la vitalità. La frustrazione, al contrario,
+non è un errore di sistema da correggere o ag-
+girare. È lo scarto necessario tra sé e l’altro,
+tra l’attesa e l’evento, tra il desiderio e la re-
+altà. In questo contesto, le relazioni non na-
+scono e si sviluppano in un vuoto neutro. Nel
+mondo descritto da Zygmunt Bauman, esse di-
+ventano sempre più facili da iniziare e sempre
+87
+più difficili da sostenere. La modernità liquida
+è attraversata da una tensione costante tra il de-
+siderio di appartenenza e la paura che esso
+comporta. «L’estrema fragilità» dei rapporti
+umani genera così «la sensazione di insicu-
+rezza», dando luogo una tensione interna fatta
+di desideri contrapposti: da un lato il bisogno
+di «stringere i legami», dall’altro la spinta a
+«mantenerli allentati». È in questa ambiva-
+lenza che si gioca la sfida: abitare relazioni che
+non siano solo funzionali, ma autenticamente
+trasformative. In tale scenario, i protagonisti
+della modernità sono descritti come individui
+sospesi tra bisogni opposti: desiderano instau-
+rare legami profondi ma, al contempo, temono
+di «restare impigliati in relazioni stabili» che
+potrebbero limitare la loro libertà (Bauman,
+2013). In questa dinamica, tuttavia, la ricerca
+di protezione finisce per produrre un effetto
+paradossale: nel tentativo di evitare il rischio
+del legame, si rinuncia anche alla sua capacità
+di incidere in profondità sull’esperienza per-
+sonale. Relazioni rese più sicure diventano pa-
+radossalmente più fragili, perché prive di
+quella esposizione reciproca che costituisce la
+sostanza di ogni autentico coinvolgimento. Si
+resta in contatto, ma raramente ci si incontra
+davvero. Vogliamo vicinanza, ma senza sen-
+88
+tirci trattenuti. Vogliamo intimità, ma senza il
+peso del disaccordo. Vogliamo riconosci-
+mento, ma senza la possibilità di essere feriti
+dal mancato riconoscimento. È in questa am-
+bivalenza che cresce una forma di intimità im-
+poverita: un’intimità che funziona finché tutto
+è leggero, ma vacilla quando emerge la diffe-
+renza. Da un punto di vista pedagogico, la re-
+lazione non è semplicemente un luogo
+emotivo. È un luogo formativo. Dentro un le-
+game si impara a nominare ciò che non va, a
+sostenere il disaccordo, a distinguere tra ferita
+e limite, tra umiliazione e frustrazione, tra ciò
+che deve essere interrotto e ciò che invece
+chiede di essere attraversato. Si impara, soprat-
+tutto, che la presenza dell’altro non è autentica
+quando ci conferma sempre, ma quando resiste
+alla nostra pretesa di renderlo perfettamente
+compatibile con noi. In tale cornice, la prospet-
+tiva dialogica di Paulo Freire permette di leg-
+gere la relazione come uno spazio di
+co-costruzione. Qui il confronto - anche
+quando assume la forma del conflitto - non è
+un’interruzione del legame, ma la sua condi-
+zione di autenticità. «Nessuno può essere au-
+tenticamente umano finché impedisce agli altri
+di esserlo» (Freire, 2005). L’intuizione peda-
+gogica è netta: l’umano si costituisce solo den-
+89
+tro una relazione orizzontale, in cui entrambe
+le parti partecipano attivamente e si ricono-
+scono reciprocamente. Senza questa apertura,
+il rapporto scivola nell’adattamento. Diventa
+una forma di convivenza senza reale esposi-
+zione, in cui si evita lo scontro e, con esso, la
+possibilità stessa dell’incontro. Educare alle
+relazioni significa allora promuovere la capa-
+cità di abitare la frustrazione, negoziare i con-
+flitti e riparare le ferite relazionali: tre
+competenze emotive e interpersonali che non
+servono semplicemente a “far funzionare” il
+legame, ma a renderlo uno spazio vivo e tra-
+sformativo, attraversato dalla possibilità del
+cambiamento. Questo non significa affatto
+idealizzare il conflitto. Ci sono tensioni che di-
+struggono, parole che umiliano, dinamiche che
+scavano nel rapporto una ferita non riparabile.
+Ci sono relazioni in cui il conflitto non apre,
+ma chiude; non fa crescere, ma consuma; non
+rivela l’alterità, ma esercita dominio. Proprio
+per questo occorre distinguere. Non ogni dif-
+ficoltà è violenza. Non ogni frizione è tossica.
+Non ogni differenza è un pericolo. Una cultura
+che non sa più tollerare alcuna frustrazione fi-
+nisce per confondere il limite con l’offesa e il
+lavoro della relazione con il suo fallimento. Il
+punto, allora, non è celebrare qualunque rot-
+90
+tura o qualunque tensione, ma restituire al con-
+flitto il suo statuto di esperienza umana fonda-
+mentale. Il legame non diventa profondo
+quando elimina ogni contraddizione, ma
+quando rende possibile attraversarla senza che
+tutto si dissolva immediatamente. In questo
+senso, la possibilità della riparazione acquista
+un valore decisivo. Una relazione matura non
+è quella che non si incrina mai; è quella che,
+almeno talvolta, sa riconoscere la propria in-
+crinatura e tentare di lavorarla. L’amore, come
+pratica attiva, non coincide con l’assenza di
+crisi, ma con la capacità di attraversarle senza
+interrompere il legame (Fromm, 1963). Qui
+entra in gioco un’altra parola importante: vul-
+nerabilità. Essa non va intesa come una debo-
+lezza accidentale, bensì come una condizione
+costitutiva e “ontologica” dell’esistenza: la
+consapevolezza che «proprio perché siamo es-
+seri intimamente relazionali, siamo dipendenti
+da altri; in questo dipendere-da-altro-da-sé sta
+la vulnerabilità propria dell’essere umano»,
+ovvero quella fragilità che sperimentiamo con-
+tinuamente come «vulnerabilità del nostro es-
+serci» (Mortari, 2015). Non c’è conflitto
+autentico senza vulnerabilità, perché nominare
+ciò che ci ha ferito o frustrato implica sempre
+una forma di esposizione. Significa mostrarsi
+91
+non autosufficienti, non perfettamente com-
+patti, non del tutto protetti. Ma è proprio ciò
+che la cultura della prestazione tende a scorag-
+giare. Funzionare bene diventa più importante
+che essere veri. Apparire padroni di sé diventa
+più desiderabile che ammettere una ferita.
+Così, molto spesso, non si litiga neppure dav-
+vero: si ritrae la parola, si cambia tono, si
+devia, si tace, si lascia sedimentare il risenti-
+mento. Il silenzio, in questi casi, non è pace. È
+solo una forma muta di distanza. Eppure,
+dall’esterno, può sembrare maturità. Questo è
+uno degli aspetti più insidiosi della nostra
+epoca affettiva: la confusione tra assenza di
+conflitto e qualità della relazione. In realtà, una
+relazione senza attrito può essere il segno di
+una profonda incapacità di incontro. Se tutto è
+sempre levigato, se nessuno mette mai davvero
+in gioco qualcosa di sé, allora il rapporto ri-
+schia di diventare soltanto una gestione edu-
+cata della reciproca superficie. La pedagogia
+può aiutare a leggere diversamente questa di-
+namica. Educare alla relazione significa edu-
+care a una forma più matura di intimità.
+Un’intimità che non coincide con la fusione,
+né con la perfetta sintonia, ma con la capacità
+di restare presenti nel momento in cui l’altro
+delude le nostre aspettative senza per questo
+92
+cessare di essere degno di incontro. Significa
+imparare che la profondità non è assenza di
+rotture, ma possibilità di attraversarle senza
+che tutto si dissolva immediatamente. In que-
+sto orizzonte, la frustrazione assume una fun-
+zione formativa. Non perché il dolore sia di
+per sé educativo, ma perché costringe a misu-
+rarsi con il limite dell’altro e con il proprio.
+Ogni relazione autentica mette in crisi l’illu-
+sione di essere il centro, di essere compresi
+senza mediazioni, di trovare nell’altro una ri-
+sposta perfetta ai propri bisogni. La frustra-
+zione, se non degenera in umiliazione o
+annullamento, può diventare allora uno spazio
+in cui si apprende la differenza tra desiderare
+e possedere, tra essere accolti e pretendere di
+essere continuamente confermati. A questo li-
+vello, il conflitto non è soltanto uno snodo in-
+terpersonale. È anche una prova etica. Obbliga
+a chiedersi come ci si pone davanti all’alterità
+quando essa smette di essere piacevole. Se la
+si accoglie come una realtà con cui fare i conti
+oppure se la si vive immediatamente come una
+minaccia da neutralizzare. In questo senso il
+conflitto ci dice molto non solo sulla qualità
+del rapporto, ma anche sulla qualità della sog-
+gettività che lo abita. Una soggettività che non
+sa tollerare il limite difficilmente saprà co-
+93
+struire legami profondi. L’agire umano si svi-
+luppa sempre in uno spazio condiviso, in cui
+la diversità non è un accidente, ma la struttura
+stessa della vita comune (Arendt, 1964). Nel
+nostro presente, segnato dalla revocabilità e
+dalla sostituzione, il conflitto appare spesso in-
+sopportabile proprio perché ci obbliga a sce-
+gliere. O si attraversa, o si arretra. O si accetta
+di entrare in una zona meno controllabile, op-
+pure si preferisce restare in superficie. Eppure,
+proprio lì, si gioca una parte decisiva della
+qualità di un legame. Non nella sua immunità
+dalle difficoltà, ma nella sua capacità di non
+cedere alla prima incrinatura.
+A volte mi chiedo come sarebbe stato se ci fos-
+simo incontrati nel momento giusto. Non per-
+fetti, non pronti, solo più disposti a restare.
+Forse all’inizio non ce ne saremmo nemmeno
+accorti. Saremmo stati due persone qualsiasi,
+sedute una accanto all’altra, a parlare di cose
+leggere, quasi per riempire il tempo. E invece,
+piano piano, in quelle parole semplici, sarebbe
+successo qualcosa. Io avrei imparato a rico-
+noscere i tuoi silenzi. Tu, forse, avresti impa-
+rato a non avere paura dei miei. Ci saremmo
+presi in giro, sì. Per le mie reazioni esagerate,
+per il mio modo di complicare anche le cose
+94
+più piccole. E io avrei sorriso delle tue insicu-
+rezze, cercando ogni volta di smontarle, pezzo
+dopo pezzo, senza mai riuscirci davvero, per-
+ché certe paure non si cancellano, si condivi-
+dono. E forse sarebbe stato proprio questo a
+tenerci insieme. Non i momenti perfetti, ma
+quelli veri. Le sere storte. Le parole dette
+male. Le pause troppo lunghe. E poi il tenta-
+tivo, ogni volta, di tornare l’uno verso l’altra.
+Mi piace pensare che avremmo imparato a re-
+stare anche quando sarebbe stato più facile al-
+lontanarsi. Che non avremmo fatto finta di
+stare bene solo per non ferirci, ma avremmo
+avuto il coraggio di dirci le cose scomode,
+quelle che fanno tremare la voce. E poi, tra
+tutto questo, ci sarebbero state anche le cose
+semplici. Un messaggio senza motivo. Una ri-
+sata improvvisa. Il modo in cui le nostre mani
+si sarebbero cercate senza pensarci. Niente di
+straordinario, forse. Ma abbastanza da farci
+sentire nel posto giusto. A volte penso che non
+sarebbe stato perfetto. Ma sarebbe stato no-
+stro. E, forse, sarebbe bastato.
+Forse amare, oggi, significa anche questo: non
+pretendere rapporti senza scosse, ma imparare
+a riconoscere quali scosse possono ancora
+aprire uno spazio di verità. Non cercare rela-
+95
+zioni che non facciano mai male, ma relazioni
+in cui il dolore non diventi dominio e in cui la
+differenza non venga subito vissuta come mi-
+naccia. In questo senso, il conflitto smette di
+essere il contrario dell’amore e può diventare,
+almeno talvolta, uno dei luoghi in cui l’amore
+prova la propria consistenza. C’è una diffe-
+renza sostanziale tra il conflitto che ferisce
+perché umilia e il conflitto che mette alla prova
+perché obbliga a uscire dalle immagini troppo
+semplici dell’altro e di sé. Il primo va nomi-
+nato e, se necessario, interrotto. Il secondo va
+compreso, lavorato, attraversato. Una cultura
+relazionale matura dovrebbe saper distinguere
+tra queste due forme. Ma per farlo occorre sot-
+trarsi al linguaggio semplificato che divide
+tutto tra ciò che è immediatamente gratificante
+e ciò che va subito eliminato. Qui il pensiero
+pedagogico ritrova tutta la sua forza. Perché
+educare non significa soltanto trasmettere con-
+tenuti o norme, ma formare alla complessità
+dell’esperienza umana. E pochi luoghi sono
+complessi quanto la relazione. Nella relazione
+si apprende la pazienza, la capacità di soppor-
+tare la non coincidenza, il coraggio di esporsi,
+la disponibilità a rivedere le proprie attese, la
+possibilità di riparare. Sono tutte competenze
+che non si acquisiscono per via teorica, ma
+96
+dentro la trama viva dei legami. Per questo
+l’intimità contemporanea ha bisogno di essere
+ripensata oltre la logica della performance.
+Non basta stare bene insieme. Non basta non
+litigare. Non basta apparire affiatati. Occorre
+chiedersi se dentro quel legame esiste davvero
+uno spazio in cui sia possibile essere più veri,
+più vulnerabili, più attraversabili dalla diffe-
+renza. Perché solo lì il rapporto smette di es-
+sere una zona di efficienza emotiva e diventa
+esperienza trasformativa. E forse il punto ul-
+timo è proprio questo: il conflitto, quando non
+degenera in dominio, non è il segno che il le-
+game è fallito. È il segno che il legame ha in-
+contrato la realtà. In senso nietzscheano, può
+essere letta come una forma di “ascesi dello
+spirito”: una disciplina dello stare che richiede
+lentezza dello sguardo, misura del pensiero e
+responsabilità della parola (Nietzsche, 1984).
+Eppure, questa capacità di sostare appare sem-
+pre più esposta alla perdita. Se «la digitalizza-
+zione fa scomparire l’Altro come sguardo»
+(Han, 2022), alla moltiplicazione dei contatti
+non corrisponde una reale vicinanza. Si è con-
+nessi, ma non in relazione. Il soggetto assume
+i tratti dell’animal laborans (Han, 2013): ipe-
+rattivo, performativo, ma interiormente svuo-
+tato. In questo vuoto di presenza, il legame
+97
+rischia di ridursi a un’adesione prolungata, a
+un incastro che garantisce la prestazione ma
+neutralizza la differenza. Non si salvaguarda il
+rapporto, ma la sua efficienza. Rivendicare il
+conflitto significa sottrarre il cuore alla logica
+della merce. Nell’urto con l’Altro si genera
+una resistenza che non si svende: si oppone
+alla pretesa di dover sempre funzionare. In
+quest’ottica, non è l’assenza di attrito a rendere
+un legame autentico, ma la capacità di attra-
+versarlo. Il conflitto smette di essere un arresto
+del sistema per farsi “crepa” che apre all’in-
+contro. Solo così la relazione supera la logica
+della forma da preservare o della tensione da
+risolvere. Diventa un luogo vivo, in cui espe-
+rienza, limite e trasformazione possono ancora
+incontrarsi. E proprio per questo può ancora
+scegliere se diventare più vera o dissolversi. In
+un tempo che teme tutto ciò che non è imme-
+diatamente fluido, questa possibilità appare
+fragile. Ma è una fragilità preziosa, perché cu-
+stodisce una delle ultime forme di profondità
+ancora possibili nei rapporti umani.
+Loredana Mazzaferro
+Annamaria Carola Fusaro
+98
+Bibliografia
+Arendt, H. (1964). Vita activa: la condizione
+umana (S. Finzi, Trad.). Bompiani, Milano.
+Bauman, Z. (2013). Amore liquido: sulla fragi-
+lità dei legami affettivi. Gius. Laterza & Figli
+S.p.A., Roma-Bari.
+Buber, M. (1993). Io e Tu. In Il principio dialo-
+gico e altri saggi. San Paolo, Roma.
+Dewey, J. (1958). Esperienza e educazione. La
+Nuova Italia, Firenze.
+Freire, P. (2005). Pedagogy of the Oppressed
+(30th Anniversary Edition). Continuum, New
+York.
+Fromm, E. (1963). L’arte d’amare (M. Damiani,
+Trad.). Arnoldo Mondadori Editore, Milano.
+Han, B. (2013). La società della stanchezza.
+Nottetempo, Roma.
+Han, B. (2022). Le non cose. Einaudi, Torino.
+Mortari, L. (2015). Filosofia della cura. Raffa-
+ello Cortina Editore, Milano.
+Nietzsche, F. (1984). Genealogia della morale.
+Uno scritto polemico. Adelphi, Milano.
+Nussbaum, M. C. (2004). Emotions as Judg-
+ments of Value and Importance. In R. C. Solo-
+mon (a cura di), Thinking About Feeling:
+Contemporary Philosophers on Emotions. Ox-
+ford University Press, New York.
+99
+V Parte
+Oltre la prestazione. Educare alla vulnerabilità
+e all’incontro.
+È strano come certe cose inizino senza un inizio
+riconoscibile. Non c’è sempre un momento pre-
+ciso in cui si può dire: ecco, è cominciato lì. A
+volte tutto prende forma in modo quasi imper-
+cettibile, attraverso piccoli scambi, abitudini
+leggere, messaggi che arrivano con naturalezza,
+risate che diventano via via più frequenti, una
+familiarità che cresce senza ancora dichiararsi.
+Con lui è andata così. Tutto sembrava semplice.
+Fluido. Quasi spontaneo. Mi sentivo a mio agio,
+ma in una forma controllata. Dicevo le cose giu-
+ste, al momento giusto. Restavo dentro una mi-
+sura che non esponeva troppo. Una sera, mentre
+parlavamo, ci fu un piccolo silenzio, uno di
+quelli in cui potresti dire qualcosa di vero. Qual-
+cosa che cambierebbe il tono della conversa-
+zione e forse anche il senso del rapporto. Non
+l’ho fatto. Ho detto una battuta, lui ha riso, e il
+101
+momento è passato. Tornando a casa, però, ho
+pensato: se continuo così, arriveremo
+mai davvero da qualche parte?
+Le relazioni contemporanee sono spesso se-
+gnate da questa ambivalenza. Nascono con fa-
+cilità, si accendono rapidamente, sembrano
+muoversi con naturalezza, e tuttavia proprio
+questa fluidità iniziale può nascondere una
+difficoltà più profonda a entrare davvero in
+gioco (Baumann, 2003). Si resta in una zona
+intermedia, piacevole ma protetta, dove la
+connessione esiste senza diventare esposi-
+zione, dove il contatto è reale ma non ancora
+trasformativo. Il problema non è soltanto in-
+dividuale. Riflette un clima culturale più
+ampio, nel quale la profondità viene sempre
+più percepita come rischio e l’imperfezione
+come un difetto da gestire, non come una con-
+dizione costitutiva dell’incontro (Nussbaum,
+2005). Entrare davvero in relazione, infatti, si-
+gnifica accettare l’imprevedibilità. Significa
+non poter controllare completamente la pro-
+pria immagine, né la risposta dell’altro. Signi-
+fica esporsi alla possibilità di non essere
+compresi, di non essere ricambiati nello stesso
+modo, di non essere confermati. Per questo,
+molto spesso, ci si ferma prima. Non perché
+102
+non si desideri la vicinanza, ma perché la si
+desidera senza il prezzo dell’incertezza. Si
+vorrebbe essere accolti senza passare attra-
+verso il rischio di mostrarsi davvero.
+Un altro giorno abbiamo parlato per ore. Con-
+dividevamo meme, video, piccole cose apparen-
+temente insignificanti. Mi sentivo bene. Poi lui
+ha detto quasi per caso che stava attraversando
+un periodo complicato. Ho percepito subito che
+il tono era cambiato. La conversazione, da leg-
+gera, stava diventando improvvisamente più
+vera. Non sapevo come stare lì dentro. Così ho
+fatto di nuovo una battuta. Lui ha sorriso, e
+siamo tornati a parlare come prima. Ma quella
+frase mi è rimasta addosso. Continuava a ripre-
+sentarsi, come se mi avesse messo davanti a
+qualcosa che avevo scelto di non vedere: il fatto
+che la profondità non arriva da sola, e che
+spesso siamo noi i primi a evitarla.
+C’è un momento molto delicato in ogni le-
+game: quello in cui il dialogo smette di essere
+semplice scambio e comincia a farsi apertura.
+È un passaggio fragile, brevissimo, in cui
+qualcuno prova, magari senza dirlo esplicita-
+mente, a portare qualcosa di più autentico. In
+quei momenti cambia la qualità della pre-
+103
+senza. Cambia il ritmo. E proprio per questo
+diventano difficili da sostenere. Non perché
+siano negativi, ma perché chiedono compe-
+tenze relazionali che raramente vengono edu-
+cate: saper ascoltare senza risolvere, saper
+restare senza riempire, saper accogliere senza
+sapere in anticipo che cosa dire. Quando que-
+ste competenze mancano, si attiva una difesa
+sottile: si alleggerisce, si devia, si torna a ciò
+che è più facile da gestire. È una forma di pro-
+tezione, ma anche una rinuncia. Ogni volta
+che la profondità viene evitata, la relazione
+perde un’occasione di evoluzione.
+Un giorno ho riguardato le nostre chat. Erano
+perfette: divertenti, leggere, sempre all’altezza
+di ciò che ci si aspetta da uno scambio ben riu-
+scito. Poi ho aperto Instagram. Tutti sembra-
+vano così interessanti, così pieni, così a posto.
+Anche noi, forse, dall’esterno avremmo potuto
+sembrare così. Ma mi è venuto un dubbio:
+stiamo davvero costruendo qualcosa, oppure
+stiamo soltanto funzionando bene?
+La cultura della performance non riguarda in-
+fatti soltanto lo studio, il lavoro, la produtti-
+vità. Investe anche il modo in cui esistiamo
+nelle relazioni (Han, 2012). Byung-Chul Han
+104
+ha mostrato come la società della prestazione
+produca soggetti che si auto-ottimizzano, ren-
+dendo il legame una zona di efficienza emo-
+tiva anziché un luogo di trasformazione (Han,
+2013). Poco alla volta impariamo a selezio-
+nare ciò che mostriamo: privilegiamo ciò che
+è piacevole, coerente, interessante, facilmente
+leggibile. Tratteniamo ciò che potrebbe risul-
+tare eccessivo, opaco, ingombrante. Questo
+processo non avviene sempre in modo piena-
+mente consapevole. Si compone di piccoli ag-
+giustamenti continui: una frase riscritta,
+un’emozione trattenuta, una verità rimandata,
+una vulnerabilità trasformata in ironia. Nel
+tempo, però, questi aggiustamenti costrui-
+scono una versione di sé che funziona ma non
+coincide pienamente con ciò che si è. Quando
+questa logica entra nei legami, il rischio è che
+l’incontro venga sostituito dalla rappresenta-
+zione. Si può essere molto presenti e, nello
+stesso tempo, molto poco esposti. Si può ap-
+parire sinceri senza esserlo davvero fino in
+fondo. Si può dare all’altro un’immagine ben
+composta di sé e tuttavia non consentirgli di
+raggiungere la parte più vera, quella che
+avrebbe bisogno di essere accolta senza garan-
+zie. In questo senso, la prestazione relazionale
+non coincide semplicemente con il fingere. È
+105
+qualcosa di più sottile: è imparare a esistere
+in una forma socialmente efficiente ma affet-
+tivamente parziale. Byung-Chul Han ha mo-
+strato come la società della prestazione
+produca soggetti che si auto-sorvegliano e si
+auto-ottimizzano, anche quando non percepi-
+scono più chiaramente il confine tra libertà e
+auto-imposizione. Questa logica, traslata nella
+sfera affettiva, genera relazioni in cui
+l’autenticità viene continuamente corretta per
+non compromettere la fluidità dello scambio.
+Il risultato è un paradosso: più siamo capaci
+di funzionare bene, meno rischiamo di incon-
+trarci davvero. La relazione diventa allora una
+zona di efficienza emotiva, non necessaria-
+mente un luogo di trasformazione.
+Poi qualcosa si è incrinato. Ha detto una cosa
+che mi ha dato fastidio. Non era grave, non era
+offensiva in modo evidente, ma era abbastanza
+per farmi sentire toccata. Volevo dirglielo. Non
+l’ho fatto. Abbiamo cambiato argomento. Da
+fuori sembrava tutto a posto. Dentro no. Quella
+piccola ferita, proprio perché non detta, è rima-
+sta lì. E mi sono accorta di quanto spesso il pro-
+blema non sia ciò che accade, ma il fatto che
+non riusciamo a sostenerne le conseguenze re-
+lazionali.
+106
+Il conflitto, nelle relazioni contemporanee,
+viene spesso vissuto come un segnale di im-
+minente rottura. Si teme che affrontarlo possa
+compromettere ciò che si è costruito, soprat-
+tutto quando il rapporto non ha ancora rag-
+giunto una forma stabile. Ma il conflitto non
+nasce da un errore. Nasce dalla presenza di
+due soggettività reali, con aspettative, storie,
+sensibilità e limiti differenti. Ogni incontro
+autentico, prima o poi, produce una frizione.
+E questa frizione non è necessariamente nega-
+tiva. Può essere il punto in cui la relazione
+smette di essere ideale e diventa vera.Alla fine
+ci ho provato. Gli ho detto che quella cosa mi
+aveva fatto stare male.
+Non ha capito subito. Ha risposto in modo di-
+verso da quello che immaginavo. Mi sono sen-
+tita frustrata. La mia prima reazione è stata
+chiudermi di nuovo, ritirarmi, pensare che forse
+non valesse la pena spiegarsi ancora. È incre-
+dibile quanto, anche quando si decide di par-
+lare, si continui a desiderare una comprensione
+immediata, quasi perfetta. Come se il coraggio
+di esporsi dovesse essere ripagato subito con
+una risposta pienamente soddisfacente.
+La frustrazione è una delle esperienze più dif-
+107
+ficili da sostenere nei legami, perché mette in
+crisi un bisogno elementare: quello di essere
+riconosciuti. Quando l’altro non comprende
+subito, non si sintonizza immediatamente, non
+restituisce l’accoglienza che avevamo sperato,
+quella distanza viene vissuta spesso come un
+rifiuto. Eppure, la distanza è strutturale. L’al-
+tro non coincide mai perfettamente con noi. Ac-
+cettarlo significa ammettere che la relazione
+non è il luogo della conferma continua, ma
+quello di una faticosa e preziosa negoziazione
+tra differenze. In questo senso la vulnerabilità
+non coincide con la debolezza. Coincide piut-
+tosto con la disponibilità ad accettare che nel-
+l’incontro con l’altro non tutto sia controllabile,
+prevedibile, immediatamente rassicurante (Nus-
+sbaum, 2004). È una postura difficile, perché
+espone alla ferita, ma è anche l’unica che renda
+possibile una relazione non ridotta a scambio
+superficiale. Chi non è disposto a sentirsi vul-
+nerabile difficilmente saprà davvero amare.
+Potrà desiderare, cercare compagnia, apprez-
+zare la leggerezza, ma farà più fatica a entrare
+in quello spazio in cui il legame smette di essere
+solo piacevole e diventa trasformativo.
+Poi abbiamo ripreso il discorso. Questa volta
+senza scappare. Non eravamo d’accordo su
+108
+tutto. A un certo punto ho pensato: se cedo,
+perdo. Poi mi sono accorta che non era questa
+la questione. Non si trattava di vincere o per-
+dere, ma di capire se tra noi potesse esistere un
+punto possibile. Non perfetto. Non definitivo.
+Ma reale.
+La negoziazione è uno degli aspetti meno in-
+tuitivi delle relazioni umane, forse perché
+viene spesso confusa con una rinuncia. In re-
+altà è il contrario. Negoziando, si riconosce
+che l’altro esiste davvero e che il suo punto di
+vista non coincide con il nostro. Si esce dalla
+logica della conferma reciproca per entrare in
+una logica di costruzione condivisa. Non si
+annullano le differenze: si cerca di renderle
+abitabili. È qui che il legame smette di essere
+il luogo in cui ciascuno pretende di trovare
+una replica di sé e diventa lo spazio in cui si
+apprende la convivenza con l’alterità. Ma la
+negoziazione, da sola, non basta. Perché una
+relazione possa davvero crescere, occorre
+anche la possibilità della riparazione. Riparare
+non significa far finta che nulla sia accaduto,
+né cancellare la ferita. Significa riconoscere
+che qualcosa si è incrinato, accettare di non
+essere stati all’altezza, provare a ricostruire fi-
+ducia e senso. La riparazione è un gesto pro-
+109
+fondamente umano e pedagogico. Ciò che
+rende solido un legame non è l’assenza di er-
+rori, ma la possibilità di riconoscerli e trasfor-
+marli. In questo senso, l’incontro autentico
+non è una conferma continua di sé, ma una fa-
+ticosa negoziazione tra differenze dove l’altro
+è finalmente riconosciuto nella sua alterità
+reale (Buber, 1923). Educare all’incontro si-
+gnifica allora educare alla responsabilità di
+tornare, spiegare e ricucire. La psicoanalisi re-
+lazionale e la riflessione educativa contempo-
+ranea insistono molto su questo punto: ciò che
+rende solido un legame non è l’assenza di er-
+rori, ma la possibilità di riconoscerli e trasfor-
+marli. Anche la crescita del bambino avviene
+dentro una trama di rotture e riparazioni. Non
+esiste una relazione primaria perfettamente ar-
+monica. Esiste piuttosto una continuità suffi-
+cientemente buona, fatta anche di mancanze,
+incomprensioni, ricomposizioni. In questo
+senso, educare all’incontro significa anche edu-
+care alla riparazione: non alla pretesa di non
+sbagliare mai, ma alla responsabilità di tornare,
+spiegare, ascoltare, ricucire dove possibile.
+Da un punto di vista pedagogico, tutto questo
+è essenziale. Educare alla vulnerabilità non si-
+gnifica insegnare a esporsi senza difese, né
+idealizzare una trasparenza impossibile. Si-
+110
+gnifica piuttosto rendere possibile uno spazio
+in cui il rischio dell’incontro possa essere so-
+stenuto senza diventare devastante. Significa
+formare soggetti capaci di ascoltare, di aspet-
+tare, di parlare in modo autentico, di attraver-
+sare il conflitto senza trasformarlo subito in
+distruzione, di restare presenti anche quando
+non controllano più completamente l’imma-
+gine di sé. Una pedagogia dell’incontro do-
+vrebbe allora sottrarsi tanto all’illusione della
+fusione quanto alla logica della prestazione
+(Banfi, 1960). Non si tratta di insegnare a es-
+sere sempre in sintonia, ma di educare alla
+presenza: una presenza capace di sostenere
+l’incertezza e di non fuggire davanti all’opa-
+cità dell’altro (Buber, 1923). In un mondo che
+ci addestra a funzionare, la relazione resta uno
+dei pochi luoghi in cui possiamo ancora im-
+parare a “essere”. Si tratta di educare alla pre-
+senza. A una presenza capace di sostenere
+l’incertezza, di non fuggire subito davanti
+all’opacità dell’altro, di tollerare il fatto che
+ogni legame significativo attraversi momenti
+di incomprensione e di squilibrio. In un
+mondo che ci addestra a funzionare, la rela-
+zione resta uno dei pochi luoghi in cui pos-
+siamo ancora imparare a essere. Ma perché
+questo accada occorre uscire dalla seduzione
+111
+della prestazione. Occorre accettare che i le-
+gami più veri non sono quelli perfetti, né
+quelli sempre facili, né quelli sempre ben riu-
+sciti dall’esterno. Sono quelli in cui, almeno
+a volte, ci si permette di non essere impecca-
+bili. Di non essere già pronti. Di non sapere
+subito come si fa. Sono quelli in cui la vulne-
+rabilità smette di apparire un difetto e torna a
+essere la condizione stessa dell’incontro.
+Forse è proprio questo che oggi fa più paura:
+non il dolore in sé, ma la perdita del controllo.
+Il fatto che l’altro possa toccarci in una zona
+non del tutto gestibile, che possa sorprenderci,
+deluderci, spiazzarci, cambiare il modo in cui
+ci percepiamo. Eppure senza questa possibi-
+lità non c’è vera relazione. C’è al massimo un
+accordo ben calibrato tra due immagini che si
+rassicurano a vicenda. Educare all’incontro si-
+gnifica allora educare a una forma più corag-
+giosa di umanità. Una umanità che non
+elimina il rischio, ma lo assume come parte
+inevitabile del legame. Una umanità che non
+confonde la protezione con la chiusura, né la
+libertà con la distanza. Una umanità che sa
+che l’altro non è mai del tutto prevedibile e
+che proprio per questo può diventare occa-
+sione di trasformazione. Se la cultura contem-
+poranea ci spinge continuamente a mostrarci
+112
+forti, efficienti, pronti, desiderabili, la peda-
+gogia può ancora difendere il valore di ciò che
+non funziona subito: la pausa, il fraintendi-
+mento, la parola esitante, il tentativo imper-
+fetto di spiegarsi, il ritorno dopo un
+allontanamento, la disponibilità a riprovare. In
+questi movimenti minimi, spesso invisibili, si
+gioca la qualità più vera dei legami. Per que-
+sto la vulnerabilità non va letta come una
+mancanza da colmare, ma come una possibi-
+lità da custodire. È ciò che ci impedisce di
+chiuderci completamente nell’autosufficienza.
+È ciò che ci rende toccabili, e quindi educa-
+bili. È ciò che apre il rapporto con l’altro non
+come consumo di presenza, ma come espe-
+rienza di trasformazione reciproca. E forse,
+alla fine, incontrarsi davvero significa proprio
+questo: smettere di funzionare per cominciare,
+almeno un poco, a esserci. Non in modo per-
+fetto. Non senza ferite. Non senza esitazioni.
+Ma in modo sufficientemente vero da lasciare
+che l’altro non resti una figura esterna bensì
+una presenza capace di incidere sulla nostra
+storia.
+Erica Spadafora
+113
+Bibliografia
+Banfi, A., Bertin, G. M. (1961). La problemati-
+cità dell’educazione e il pensiero pedagogi-
+co. Italia: La Nuova Italia.
+Bauman, Z. (2017). Amore liquido: Sulla fragi-
+lità dei legami affettivi. Italia: Editori Laterza.
+Buber, M. (1993). Il principio dialogico e altri
+saggi. Italia: San Paolo.
+Han, B. (2012). La società della stanchezza. Ita-
+lia: Nottetempo.
+Han, B. (2013). Eros in agonia. Italia: Notte-
+tempo.
+Nussbaum, M. C. (2007). Nascondere l’uma-
+nità. Il disgusto, la vergogna, la
+legge. Italia: Carocci.
+Nussbaum, M. C. (1996). La fragilità del bene.
+Fortuna ed etica nella tragedia e nella filosofia
+greca. Italia: Il Mulino.
+114
+VI Parte
+Troppo, subito, più niente.
+Love bombing, ghosting e pedagogia della
+sparizione.
+All’inizio non mi sembrava eccessivo. Mi
+sembrava bello. Mi scriveva appena sveglio e
+io trovavo i suoi messaggi prima ancora di al-
+zarmi dal letto. Mi scriveva la sera, quando
+ormai avevo quasi spento tutto, come se vo-
+lesse essere l’ultima voce della giornata. Mi
+scriveva durante il pomeriggio per sapere che
+cosa stessi facendo, se avessi mangiato, come
+mi sentissi, che cosa pensassi di una canzone,
+di una frase, di una fotografia. C’era una con-
+tinuità che, all’inizio, interpretavo come atten-
+zione. Una premura che mi faceva sentire
+vista. Non semplicemente guardata: vista dav-
+vero. Non era soltanto la frequenza. Era il
+tono. Le parole arrivavano grandi, forse
+troppo grandi, ma dette con una naturalezza
+che le rendeva credibili. Diceva che non gli
+115
+era mai capitato di sentirsi così vicino a qual-
+cuno in così poco tempo. Diceva che con me
+era diverso. Diceva che gli sembrava di cono-
+scermi da sempre. Ogni frase sembrava co-
+struire un’intimità anticipata, come se il
+tempo della conoscenza potesse essere saltato
+e sostituito da una specie di evidenza emotiva
+immediata. Non c’era ancora stata una vera
+storia, eppure sembrava già esserci una pro-
+messa. Non c’era ancora stata una prova, ep-
+pure sembrava già esserci una certezza. Non
+ci conoscevamo abbastanza, eppure lui par-
+lava come se avesse già attraversato parti pro-
+fonde di me. Io, che pure una parte di
+prudenza continuavo a conservarla, cominciai
+lentamente a cedere a quella intensità. Non
+perché fossi ingenua. Ma perché quando qual-
+cuno ti fa sentire importante in modo così
+netto, è difficile non lasciarsi toccare. È diffi-
+cile non credere, almeno per un momento, che
+quella presenza così insistente abbia qualcosa
+di raro. È difficile non pensare che, forse, pro-
+prio quella velocità dica qualcosa della forza
+del sentimento. In fondo, quando una persona
+arriva con tanta decisione, quando sembra ri-
+conoscerti senza esitazioni, quando ti restitui-
+sce l’immagine di qualcuno che finalmente
+conta, una parte di te vorrebbe credere che sia
+116
+tutto vero. Forse è proprio questo il primo nu-
+cleo del love bombing: non l’affetto in sé, non
+l’attenzione in sé, non il desiderio di esserci,
+ma il modo in cui tutto arriva troppo presto,
+troppo pieno, troppo saturo, e proprio per que-
+sto finisce per assomigliare a una verità.
+Quello che dovrebbe maturare lentamente
+viene anticipato. Quello che dovrebbe chie-
+dere tempo viene pronunciato subito. La fidu-
+cia, la prossimità, l’investimento emotivo,
+perfino una forma di promessa, compaiono
+prima ancora che il legame abbia attraversato
+le sue soglie più semplici e più necessarie. Il
+tempo reale dell’incontro viene sostituito da
+un’accelerazione. Ma quando si è dentro que-
+sta accelerazione non la si riconosce facil-
+mente come tale. La si scambia per intensità.
+La si interpreta come autenticità. Si pensa che
+la velocità non tolga nulla alla verità del sen-
+timento, e che anzi, forse, la confermi. Sembra
+quasi che ciò che arriva subito, proprio perché
+arriva con tanta forza, sia più vero di ciò che
+cresce lentamente. Eppure non sempre è così.
+A volte ciò che arriva subito non ha ancora ra-
+dici. A volte ciò che travolge non conosce
+davvero. A volte ciò che riempie ogni spazio
+non sta amando: sta occupando.In fondo, ogni
+essere umano desidera sentirsi scelto. Desi-
+117
+dera occupare un posto nitido nella vita di
+qualcuno. Desidera essere cercato, atteso, ri-
+conosciuto. Dentro ognuno di noi abita un bi-
+sogno profondo di conferma affettiva, di
+presenza, di reciprocità. Per questo il love
+bombing non funziona solo come strategia
+dell’altro: funziona perché intercetta un biso-
+gno reale. Raggiunge un punto scoperto. Parla
+a una fame di riconoscimento che nessuno può
+dire di non conoscere. Non seduce soltanto
+perché promette amore; seduce perché pro-
+mette di colmare una mancanza. Dice, impli-
+citamente: finalmente qualcuno ti vede,
+finalmente qualcuno ti sceglie, finalmente
+qualcuno resta.Così iniziai ad abituarmi a
+quella presenza. O forse sarebbe più giusto
+dire: iniziai a regolarvi sopra una parte della
+mia giornata. Aspettavo i messaggi. Ne perce-
+pivo il ritmo. Mi rassicuravo nella loro conti-
+nuità. Se tardava, sentivo già una piccola
+incrinatura. Se arrivava, tornava subito una
+specie di sollievo. Senza accorgermene, ciò
+che all’inizio mi sembrava soltanto piacevole
+stava diventando una condizione. Non era an-
+cora dipendenza, forse, ma certamente era già
+qualcosa di più di una semplice conoscenza.
+L’altro aveva cominciato a occupare, attra-
+verso l’intensità della sua presenza, una por-
+118
+zione crescente del mio paesaggio interiore.
+Non c’era stato ancora il tempo di vedere dav-
+vero i suoi limiti, le sue esitazioni, le sue con-
+traddizioni. Non c’era stato il tempo di
+attraversare il quotidiano, di misurare la te-
+nuta del legame fuori dalla fase euforica del-
+l’inizio, di verificare se quella intensità
+sapesse trasformarsi in cura, in continuità, in
+verità. Eppure io ero già dentro. Dentro una
+scena emotiva molto più avanzata rispetto alla
+realtà del rapporto. Era come se le parole
+avessero corso più velocemente della vita.
+Come se avessimo costruito un’intimità ver-
+bale prima ancora di averla vissuta davvero.
+Come se il legame fosse già arrivato a un
+punto che, nella realtà, non aveva ancora at-
+traversato.Il love bombing confonde proprio
+perché non si presenta immediatamente come
+una ferita. Non arriva con il volto della man-
+canza, ma con quello dell’eccesso. Non sot-
+trae, almeno all’inizio; aggiunge. Non
+raffredda; accende. Non allontana; avvicina
+troppo. E proprio per questo è difficile rico-
+noscerlo. Perché siamo più preparati a difen-
+derci dall’indifferenza che dall’eccesso di
+attenzione. Sappiamo temere chi ci trascura,
+meno chi ci riempie. Sappiamo nominare la
+freddezza, meno la saturazione. E invece
+119
+anche l’eccesso può diventare una forma di
+squilibrio, soprattutto quando non lascia spa-
+zio al tempo necessario perché l’altro emerga
+davvero nella sua realtà.A poco a poco, quella
+presenza così intensa iniziò a sembrarmi indi-
+spensabile. Non perché lo fosse davvero, ma
+perché era stata costruita così: come un ritmo
+continuo, come una conferma ripetuta, come
+una specie di appuntamento emotivo costante.
+Mi svegliavo e cercavo il suo nome sullo
+schermo. Durante la giornata mi accorgevo di
+pensare a ciò che gli avrei raccontato. Se ac-
+cadeva qualcosa, anche minima, immaginavo
+già il modo in cui gliela avrei detta. La sua
+presenza cominciava a precedere perfino la
+mia esperienza. Non vivevo più soltanto qual-
+cosa: vivevo anche pensando a come sarebbe
+entrata dentro quella conversazione.Questo è
+uno degli aspetti più delicati del love bom-
+bing: la persona non entra soltanto nella nostra
+vita, ma entra nel modo in cui iniziamo a per-
+cepirla. Diventa filtro, attesa, misura. La gior-
+nata si organizza intorno alla possibilità del
+messaggio, della risposta, della conferma.
+L’altro diventa una specie di specchio conti-
+nuo nel quale cercare il proprio valore. E
+quando il proprio valore comincia a dipendere
+dalla continuità di quello sguardo, ogni varia-
+120
+zione diventa minacciosa.Poi, quasi impercet-
+tibilmente, qualcosa cambiò.Non ci fu una
+frattura netta. Non ci fu una lite. Non ci fu un
+momento preciso in cui avrei potuto dire:
+ecco, è successo qui. Cambiò il ritmo. E que-
+sto, all’inizio, è ciò che più confonde: perché
+quando un legame nasce nell’eccesso della
+presenza, anche il suo logorarsi non avviene
+subito come sparizione completa. Prima ral-
+lenta. Poi si sfilaccia. Poi si sottrae.Una rispo-
+sta arrivò più tardi del solito. Un’altra fu più
+breve. Alcuni messaggi che un tempo avreb-
+bero aperto conversazioni lunghe si ridussero
+a formule veloci, senza profondità. Le do-
+mande diminuirono. L’insistenza si spense. Le
+parole grandi, quelle pronunciate troppo pre-
+sto, furono le prime a sparire. Prima erano
+ovunque. Poi sembravano diventate improv-
+visamente troppo pesanti per essere ripetute.
+Come se ciò che fino a poco tempo prima era
+stato detto con assoluta naturalezza ora non
+avesse più un luogo in cui stare.Per qualche
+giorno continuai a dirmi che non significava
+niente. Che era normale. Che forse ero io a es-
+sere diventata troppo attenta ai dettagli. Ma la
+verità è che, quando qualcuno ti ha abituata a
+una presenza intensa e quasi continua, ti basta
+pochissimo per accorgerti della sua ritrazione.
+121
+Ogni vuoto si amplifica. Ogni ritardo diventa
+segnale. Ogni silenzio pesa più del dovuto,
+proprio perché viene misurato contro un prima
+troppo pieno.Provai a capire. Rilessi i mes-
+saggi. Ripensai alle ultime conversazioni. Mi
+chiesi se avessi detto qualcosa di sbagliato, se
+avessi chiesto troppo, se fossi diventata im-
+provvisamente meno interessante. Cercavo
+una causa, perché la mente fatica a sopportare
+ciò che cambia senza spiegazione. Quando
+l’altro non dice nulla, siamo noi a parlare al
+posto suo. E spesso lo facciamo contro noi
+stessi. Riempiamo il silenzio con ipotesi,
+colpe, ricostruzioni, dettagli minuscoli che di-
+ventano indizi. Una frase riletta dieci volte.
+Una risposta più fredda. Una visualizzazione
+senza replica. Un cambiamento di tono. Tutto
+diventa materiale per un processo interiore in
+cui, quasi sempre, l’imputato finisce per es-
+sere chi è rimasto.Ma la difficoltà più grande
+era un’altra: non c’era una verità su cui appog-
+giarmi. Non c’era una parola. Non c’era un
+chiarimento. Solo una progressiva sottra-
+zione.Poi arrivò il silenzio.Non un silenzio di-
+chiarato. Non il silenzio di chi dice: non riesco
+più, non me la sento, non voglio continuare.
+Fu un silenzio vuoto di responsabilità. Una
+scomparsa. Un’assenza che non si consegnava
+122
+a nessuna frase finale. Allora capii che il pro-
+blema non era solo la fine del rapporto. Il pro-
+blema era il modo in cui quella fine si stava
+producendo: senza soglia, senza parola, senza
+riconoscimento dell’altro.E fu lì che iniziai a
+comprendere quanto il ghosting sia una delle
+forme più crudeli della contemporaneità affet-
+tiva. Non perché contenga necessariamente
+più dolore di altre rotture, ma perché lascia il
+dolore senza linguaggio. E quando il dolore
+non trova linguaggio, diventa più opaco, più
+insistente, più difficile da elaborare.Continuai
+a controllare il telefono come se da un mo-
+mento all’altro dovesse arrivare qualcosa ca-
+pace di rimettere ordine. Non speravo
+necessariamente in un ritorno. Avrei voluto
+anche solo una frase vera. Una frase che di-
+cesse che cosa era successo, che cosa era cam-
+biato, perché ciò che fino a pochi giorni prima
+sembrava così totalizzante ora veniva lasciato
+scivolare via come se non avesse avuto peso.
+Mi sarebbe bastato anche un dolore esplicito.
+Mi sarebbe bastato sapere che qualcosa era fi-
+nito. Perché una fine detta fa male, ma almeno
+ha un confine. Una sparizione, invece, non
+chiude: sospende.Il silenzio, quando segue un
+eccesso di presenza, non è mai neutro. È un
+vuoto che continua a lavorarti dentro. Ti co-
+123
+stringe a riempirlo con ipotesi, con colpe, con
+nostalgie, con dubbi sul tuo stesso sguardo. Ti
+porta a chiederti se hai immaginato troppo, se
+hai creduto troppo, se hai letto come profon-
+dità ciò che era soltanto accelerazione. Ti co-
+stringe a tornare su ogni parola, su ogni
+promessa, su ogni gesto, non tanto per ricor-
+dare, ma per capire se qualcosa fosse già
+scritto dall’inizio e tu non l’avessi visto.Da un
+punto di vista pedagogico, love bombing e
+ghosting non sono semplicemente due feno-
+meni linguistici della contemporaneità digi-
+tale, né due etichette mediatiche da repertorio
+psicologico. Sono, piuttosto, sintomi di una
+trasformazione più ampia del rapporto con il
+legame. Dicono qualcosa del nostro modo di
+entrare nelle relazioni e del nostro modo di
+uscirne. Dicono qualcosa del rapporto con-
+temporaneo con il tempo, con la presenza, con
+il limite, con la promessa, con la responsabi-
+lità della parola.Il love bombing, infatti, non
+è soltanto “troppa attenzione”. È una forma di
+intensificazione prematura del rapporto che
+sostituisce il tempo della costruzione con la
+saturazione emotiva. Anticipa il legame in-
+vece di lasciarlo maturare. Riempie subito uno
+spazio che dovrebbe essere abitato lenta-
+mente. In questo senso esso appartiene perfet-
+124
+tamente a una cultura che premia la rapidità,
+l’impatto, l’accensione, la spettacolarità del-
+l’inizio. Viviamo in un tempo che fa fatica ad
+accettare la gradualità. Tutto deve apparire su-
+bito significativo, subito forte, subito memo-
+rabile. Anche l’amore rischia di essere
+trascinato in questa logica: non deve più cre-
+scere, deve imporsi. Non deve più prendere
+forma, deve esplodere. Ma ciò che esplode
+non sempre dura; e ciò che travolge non sem-
+pre conosce.Il ghosting, specularmente, è l’al-
+tra faccia della stessa incapacità. Là dove il
+love bombing salta il tempo dell’inizio, il gho-
+sting cancella il tempo della fine. Non sa abi-
+tare la soglia del congedo. Non sa sostenere il
+disagio del chiarimento, la fatica della verità,
+la responsabilità di riconoscere all’altro il di-
+ritto di sapere. Si sottrae. Scompare. Evita. E
+nel farlo produce una ferita tipicamente con-
+temporanea: la sparizione come forma di chiu-
+sura. Ma la sparizione non è chiusura. È, al
+contrario, una sospensione traumatica del
+senso.Per questo love bombing e ghosting non
+sono affatto opposti. Sono due facce della
+stessa povertà relazionale. Prima si anticipa
+troppo, poi si ritira troppo. Prima si promette
+una vicinanza totalizzante, poi si nega perfino
+una parola finale. In entrambi i casi manca la
+125
+competenza decisiva del legame: la capacità
+di abitare il suo tempo umano. Un tempo fatto
+di gradualità, misura, prova, delusione, chia-
+rimento, ripresa, persino conflitto. Un tempo
+in cui l’altro non è una scena emotiva costruita
+per rassicurarci, ma una presenza reale, libera,
+non perfettamente controllabile, che richiede
+incontro e non solo intensità.Qui si apre con
+forza la questione educativa. Educare ai le-
+gami oggi significa, prima di tutto, educare al
+tempo. John Dewey ha mostrato che non ogni
+esperienza è automaticamente educativa; lo
+diventa solo quando può essere attraversata,
+riflessa, rielaborata, integrata nel processo
+della crescita (Dewey, 2014). Il love bombing,
+proprio perché brucia i passaggi, ostacola que-
+sta maturazione. Produce l’illusione di una
+pienezza senza esperienza. Il ghosting, a sua
+volta, interrompe brutalmente il lavoro simbo-
+lico della separazione. Togliendo la parola,
+sottrae una condizione essenziale all’elabora-
+zione dell’esperienza stessa. In entrambi i
+casi, il rapporto viene vissuto fuori dal tempo
+formativo: troppo compresso all’inizio, troppo
+negato alla fine.La pedagogia, allora, è chia-
+mata a restituire dignità al ritmo umano del-
+l’incontro. Questo significa riconoscere che i
+legami veri non nascono saturando l’altro, ma
+126
+lasciando che emerga nella sua differenza. Si-
+gnifica accettare che l’amore non ha bisogno
+di invadere per essere autentico. Luigina Mor-
+tari ha insistito sul fatto che la cura è pratica
+dell’attenzione, del sostare, del custodire, non
+semplice intensità emotiva (Mortari, 2006).
+Una relazione che travolge subito può appa-
+rire calorosa, ma non sempre sa custodire. Può
+riempire, ma non accompagnare. Può accen-
+dere, ma non avere ancora la struttura inte-
+riore necessaria a durare.Educare agli affetti
+significa allora anche educare a distinguere tra
+intensità e profondità. L’intensità riguarda il
+grado dell’emozione; la profondità riguarda la
+qualità del legame. La prima può essere im-
+mediata; la seconda chiede tempo. La prima
+può impressionare; la seconda trasforma.
+Nella cultura contemporanea, però, la prima
+tende continuamente a mimare la seconda. Si
+crede che ciò che è forte sia per questo stesso
+motivo anche vero. Ma non è così. Una pre-
+senza può essere molto intensa e tuttavia non
+ancora responsabile. Una parola può essere
+molto bella e tuttavia non ancora capace di
+mantenersi nel tempo. Un inizio può essere
+travolgente e tuttavia non contenere ancora
+una reale disponibilità all’incontro.Byung-
+Chul Han ha mostrato come la società dell’ac-
+127
+celerazione, della trasparenza e della presta-
+zione tenda a espellere la lentezza, la negati-
+vità, la distanza, tutto ciò che non si lascia
+immediatamente consumare o mostrare (Han,
+2017; Han, 2022). Eppure i legami hanno bi-
+sogno proprio di questo: di un intervallo, di
+una opacità, di una durata che non coincida
+con la sola eccitazione dell’inizio. Hanno bi-
+sogno di un tempo in cui l’altro possa smettere
+di essere immagine e diventare persona.
+Hanno bisogno di passare attraverso il limite,
+la differenza, perfino la delusione. Perché solo
+quando l’altro non coincide più perfettamente
+con ciò che avevamo immaginato, possiamo
+cominciare davvero a incontrarlo.Il ghosting,
+inoltre, apre un’altra questione decisiva:
+quella del riconoscimento dell’altro. Sparire
+senza parola non significa solo evitare una
+conversazione scomoda. Significa negare al-
+l’altro la dignità di interlocutore fino alla fine.
+In questo senso il ghosting è anche un falli-
+mento dialogico. Paulo Freire ha mostrato che
+l’autenticità della relazione si gioca nella pos-
+sibilità del dialogo, del reciproco riconosci-
+mento, della parola che non schiaccia ma
+neppure cancella l’altro (Freire, 2004).
+Quando una relazione si interrompe nel silen-
+zio della sparizione, non viene negato soltanto
+128
+il futuro del legame; viene colpita la stessa
+possibilità che quel legame venga ricono-
+sciuto nella sua verità passata. L’altro viene
+lasciato solo con il compito di interpretare,
+raccogliere, giustificare.In questo senso il
+ghosting è una forma di deresponsabilizza-
+zione affettiva che rivela una povertà educa-
+tiva prima ancora che emotiva. Non si tratta
+soltanto di mancanza di coraggio individuale.
+Si tratta di una difficoltà più ampia a sostenere
+la parola quando essa non coincide con la gra-
+tificazione, con l’inizio, con l’euforia. Sap-
+piamo scrivere molto quando desideriamo
+entrare nella vita di qualcuno; spesso non sap-
+piamo dire nulla quando decidiamo di uscirne.
+Ma anche il congedo è una forma della rela-
+zione. Anche la fine chiede una postura etica.
+Anche l’interruzione, quando è necessaria,
+può essere attraversata con una misura di
+cura.Sarebbe però troppo semplice ridurre
+tutto alla colpa individuale. Il problema è più
+ampio. La cultura digitale e il dating online
+non inventano da zero l’instabilità dei legami,
+ma ne facilitano alcune forme. Rendono sem-
+plice l’accensione rapida e semplice la sottra-
+zione improvvisa. Creano un ambiente in cui
+la connessione continua può essere facilmente
+confusa con la prossimità e in cui la reperibi-
+129
+lità permanente produce l’illusione di una in-
+timità già costituita. Allo stesso tempo, la
+stessa infrastruttura tecnica consente di spa-
+rire con pochi gesti: non rispondere, visualiz-
+zare senza replicare, cancellarsi, scivolare
+altrove.Il legame, così, viene esposto a una
+doppia deriva: può essere intensificato artifi-
+cialmente e interrotto senza assunzione di re-
+sponsabilità. Un messaggio può accendere una
+giornata. Una mancata risposta può rovinarla.
+Una visualizzazione può diventare una ferita.
+Una presenza online può rendere ancora più
+incomprensibile l’assenza nella conversa-
+zione. “È connesso, ma non risponde”: in que-
+sta frase minima si concentra una parte della
+sofferenza affettiva contemporanea. L’altro
+non è semplicemente assente; è visibile nella
+sua assenza. C’è altrove, ma non qui. Esiste,
+ma non per me. Continua a muoversi nel
+mondo digitale, ma ha interrotto il filo che lo
+legava alla mia attesa.Questo produce effetti
+profondi sulle soggettività, soprattutto giova-
+nili. Chi subisce un love bombing impara,
+spesso senza volerlo, a diffidare perfino del-
+l’entusiasmo autentico. Chi subisce ghosting
+rischia di interiorizzare l’idea di non meritare
+nemmeno una parola finale. Si incrina il rap-
+porto con il proprio valore, ma anche con il
+130
+tempo della fiducia. Non si soffre soltanto per
+la perdita dell’altro; si soffre per la confusione
+che resta, per la difficoltà di credere ancora
+alla stabilità delle parole, per il sospetto che
+ogni vicinanza intensa possa essere solo il pre-
+ludio a una successiva sparizione.Per questo
+una pedagogia dei legami oggi non può limi-
+tarsi a esortare genericamente al rispetto o alla
+sincerità. Deve interrogare le forme concrete
+in cui il legame viene vissuto. Deve educare
+alla gradualità dell’inizio e alla responsabilità
+della fine. Deve insegnare che esiste una mi-
+sura dell’avvicinamento e una misura del con-
+gedo. Non per rendere i rapporti freddi o
+trattenuti, ma per restituire loro una struttura
+umana, abitabile, non predatoria.Educare alla
+gradualità significa riconoscere che il legame
+non cresce nella saturazione, ma nella dispo-
+nibilità a conoscere davvero. Significa accet-
+tare che l’altro non debba subito riempire tutto
+il nostro orizzonte. Significa lasciare che l’en-
+tusiasmo non diventi invasione, che l’atten-
+zione non si trasformi in occupazione
+simbolica, che il desiderio non anticipi ciò che
+ancora non conosce. Significa comprendere
+che il tempo non è un ostacolo all’amore, ma
+una sua condizione. Perché solo il tempo per-
+mette di distinguere tra ciò che è slancio e ciò
+131
+che è cura, tra ciò che è promessa e ciò che è
+presenza, tra ciò che è emozione e ciò che può
+diventare legame.Educare alla responsabilità
+della fine significa invece comprendere che
+interrompere un rapporto, quando necessario,
+non autorizza a cancellare l’altro. Il congedo
+maturo non evita la parola; la cerca. Non pre-
+tende che tutto sia indolore; prova almeno a
+essere giusto. Non sempre si può evitare la
+sofferenza, ma si può evitare l’umiliazione
+della cancellazione. Non sempre si può offrire
+una spiegazione completa, ma si può offrire
+almeno il riconoscimento minimo di ciò che è
+stato. Dire “non posso continuare” può ferire,
+ma non equivale a sparire. Dire “qualcosa è
+cambiato” può fare male, ma restituisce all’al-
+tro una realtà su cui appoggiarsi. Il silenzio as-
+soluto, invece, lascia la persona dentro una
+domanda senza pareti.In questo quadro, anche
+la categoria pedagogica del limite riacquista
+centralità. Il love bombing è incapace di ac-
+cettare il limite dell’inizio: il fatto che non
+tutto possa essere detto subito, che non tutta
+l’intimità possa essere anticipata, che non
+ogni desiderio debba immediatamente espan-
+dersi in totalità. Il ghosting è incapace di ac-
+cettare il limite della relazione finita: il fatto
+che anche separarsi abbia un costo, una re-
+132
+sponsabilità, un debito di parola. Martha Nus-
+sbaum ha mostrato come la vulnerabilità non
+sia un incidente dell’umano, ma una sua con-
+dizione strutturale (Nussbaum, 2001). I le-
+gami ci espongono, ci rendono feribili, e
+proprio per questo richiedono cura, misura, re-
+sponsabilità. Quando questa vulnerabilità
+viene sfruttata attraverso l’eccesso iniziale o
+ignorata attraverso la sparizione finale, allora
+la relazione smette di essere luogo di crescita
+e diventa spazio di disorientamento.C’è poi un
+aspetto ulteriore, forse meno evidente ma de-
+cisivo. Il love bombing e il ghosting colpi-
+scono anche il rapporto con la memoria. Nel
+love bombing si produce una memoria antici-
+pata: si parla come se ci fosse già una storia,
+come se esistessero già ricordi, appartenenze,
+destini comuni. Nel ghosting, invece, quella
+stessa memoria viene improvvisamente svuo-
+tata. Ciò che era stato caricato di significato
+sembra perdere valore senza spiegazione. La
+persona si chiede allora che cosa debba fare
+dei messaggi, delle parole, dei momenti con-
+divisi. Deve considerarli veri? Deve conside-
+rarli falsi? Deve archiviarli come illusione?
+Deve proteggerli come qualcosa che, almeno
+per lei, è stato reale?Questa incertezza è una
+delle ferite più profonde. Perché non riguarda
+133
+solo l’altro, ma la fiducia nella propria capa-
+cità di leggere l’esperienza. Dopo il ghosting
+non ci si chiede soltanto: perché se n’è an-
+dato? Ci si chiede anche: perché io non l’ho
+capito? Perché ho creduto? Perché mi sono fi-
+data? Perché ho dato peso a parole che forse
+non lo avevano? In questo modo la sparizione
+dell’altro diventa anche incrinatura dello
+sguardo su di sé. Non viene meno soltanto una
+relazione. Viene meno, per un tratto, la fiducia
+nella propria percezione.La pedagogia può in-
+tervenire proprio qui: non per offrire risposte
+facili, ma per restituire senso all’esperienza.
+Educare non significa impedire ogni ferita. Si-
+gnifica aiutare a non trasformare ogni ferita in
+colpa. Significa dare parole a ciò che altri-
+menti resta confuso. Significa insegnare che
+essere stati attraversati da un eccesso di atten-
+zione non rende ingenui; dice piuttosto quanto
+sia umano desiderare riconoscimento. Signi-
+fica insegnare che essere stati lasciati senza
+spiegazione non dice il valore di chi resta, ma
+la povertà relazionale di chi non ha saputo
+congedarsi. Significa trasformare il dolore in
+consapevolezza senza irrigidire il cuore nella
+sfiducia.Forse una parte dell’educazione sen-
+timentale contemporanea deve ripartire da
+qui: dal restituire valore alla presenza non in-
+134
+vasiva e alla parola non elusa. Dalla capacità
+di dire senza travolgere. Dalla capacità di av-
+vicinarsi senza occupare. Dalla capacità di
+uscire senza cancellare. Dal comprendere che
+non tutto ciò che è travolgente è amore e non
+tutto ciò che tace è innocuo.La vera presenza
+non coincide con l’occupazione dell’altro;
+coincide con una forma di cura che sa rispet-
+tarne il tempo, il respiro, la differenza. E la
+vera fine non coincide con la fuga; coincide
+con il coraggio difficile della soglia. Non sem-
+pre una relazione può continuare. Non sempre
+restare è giusto. Non sempre ciò che nasce in-
+tensamente possiede davvero la forza per du-
+rare. Ma anche quando un legame finisce,
+resta il modo in cui lo si lascia finire. Resta la
+responsabilità della parola. Resta la cura mi-
+nima dovuta a ciò che, per un tratto, ha avuto
+un significato. Forse la maturità affettiva co-
+mincia proprio quando si smette di pensare
+che il legame debba o incendiare tutto o dis-
+solversi nel nulla. Comincia quando si accetta
+che la forma più umana dell’incontro non è né
+l’eccesso né la sparizione, ma la misura.
+Quella misura che non spegne il desiderio, ma
+gli dà durata. Quella misura che non rende in-
+nocue le separazioni, ma almeno le consegna
+a una parola. Quella misura che impedisce di
+135
+trattare l’altro come scena emotiva prima, e
+come residuo cancellabile poi. Perché anche
+il modo in cui iniziamo una relazione, e il
+modo in cui la lasciamo, dice qualcosa di noi.
+Non tutto ciò che entra nella nostra vita è de-
+stinato a restare, ma nulla di ciò che ha toccato
+davvero l’esperienza di qualcuno dovrebbe es-
+sere cancellato come se non fosse mai esistito.
+Veronica Iantorno
+136
+Bibliografia
+Bauman, Z. (2013). Amore liquido. Sulla fragi-
+lità dei legami affettivi. Laterza, Roma-Bari.
+Bowlby, J. (1989). Una base sicura. Applica-
+zioni cliniche della teoria dell’attaccamento.
+Raffaello Cortina, Milano.
+Dewey, J. (2014). Esperienza e educazione. Raf-
+faello Cortina, Milano.
+Freire, P. (2004). Pedagogia dell’autonomia.
+EGA, Torino.
+Giddens, A. (1995). La trasformazione dell’in-
+timità. Sessualità, amore ed erotismo nelle so-
+cietà moderne. Il Mulino, Bologna.
+Han, B.-C. (2017). L’espulsione dell’altro. Not-
+tetempo, Roma.
+Han, B.-C. (2022). Le non cose. Come abbiamo
+smesso di vivere il reale. Einaudi, Torino.
+Illouz, E. (2012). Perché l’amore fa soffrire. Il
+Mulino, Bologna.
+Le Breton, D. (2018). Fuggire da sé. Una tenta-
+zione contemporanea. Raffaello Cortina, Mi-
+lano.
+Mortari, L. (2006). La pratica dell’aver cura.
+Mondadori, Milano.
+Nussbaum, M. C. (2001). L’intelligenza delle
+emozioni. Il Mulino, Bologna.
+Rosa, H. (2021). Accelerazione e alienazione.
+137
+Per una teoria critica del tempo nella tarda mo-
+dernità. Einaudi, Torino.
+Turkle, S. (2012). Insieme ma soli. Perché ci
+aspettiamo sempre più dalla tecnologia e sempre
+meno dagli altri. Codice, Torino.
+138
+Conclusione
+La forma educativa degli affetti.
+C’è una cosa che queste pagine, nel loro in-
+sieme, mi consegnano con particolare chia-
+rezza: gli affetti non sono mai soltanto ciò che
+accade tra due persone. Sono anche il modo
+in cui impariamo a dare forma alla nostra pre-
+senza nel mondo. In un legame non si gioca
+semplicemente una vicenda privata, ma una
+parte essenziale della formazione di sé: la ca-
+pacità di riconoscere l’altro, di attraversare il
+limite, di sostenere la mancanza, di non con-
+fondere il desiderio con il possesso, la libertà
+con la fuga, la fine con la cancellazione. Per
+questo, giunti alla conclusione di questo per-
+corso, non sento il bisogno di aggiungere
+un’ultima spiegazione ai capitoli che prece-
+dono. Ogni parte ha già detto, con la propria
+voce, qualcosa di necessario: il dolore del
+congedo, la fatica della durata, l’ansia dell’al-
+trove, la paura del conflitto, il rischio della
+139
+vulnerabilità, la violenza silenziosa della spa-
+rizione. Sarebbe riduttivo chiudere tutto in
+una formula. Sarebbe quasi tradire il senso
+stesso del libro, che non nasce per semplifi-
+care l’esperienza affettiva, ma per restituirle
+complessità. La conclusione, allora, non può
+essere una sintesi. Può essere, semmai, una
+soglia. Una soglia dalla quale guardare agli
+affetti non come a una materia sentimentale,
+ma come a un luogo pedagogico radicale.
+Perché è nei legami che il soggetto impara,
+spesso dolorosamente, di non bastare a sé
+stesso. È nei legami che scopre la propria
+esposizione, la propria dipendenza, la propria
+finitezza. È nei legami che comprende che
+l’altro non è un semplice prolungamento del
+proprio bisogno, ma una presenza irriduci-
+bile, libera, opaca, non sempre disponibile,
+non sempre decifrabile. Ed è proprio questa
+irriducibilità a rendere la relazione educativa:
+l’altro ci forma perché non coincide con noi.
+Molte fragilità contemporanee sembrano na-
+scere dalla difficoltà di abitare questa non
+coincidenza. Vorremmo legami intensi ma
+non faticosi, autentici ma non troppo esigenti,
+profondi ma non vincolanti, liberi ma sempre
+rassicuranti. Vorremmo essere scelti senza
+sentirci esposti, essere amati senza essere fe-
+140
+riti, essere riconosciuti senza dover attraver-
+sare l’incertezza dell’incontro. Ma il legame
+vero non funziona così. Il legame vero non
+conferma soltanto: interrompe, decentra,
+mette alla prova, obbliga a uscire dalla pro-
+pria autosufficienza immaginaria. In questo
+senso, gli affetti educano perché costringono
+a misurarsi con ciò che non si controlla. Edu-
+cano quando aprono alla cura, ma anche
+quando rivelano la nostra difficoltà di pren-
+derci cura. Educano quando durano, ma anche
+quando finiscono e ci obbligano a rimettere
+insieme ciò che dentro di noi si è spezzato.
+Educano quando chiedono parola, ma anche
+quando il silenzio dell’altro ci mostra quanto
+sia necessario imparare a nominare il dolore.
+Educano non perché facciano sempre bene,
+ma perché incidono. E ciò che incide, se
+viene pensato, può diventare formazione. È
+qui che si colloca, a mio avviso, il compito
+più profondo della pedagogia. Non proteg-
+gere l’essere umano da ogni ferita, perché
+questo sarebbe impossibile e forse persino di-
+sumano. Non trasformare l’amore in un in-
+sieme di istruzioni, perché nessuna relazione
+viva può essere interamente prevista. Non
+educare a non soffrire, ma educare a non per-
+dere sé stessi dentro la sofferenza. Educare a
+141
+comprendere che una ferita non deve neces-
+sariamente diventare una prigione, che una
+fine non coincide con un fallimento, che una
+mancanza non cancella il valore di ciò che è
+stato vissuto. La pedagogia degli affetti non
+promette immunità. Promette, piuttosto, pen-
+sabilità. Aiuta a dare parola a ciò che altri-
+menti resta confuso. Aiuta a distinguere. E
+oggi distinguere è già un atto educativo es-
+senziale. Distinguere tra cura e controllo, tra
+presenza e invasione, tra intensità e profon-
+dità, tra conflitto e violenza, tra libertà e irre-
+sponsabilità, tra congedo e scarto. Molte
+sofferenze nascono proprio dalla perdita di
+queste distinzioni. Quando tutto viene acce-
+lerato, consumato, esposto, sostituito, anche
+il vocabolario dell’esperienza si impoverisce.
+Si finisce per chiamare amore ciò che è di-
+pendenza, leggerezza ciò che è fuga, sincerità
+ciò che è brutalità, libertà ciò che è semplice
+incapacità di restare. Educare significa allora
+restituire nomi più giusti alle cose. Non per
+irrigidire la vita, ma per renderla più abita-
+bile. Le parole non salvano da sole, ma pos-
+sono impedire che il dolore resti indistinto.
+Possono trasformare una confusione in con-
+sapevolezza, una frattura in passaggio, una
+perdita in memoria, una vulnerabilità in co-
+142
+noscenza di sé. Quando un’esperienza affet-
+tiva trova una parola adeguata, non smette ne-
+cessariamente di fare male; però smette,
+almeno in parte, di essere muta. E ciò che non
+è più muto può essere attraversato. Questo
+libro, alla fine, mi sembra custodire proprio
+questa tensione: non la pretesa di risolvere la
+fragilità dei legami, ma il tentativo di sot-
+trarla alla banalizzazione. Viviamo in un
+tempo in cui tutto tende a diventare conte-
+nuto, immagine, prestazione, consumo.
+Anche il dolore rischia di essere rapidamente
+comunicato e altrettanto rapidamente dimen-
+ticato. Anche l’intimità rischia di essere tra-
+dotta in segni visibili, in conferme misurabili,
+in presenze intermittenti. Eppure ciò che
+forma davvero una persona avviene spesso al-
+trove: nelle zone lente, invisibili, non imme-
+diatamente condivisibili dell’esperienza.
+Avviene quando si impara a sostenere un’at-
+tesa, a nominare una paura, a riconoscere un
+errore, a chiedere scusa, a lasciare andare
+senza cancellare, a restare senza possedere.
+Gli affetti chiedono tempo. Questa è forse una
+delle verità più semplici e più dimenticate.
+Chiedono il tempo dell’inizio, perché nessuno
+può essere conosciuto davvero nell’urgenza
+della saturazione. Chiedono il tempo della
+143
+durata, perché ciò che non attraversa il quoti-
+diano resta spesso immagine. Chiedono il
+tempo del conflitto, perché l’altro diventa
+reale quando smette di coincidere perfetta-
+mente con la nostra attesa. Chiedono il tempo
+della fine, perché anche separarsi è un gesto
+umano che non dovrebbe essere consegnato
+alla pura sparizione. Senza tempo, il legame
+si deforma: diventa impulso, consumo, scena,
+residuo. Restituire tempo agli affetti significa
+restituire loro dignità. Significa riconoscere
+che non tutto ciò che è immediato è autentico,
+non tutto ciò che è intenso è profondo, non
+tutto ciò che finisce è inutile, non tutto ciò
+che dura è buono. La pedagogia non può ac-
+contentarsi di opporre superficialmente du-
+rata e rottura, stabilità e cambiamento,
+presenza e distanza. Deve abitare le distin-
+zioni più difficili. Deve dire che ci sono le-
+gami da custodire e legami da lasciare. Che
+ci sono conflitti da attraversare e conflitti da
+interrompere. Che ci sono attese feconde e at-
+tese che consumano. Che ci sono silenzi ne-
+cessari e silenzi che feriscono. La maturità
+affettiva non sta nel restare sempre, ma nel
+comprendere che cosa meriti presenza, che
+cosa chieda distanza, che cosa domandi pa-
+rola. In questa prospettiva, educare agli affetti
+144
+significa educare alla responsabilità. Una pa-
+rola oggi forse poco amata, perché sembra
+evocare peso, obbligo, limite. Eppure senza
+responsabilità non c’è legame che possa di-
+ventare davvero umano. Responsabilità non
+significa garanzia assoluta. Nessuno può pro-
+mettere di non cambiare mai, di non deludere
+mai, di non ferire mai. Responsabilità signi-
+fica sapere che ciò che facciamo nei legami
+lascia tracce. Che le parole dette troppo pre-
+sto possono creare attese. Che i silenzi pos-
+sono disorientare. Che le fughe possono
+produrre ferite. Che l’altro non è una com-
+parsa dentro la nostra instabilità, ma una per-
+sona che riceve il peso dei nostri gesti. Forse
+è proprio qui che gli affetti smettono di essere
+soltanto materia privata e diventano questione
+etica. Nel modo in cui trattiamo chi ci ama,
+chi ci cerca, chi ci delude, chi non possiamo
+più amare, si rivela qualcosa della nostra idea
+di umano. Ogni relazione, anche la più fra-
+gile, contiene una domanda di riconosci-
+mento. Ignorarla significa impoverire non
+solo l’altro, ma anche noi stessi. Perché ogni
+volta che trattiamo una persona come sosti-
+tuibile, cancellabile, utilizzabile, reversibile,
+perdiamo un frammento della nostra stessa
+capacità di relazione. Il rischio del nostro
+145
+tempo non è soltanto amare meno. È amare
+dentro forme sempre più povere di responsa-
+bilità simbolica. È entrare e uscire dai legami
+senza sostare abbastanza per comprenderne il
+significato. È confondere la possibilità di sce-
+gliere con l’impossibilità di assumere conse-
+guenze. È vivere l’altro come esperienza
+emotiva provvisoria, finché accende, con-
+ferma, consola, distrae. Ma l’altro non è
+un’esperienza da consumare. È una presenza
+da incontrare. Anche quando l’incontro è
+breve. Anche quando non diventa storia.
+Anche quando finisce. Una pedagogia degli
+affetti dovrebbe allora educare a questa con-
+sapevolezza minima e decisiva: nessuno
+passa nella vita di un altro senza lasciare
+qualcosa. Anche un gesto piccolo può aprire
+o chiudere, custodire o ferire, riconoscere o
+cancellare. Non si tratta di caricare ogni rela-
+zione di un peso insostenibile. Si tratta, al
+contrario, di restituire leggerezza alla parola
+responsabilità: non come colpa, ma come
+cura della traccia. Essere responsabili non si-
+gnifica restare per forza. Significa non fin-
+gere che il nostro passaggio non abbia effetti.
+Se dovessi dire, alla fine, che cosa questo
+libro mi ha insegnato, direi questo: gli affetti
+hanno bisogno di educazione non perché
+146
+siano deboli, ma perché sono potenti. Proprio
+perché ci toccano in profondità, proprio per-
+ché ci espongono, proprio perché possono
+aprire possibilità immense o ferite altrettanto
+profonde, non possono essere lasciati soltanto
+all’improvvisazione emotiva. Hanno bisogno
+di pensiero, di parola, di misura, di cura.
+Hanno bisogno di adulti capaci di ascoltare
+senza banalizzare e di giovani messi nelle
+condizioni di comprendere ciò che vivono
+senza vergognarsene. Non esiste formazione
+autentica che non passi, prima o poi, da una
+educazione del sentire. Non basta sapere
+molte cose se poi non si sa stare davanti alla
+fragilità propria e altrui. Non basta essere
+competenti se non si è capaci di riconoscere
+una ferita. Non basta essere liberi se la libertà
+diventa incapacità di legame. Non basta co-
+municare continuamente se non si è più ca-
+paci di rivolgere all’altro una parola vera.
+Alla fine, forse, educare agli affetti significa
+proprio questo: formare persone capaci di non
+consumare ciò che merita cura. Persone ca-
+paci di riconoscere che ogni legame è una so-
+glia, non un possesso; una possibilità, non
+una merce; un incontro, non una prestazione.
+Persone capaci di comprendere che amare
+non significa soltanto provare qualcosa, ma
+147
+imparare una forma più responsabile di pre-
+senza. E allora il titolo di questo libro non va
+letto soltanto come una denuncia. Affetti in
+saldo è anche una domanda lasciata aperta.
+Chiede se siamo ancora disposti a sottrarre i
+legami alla logica dello sconto, dello scarto,
+della sostituzione veloce. Chiede se siamo an-
+cora capaci di riconoscere valore a ciò che
+non produce immediata gratificazione, a ciò
+che richiede tempo, a ciò che non si lascia
+esibire, a ciò che continua a lavorare dentro
+anche quando non fa rumore. La pedagogia
+non può impedire al mondo di mettere tutto
+in saldo. Ma può insegnare a non confondere
+il prezzo con il valore. Può ricordare che ciò
+che forma davvero non sempre appare, non
+sempre brilla, non sempre coincide con ciò
+che il presente rende desiderabile. Può custo-
+dire l’idea che gli affetti, anche quando sono
+fragili, anche quando falliscono, anche
+quando finiscono, restano uno dei luoghi de-
+cisivi in cui impariamo a diventare umani. Ed
+è forse da qui che bisogna ripartire: non dalla
+nostalgia di legami perfetti, che non sono mai
+esistiti, ma dalla possibilità di legami più con-
+sapevoli. Non dall’illusione di non ferirsi, ma
+dalla responsabilità di non ferire inutilmente.
+Non dalla pretesa di restare sempre, ma dal
+148
+coraggio di esserci davvero quando si resta e
+di non cancellare l’altro quando si va via. Per-
+ché gli affetti non sono mai davvero “in
+saldo” finché qualcuno continua a pensarli, a
+educarli, a custodirne il valore.
+Giovanbattista Trebisacce
+149
+Una riflessione
+In una fase storica segnata da profonde tra-
+sformazioni sociali, culturali e relazionali,
+parlare di affetti significa assumere una re-
+sponsabilità educativa di grande rilievo. Le
+giovani generazioni vivono oggi dentro un
+tempo complesso, attraversato dalla connes-
+sione permanente, dall’esposizione continua,
+dalla velocità dei rapporti e, spesso, da una
+fragilità emotiva che chiede di essere ascol-
+tata, compresa e accompagnata. Per questo ri-
+tengo particolarmente significativo il percorso
+che ha dato vita ad Affetti in saldo, un progetto
+che non si limita a descrivere una condizione
+generazionale, ma prova a interpretarla attra-
+verso la lente della formazione, della consa-
+pevolezza e della cura educativa. Il valore di
+questo volume sta innanzitutto nella sua ori-
+gine. Non nasce come semplice prodotto edi-
+toriale, ma come esperienza formativa
+maturata all’interno dell’Università della Ca-
+labria, in un contesto didattico e laboratoriale
+151
+capace di integrare studio, ricerca, partecipa-
+zione attiva e scrittura. È questo l’aspetto che
+considero più prezioso: il fatto che le studen-
+tesse siano state protagoniste di un percorso
+nel quale vissuti, osservazioni, domande e ri-
+flessioni sono diventati materia di pensiero
+critico. Quando l’università riesce a trasfor-
+mare l’esperienza dei giovani in consapevo-
+lezza pubblica, essa assolve pienamente una
+delle sue funzioni più alte: non soltanto tra-
+smettere saperi, ma formare persone capaci di
+leggere il proprio tempo. Affetti in saldo af-
+fronta una questione decisiva: che cosa accade
+ai legami affettivi in una società in cui tutto
+sembra diventare più rapido, più visibile, più
+sostituibile? Le relazioni, soprattutto nell’età
+giovanile, sono oggi esposte a dinamiche
+nuove: il bisogno di riconoscimento, la paura
+dell’esclusione, la difficoltà di sostenere la
+durata, la tendenza alla fuga davanti al con-
+flitto, la fragilità prodotta da forme di comu-
+nicazione sempre più immediate e, talvolta,
+sempre meno profonde. In questo scenario è
+fondamentale riportare al centro il valore dei
+legami, promuovendo percorsi educativi ca-
+paci di accompagnare i giovani nella costru-
+zione di relazioni autentiche, mature e
+consapevoli. Il libro ha il merito di non cadere
+152
+né nel moralismo né nella semplificazione.
+Non si limita a denunciare i rischi del digitale
+o a descrivere genericamente la crisi dei rap-
+porti umani. Al contrario, prova a compren-
+dere. E comprendere è già un atto educativo.
+Significa dare parola a ciò che spesso resta
+confuso, trasformare la fragilità in occasione
+di riflessione, riconoscere che i sentimenti non
+sono una dimensione marginale della vita, ma
+un luogo essenziale della crescita personale e
+sociale. In questo senso, il lavoro promosso e
+curato dal professor Giovanbattista Trebisacce
+rappresenta un esempio significativo di come
+la formazione universitaria possa farsi labora-
+torio vivo di cittadinanza, responsabilità e
+umanità. Dare voce ai giovani, valorizzarne le
+idee, guidarli nella costruzione di uno sguardo
+critico sulle trasformazioni del presente signi-
+fica investire in una cultura educativa capace
+di incidere realmente nella società. L’apporto
+delle studentesse rende il volume vivo e at-
+tuale: la teoria non resta astratta, ma incontra
+l’esperienza; la riflessione pedagogica non si
+chiude nell’accademia, ma dialoga con le do-
+mande reali delle nuove generazioni. Consi-
+dero Affetti in saldo un contributo importante
+perché rimette al centro alcune parole deci-
+sive: relazione, conflitto, narrazione, respon-
+153
+sabilità, durata, riconoscimento. Sono parole
+che oggi rischiano di essere indebolite da una
+cultura dell’immediatezza e della prestazione,
+ma che restano fondamentali per costruire co-
+munità più consapevoli e più attente alla di-
+mensione umana dei processi educativi. La
+scuola, l’università, le istituzioni e il territorio
+hanno il dovere di collaborare affinché la fra-
+gilità emotiva non sia lasciata alla solitudine
+individuale, ma diventi oggetto di percorsi
+condivisi, strutturati e duraturi. Sono certa che
+questo volume potrà affermarsi come uno
+strumento pedagogico autorevole di rifles-
+sione e approfondimento. Non soltanto perché
+affronta un tema urgente, ma perché lo fa con
+uno sguardo capace di tenere insieme forma-
+zione, ricerca e vita. Ed è proprio da questa al-
+leanza che possono nascere le risposte più
+autentiche alle sfide educative contempora-
+nee: dalla capacità di ascoltare i giovani, di
+accompagnarli, di riconoscere le loro fragilità
+non come limiti da nascondere, ma come punti
+di partenza per costruire relazioni più vere,
+più libere e più consapevoli.
+Giusi Princi
+154`;
+
+const MODES = {
+  domande: {
+    icon: "💬", color: "var(--rose-light)",
+    title: "Domande libere",
+    sub: "Fai qualsiasi domanda sul libro",
+    sys: `Sei un assistente di studio specializzato nel libro "Affetti in saldo. Per una pedagogia dei legami fragili" (Jonia Editrice, 2026).
+
+Il tuo compito è aiutare studenti e lettori a comprendere il testo in profondità.
+
+REGOLE FONDAMENTALI:
+- Rispondi SEMPRE e SOLO basandoti sul contenuto del libro fornito.
+- Se la risposta non è nel libro, dillo chiaramente: "Questo argomento non è trattato nel libro."
+- Cita sempre il contesto preciso (es. "Nella prefazione...", "Nel capitolo sulla trasformazione...", "L'autrice scrive...") per aiutare il lettore a ritrovare il passaggio.
+- Non inventare mai contenuti, tesi o riferimenti non presenti nel testo.
+- Usa un tono accessibile, incoraggiante, adatto a studenti.
+- Quando citi un passaggio significativo, mettilo in evidenza con le virgolette.
+
+Inizia presentandoti brevemente e chiedendo su cosa vuole lavorare.`,
+    prompts: ["Chi ha scritto questo libro?", "Di cosa parla la prefazione?", "Cosa significa 'affetti in saldo'?", "Chi è Lucio Presta nel libro?"]
+  },
+  riassunto: {
+    icon: "📝", color: "var(--navy-light)",
+    title: "Riassunti",
+    sub: "Riassunti di sezioni e capitoli",
+    sys: `Sei un assistente di studio specializzato nel libro "Affetti in saldo. Per una pedagogia dei legami fragili" (Jonia Editrice, 2026).
+
+Il tuo compito è produrre riassunti chiari e fedeli al testo.
+
+REGOLE FONDAMENTALI:
+- Riassumi SOLO ciò che è scritto nel libro. Non aggiungere interpretazioni esterne.
+- Struttura i riassunti in modo chiaro: punti principali, tesi centrale, concetti chiave.
+- Per i riassunti di sezioni, indica sempre a quale parte del libro si riferiscono.
+- Usa un linguaggio accessibile, adatto allo studio.
+- Se l'utente chiede un riassunto di qualcosa non presente nel libro, dillo chiaramente.
+- Termina ogni riassunto con 2-3 "Concetti chiave da ricordare".
+
+Inizia chiedendo di quale parte del libro vuole un riassunto.`,
+    prompts: ["Riassumi la prefazione", "Riassumi l'introduzione", "Qual è la tesi centrale del libro?", "Riassumi il primo capitolo"]
+  },
+  analisi: {
+    icon: "🔍", color: "var(--teal-light)",
+    title: "Analisi dei temi",
+    sub: "Approfondimento concettuale",
+    sys: `Sei un assistente di studio specializzato nel libro "Affetti in saldo. Per una pedagogia dei legami fragili" (Jonia Editrice, 2026).
+
+Il tuo compito è guidare l'utente nell'analisi profonda dei temi pedagogici del testo.
+
+REGOLE FONDAMENTALI:
+- Analizza SOLO concetti e temi presenti nel libro. Fonti esterne solo se esplicitamente citate nel testo (es. Han, Mortari, Winnicott).
+- Per ogni tema: definizione nel testo, come viene sviluppato, esempi riportati dall'autrice, implicazioni pedagogiche.
+- Evidenzia sempre i collegamenti tra temi diversi presenti nel libro.
+- Se l'utente chiede di un tema non trattato nel libro, dillo onestamente.
+- Usa linguaggio accademico ma accessibile.
+
+Inizia chiedendo quale tema o concetto pedagogico vuole approfondire.`,
+    prompts: ["Cosa si intende per 'pedagogia della trasformazione'?", "Come viene trattato il tema del dolore?", "Cosa dice il libro sulla società contemporanea?", "Analizza il tema del legame affettivo"]
+  },
+  quiz: {
+    icon: "🎯", color: "var(--amber-light)",
+    title: "Quiz di verifica",
+    sub: "Metti alla prova la comprensione",
+    sys: `Sei un assistente di studio specializzato nel libro "Affetti in saldo. Per una pedagogia dei legami fragili" (Jonia Editrice, 2026).
+
+Il tuo compito è creare quiz e domande di verifica basate ESCLUSIVAMENTE sul contenuto del libro.
+
+REGOLE FONDAMENTALI:
+- Crea domande SOLO su contenuti effettivamente presenti nel libro.
+- Ogni domanda deve avere 4 opzioni di risposta (A, B, C, D), una sola corretta.
+- Dopo che l'utente risponde, spiega perché quella risposta è corretta o sbagliata, citando il passaggio del libro.
+- Varia i tipi di domande: comprensione, analisi, vocabolario specifico del testo.
+- Adatta la difficoltà in base alle risposte dell'utente.
+- Tieni il conto delle risposte corrette e, ogni 5 domande, dai un feedback sul livello di comprensione.
+
+Inizia presentando il quiz e chiedendo se preferisce un argomento specifico o domande casuali sull'intero libro.`,
+    prompts: ["Inizia il quiz", "Domande sulla prefazione", "Domande sui temi principali", "Domande difficili per la verifica"]
+  }
+};
+
+let mode = null;
+let msgs = [];
+let loading = false;
+
+function buildSys() {
+  const m = MODES[mode];
+  return m.sys + "\n\n---\n\nTESTO COMPLETO DEL LIBRO (usa questo come unica fonte):\n\n" + LIBRO;
+}
+
+function startChat(m) {
+  mode = m;
+  msgs = [];
+  const cfg = MODES[m];
+  document.getElementById("ws").style.display = "none";
+  const cs = document.getElementById("cs");
+  cs.style.display = "flex";
+  const hb = document.getElementById("hb");
+  hb.style.background = cfg.color;
+  hb.textContent = cfg.icon;
+  document.getElementById("ht").textContent = cfg.title;
+  document.getElementById("cws").innerHTML = "";
+  renderPills(cfg.prompts);
+  initMsg();
+}
+
+function renderPills(prompts) {
+  const c = document.getElementById("spp");
+  c.innerHTML = prompts.map(p => `<button class="spp" onclick="useP(this)">${p}</button>`).join("");
+}
+
+function useP(el) {
+  document.getElementById("ci").value = el.textContent;
+  document.getElementById("ci").focus();
+  document.getElementById("sp").style.display = "none";
+}
+
+function goBack() {
+  document.getElementById("cs").style.display = "none";
+  document.getElementById("ws").style.display = "flex";
+  mode = null; msgs = [];
+}
+
+function newChat() {
+  msgs = [];
+  document.getElementById("cws").innerHTML = "";
+  renderPills(MODES[mode].prompts);
+  document.getElementById("sp").style.display = "block";
+  initMsg();
+}
+
+async function initMsg() {
+  showT();
+  try {
+    const r = await callClaude([{role:"user", content:"Presentati brevemente e spiega come puoi aiutare in questa modalità."}]);
+    hideT();
+    addMsg("assistant", r);
+    msgs.push({role:"assistant", content:r});
+  } catch(e) {
+    hideT();
+    addMsg("assistant", "⚠️ Controlla la API key e ricarica la pagina.");
+  }
+}
+
+function onKey(e) {
+  if(e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+}
+
+function resize(el) {
+  el.style.height = "auto";
+  el.style.height = Math.min(el.scrollHeight, 110) + "px";
+}
+
+async function send() {
+  const inp = document.getElementById("ci");
+  const t = inp.value.trim();
+  if(!t || loading) return;
+  inp.value = ""; inp.style.height = "auto";
+  document.getElementById("sp").style.display = "none";
+  addMsg("user", t);
+  msgs.push({role:"user", content:t});
+  await run();
+}
+
+async function run() {
+  loading = true;
+  document.getElementById("sb").disabled = true;
+  showT();
+  try {
+    const r = await callClaude(msgs);
+    hideT();
+    addMsg("assistant", r);
+    msgs.push({role:"assistant", content:r});
+  } catch(e) {
+    hideT();
+    addMsg("assistant", "⚠️ Errore: " + (e.message || "Riprova."));
+  }
+  loading = false;
+  document.getElementById("sb").disabled = false;
+}
+
+async function callClaude(ms) {
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": API_KEY,
+      "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true"
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-5",
+      max_tokens: 1500,
+      system: buildSys(),
+      messages: ms
+    })
+  });
+  if(!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.error?.message || "HTTP " + r.status); }
+  return (await r.json()).content[0].text;
+}
+
+function addMsg(role, text) {
+  const c = document.getElementById("cws");
+  const d = document.createElement("div");
+  d.className = "msg " + role;
+  const av = document.createElement("div");
+  av.className = "ma";
+  av.textContent = role === "user" ? "Tu" : (MODES[mode]?.icon || "✦");
+  const b = document.createElement("div");
+  b.className = "mb";
+  b.innerHTML = fmt(text);
+  d.appendChild(av); d.appendChild(b);
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+
+function fmt(t) {
+  return t
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g,"<em>$1</em>")
+    .replace(/^#{1,3} (.+)$/gm,"<strong>$1</strong>")
+    .replace(/\n/g,"<br>");
+}
+
+function showT() {
+  const c = document.getElementById("cws");
+  const el = document.createElement("div");
+  el.className = "msg assistant"; el.id = "ti";
+  const av = document.createElement("div");
+  av.className = "ma";
+  av.textContent = MODES[mode]?.icon || "✦";
+  const b = document.createElement("div");
+  b.className = "mb";
+  b.innerHTML = '<div class="ti"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  el.appendChild(av); el.appendChild(b);
+  c.appendChild(el);
+  c.scrollTop = c.scrollHeight;
+}
+
+function hideT() { const el = document.getElementById("ti"); if(el) el.remove(); }
+</script>
+</body>
+</html>
