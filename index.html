@@ -828,13 +828,13 @@
         </blockquote>
         <div class="sp-price-row">
           <span class="sp-price" id="shop-price-display">€XX,XX</span>
-          <span class="sp-shipping-note" id="shop-shipping-display">+ spese di spedizione</span>
+          <span class="sp-shipping-note" id="shop-shipping-display">Spedizione inclusa</span>
         </div>
         <!-- PAGAMENTO: sostituisci href con il tuo Stripe Payment Link o PayPal URL -->
         <a href="#" class="sp-cta" id="buy-btn">Acquista ora</a>
         <ul class="sp-trust">
           <li><span>🔒</span> Pagamento sicuro via Stripe</li>
-          <li><span>📦</span> Spedizione tracciata · 3–5 giorni lavorativi</li>
+          <li><span>📦</span> Spedizione inclusa e tracciata · 3–5 giorni lavorativi</li>
           <li><span>↩</span> Reso gratuito entro 30 giorni</li>
         </ul>
       </div>
@@ -843,7 +843,7 @@
       <h3 class="sp-faq-title">Domande frequenti</h3>
       <details>
         <summary>Come avviene la spedizione?</summary>
-        <p class="faq-body">Spedizione tramite corriere tracciato entro 1–2 giorni lavorativi. Riceverai un'email con il numero di tracciamento. Consegna in 3–5 giorni lavorativi in tutta Italia.</p>
+        <p class="faq-body">La spedizione è inclusa nel prezzo. Il libro viene affidato a un corriere tracciato entro 1–2 giorni lavorativi dall'ordine. Riceverai un'email con il numero di tracciamento e la consegna avverrà in 3–5 giorni lavorativi in tutta Italia.</p>
       </details>
       <details>
         <summary>Posso restituire il libro?</summary>
@@ -875,10 +875,10 @@
   //  CONFIGURAZIONE LANCIO
   // ═══════════════════════════════════════════════════════
   const SHOP_CONFIG = {
-    live: false,                  // ← imposta true il giorno del lancio
-    prezzo: '€XX,XX',            // ← es. '€15,00'
-    spedizione: '+ spese di spedizione',
-    paymentLink: '#',            // ← Stripe Payment Link o PayPal URL
+    live: true,                   // ← imposta true il giorno del lancio
+    prezzo: '€22,50',            // ← es. '€15,00'
+    spedizione: 'Spedizione inclusa',
+    paymentLink: 'https://buy.stripe.com/8x28wOerz7OwfRrcH763K00',            // ← Stripe Payment Link o PayPal URL
     navLabel: 'Acquista',
   };
   // ═══════════════════════════════════════════════════════
