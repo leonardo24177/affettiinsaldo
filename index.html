@@ -826,19 +826,22 @@
           <p>«I sentimenti non sono un fatto minore. Sono uno dei luoghi in cui si decide la qualità della nostra vita.»</p>
           <cite>— Lucio Presta, dall'Introduzione</cite>
         </blockquote>
-        <div class="sp-price-row">
+        <div class="sp-price-row" id="shop-price-row">
           <span class="sp-price" id="shop-price-display">€XX,XX</span>
           <span class="sp-shipping-note" id="shop-shipping-display">Spedizione inclusa</span>
         </div>
         <!-- PAGAMENTO: sostituisci href con il tuo Stripe Payment Link o PayPal URL -->
         <a href="#" class="sp-cta" id="buy-btn">Acquista ora</a>
-        <ul class="sp-trust">
+        <ul class="sp-trust" id="shop-trust-direct">
           <li><span>🔒</span> Pagamento sicuro via Stripe</li>
           <li><span>📦</span> Spedizione inclusa e tracciata · 3–5 giorni lavorativi</li>
         </ul>
+        <ul class="sp-trust" id="shop-trust-amazon" style="display:none">
+          <li><span>📦</span> Acquisto, pagamento e spedizione gestiti da Amazon</li>
+        </ul>
       </div>
     </div>
-    <div class="sp-faq">
+    <div class="sp-faq" id="shop-faq">
       <h3 class="sp-faq-title">Domande frequenti</h3>
       <details>
         <summary>Come avviene la spedizione?</summary>
@@ -878,6 +881,10 @@
     spedizione: 'Spedizione inclusa',
     paymentLink: 'https://buy.stripe.com/8x28wOerz7OwfRrcH763K00',            // ← Stripe Payment Link o PayPal URL
     navLabel: 'Acquista',
+    // Vendita diretta dal sito (Stripe) in pausa: i pulsanti rimandano ad Amazon.
+    // Per riattivarla imposta venditaDiretta: true
+    venditaDiretta: false,
+    amazonLink: 'https://www.amazon.it/Affetti-Saldo-cura-Giovanbattista-Trebisacce/dp/8895617703',
   };
   // ═══════════════════════════════════════════════════════
 
@@ -889,7 +896,19 @@
       document.getElementById('acquista').classList.add('live');
       document.getElementById('shop-price-display').textContent = SHOP_CONFIG.prezzo;
       document.getElementById('shop-shipping-display').textContent = SHOP_CONFIG.spedizione;
-      document.getElementById('buy-btn').href = SHOP_CONFIG.paymentLink;
+      const buyBtn = document.getElementById('buy-btn');
+      if (SHOP_CONFIG.venditaDiretta) {
+        buyBtn.href = SHOP_CONFIG.paymentLink;
+      } else {
+        buyBtn.href = SHOP_CONFIG.amazonLink;
+        buyBtn.target = '_blank';
+        buyBtn.rel = 'noopener';
+        buyBtn.textContent = 'Acquista su Amazon';
+        document.getElementById('shop-price-row').style.display = 'none';
+        document.getElementById('shop-trust-direct').style.display = 'none';
+        document.getElementById('shop-trust-amazon').style.display = '';
+        document.getElementById('shop-faq').style.display = 'none';
+      }
       const navCta = document.getElementById('nav-cta-btn');
       if (navCta) navCta.textContent = SHOP_CONFIG.navLabel;
     } else {
